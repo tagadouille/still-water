@@ -1,0 +1,10 @@
+package com.app.main;
+
+import javafx.application.Application;
+
+public class Launcher {
+    public static void main(String[] args) {
+        //Application.launch(Game.class, args);
+        System.out.println("Hello World!");
+    }
+}
