@@ -40,7 +40,9 @@ javafx {
         "javafx.controls",
         "javafx.fxml",
         "javafx.web",
-        "javafx.media"
+        "javafx.media",
+        "javafx.graphics",
+        "javafx.swing"
     )
 }
 

@@ -6,6 +6,9 @@ module com.app.main {
     requires javafx.media;
     requires javafx.graphics;
 
+    requires java.desktop;
+    requires javafx.swing;
+
     opens com.app.main to javafx.fxml;
 
     exports com.app.main;
