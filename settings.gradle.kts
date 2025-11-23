@@ -1,6 +1,9 @@
 pluginManagement {
     repositories {
-        mavenCentral()
+        maven {
+            url = uri("http://repo.maven.apache.org/maven2/")
+            isAllowInsecureProtocol = true
+        }
         gradlePluginPortal()
     }
 }
@@ -8,7 +11,10 @@ pluginManagement {
 dependencyResolutionManagement {
     repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
     repositories {
-        mavenCentral()
+        maven {
+            url = uri("http://repo.maven.apache.org/maven2/")
+            isAllowInsecureProtocol = true
+        }
     }
 }
 
