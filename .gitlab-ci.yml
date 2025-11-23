@@ -1,46 +1,31 @@
-# 1. L'image Docker
-# C'est l'environnement Linux avec Java 17 pré-installé qui va exécuter ton code.
-# Si tu utilises Java 21, remplace '17' par '21'.
-image: eclipse-temurin:17-jdk-alpine
+image: gradle:jdk17
 
-# 2. Les étapes du pipeline
 stages:
   - build
   - test
 
-# 3. Configuration globale avant chaque job
-before_script:
-  # Très important : donne les droits d'exécution au script Gradle
-  # Sinon tu auras une erreur "Permission denied"
-  - chmod +x gradlew
-  - export GRADLE_USER_HOME=`pwd`/.gradle
+variables:
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
 
-# --- ÉTAPE 1 : COMPILATION ---
+before_script:
+  - gradle --version
+
 build:
   stage: build
   script:
-    # Compile le projet sans lancer les tests pour vérifier la syntaxe
-    - ./gradlew assemble
+    - gradle assemble
   artifacts:
     paths:
       - build/libs/*.jar
     expire_in: 1 week
-  cache:
-    key: "$CI_COMMIT_REF_SLUG"
-    paths:
-      - .gradle/wrapper
-      - .gradle/caches
 
-# --- ÉTAPE 2 : TESTS ---
 test:
   stage: test
   script:
-    # Lance les tests unitaires
-    - ./gradlew test
+    - gradle test
   artifacts:
     when: always
     reports:
-      # Permet à GitLab d'afficher un joli rapport de tests dans l'interface
       junit: build/test-results/test/**/TEST-*.xml
   dependencies:
     - build
