@@ -5,7 +5,7 @@ stages:
   - test
 
 variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttp.proxyHost=www-cache.u-paris.fr -Dhttp.proxyPort=3128 -Dhttps.proxyHost=www-cache.u-paris.fr -Dhttps.proxyPort=3128"
 
 before_script:
   - gradle --version
