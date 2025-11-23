@@ -1,31 +1,28 @@
-image: gradle:8.5-jdk17-jammy
-
-stages:
-  - build
-  - test
+image: gradle:8-jdk17-alpine
 
 variables:
-  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttp.proxyHost=proxy.univ-paris-diderot.fr -Dhttp.proxyPort=3128 -Dhttps.proxyHost=proxy.univ-paris-diderot.fr -Dhttps.proxyPort=3128"
+  GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttp.proxyHost=194.254.199.96 -Dhttp.proxyPort=3128 -Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
 
 before_script:
+  - export GRADLE_USER_HOME="$(pwd)/.gradle"
   - gradle --version
 
 build:
   stage: build
-  script:
-    - gradle assemble --info
-  artifacts:
+  script: gradle --build-cache assemble
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: push
     paths:
-      - build/libs/*.jar
-    expire_in: 1 week
+      - build
+      - .gradle
 
 test:
   stage: test
-  script:
-    - gradle test
-  artifacts:
-    when: always
-    reports:
-      junit: build/test-results/test/**/TEST-*.xml
-  dependencies:
-    - build
+  script: gradle check
+  cache:
+    key: "$CI_COMMIT_REF_NAME"
+    policy: pull
+    paths:
+      - build
+      - .gradle
