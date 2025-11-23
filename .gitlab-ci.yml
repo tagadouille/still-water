@@ -1,5 +1,10 @@
 image: gradle:8-jdk21-alpine
 
+stages:
+  - build
+  - test
+  - deploy
+
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttp.proxyHost=194.254.199.96 -Dhttp.proxyPort=3128 -Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
 
@@ -7,6 +12,7 @@ before_script:
   - export GRADLE_USER_HOME="$(pwd)/.gradle"
   - gradle --version
 
+#JOB 1 - build 
 build:
   stage: build
   script: gradle --build-cache assemble
@@ -22,6 +28,7 @@ build:
       - build
       - .gradle
 
+#JOB 2 - test 
 test:
   stage: test
   script: gradle check
@@ -31,3 +38,17 @@ test:
     paths:
       - build
       - .gradle
+
+#JOB 3 - deploy
+pages:
+  stage: deploy
+  script:
+    - gradle javadoc
+    - mkdir -p public
+    - cp -r build/docs/javadoc/* public/
+  artifacts:
+    paths:
+      - public
+  rules:
+    - if: $CI_COMMIT_BRANCH == "master" 
+    - if: $CI_COMMIT_BRANCH == "main"
