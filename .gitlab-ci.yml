@@ -1,4 +1,4 @@
-image: gradle:8-jdk17-alpine
+image: gradle:8-jdk21-alpine
 
 variables:
   GRADLE_OPTS: "-Dorg.gradle.daemon=false -Dhttp.proxyHost=194.254.199.96 -Dhttp.proxyPort=3128 -Dhttps.proxyHost=194.254.199.96 -Dhttps.proxyPort=3128"
