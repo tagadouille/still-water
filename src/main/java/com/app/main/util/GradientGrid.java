@@ -58,7 +58,7 @@ public class GradientGrid {
     public void calculgradient(int targetx, int targety){
 
         if(!isValid(targetx, targety) || obstacle[targetx][targety]){
-            return;
+            throw new IllegalArgumentException("Case non valide");
         }
 
         Queue<Point> file = new ArrayDeque<>();
@@ -84,7 +84,6 @@ public class GradientGrid {
                     }
                 }
             }
-
         }
     }
 
