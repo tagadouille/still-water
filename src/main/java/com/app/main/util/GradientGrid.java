@@ -11,8 +11,8 @@ public class GradientGrid {
 
     private final boolean[][] obstacle;
 
-    public static final int DISTANCE_INFINIE = Integer.MAX_VALUE;
-    public static final int MUR = -1;
+    public static final int INFINITE_DISTANCE = Integer.MAX_VALUE;
+    public static final int WALL = -1;
 
     private static final int[][] DIRECTIONS = {
         {0, 1}, {0, -1}, {1, 0}, {-1, 0}
@@ -42,7 +42,7 @@ public class GradientGrid {
     public void reset(){
         for(int i = 0; i < distances.length ; i++){
             for(int j = 0; j < distances.length; j++){
-                distances[i][j] = DISTANCE_INFINIE;
+                distances[i][j] = INFINITE_DISTANCE;
             }
         }
     }
@@ -51,7 +51,7 @@ public class GradientGrid {
         if (isValid(x, y)) {
             return distances[x][y];
         }
-        return DISTANCE_INFINIE;
+        return INFINITE_DISTANCE;
     }
 
     //Ouai c'est littéralement le BFS bluddy blud
@@ -76,7 +76,7 @@ public class GradientGrid {
 
                 if(isValid(nx, ny) && !obstacle[nx][ny]){
 
-                    if(distances[nx][ny] == DISTANCE_INFINIE){
+                    if(distances[nx][ny] == INFINITE_DISTANCE){
 
                         distances[nx][ny] = currentDist + 1;
 
