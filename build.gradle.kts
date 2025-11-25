@@ -49,6 +49,10 @@ javafx {
 // Dépendances
 dependencies {
     implementation(kotlin("stdlib"))
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.17.2")
+    implementation("com.fasterxml.jackson.core:jackson-core:2.17.2")
+    implementation ("com.fasterxml.jackson.core:jackson-annotations:2.17.2")
+
 
     // Tests JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")

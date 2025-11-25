@@ -12,10 +12,10 @@ import java.io.IOException;
 /**
  * @author Dai Elias
  */
-public class MapGenerator {
+public final class MapGenerator {
 
-    private final Image img; //The image
-    private final int width, height; //Dimension of the image
+    private final Image img; //L'image
+    private final int width, height; //Dimension de l'image
 
     /**
      * Constructeur : charge une image depuis un fichier.
@@ -64,9 +64,9 @@ public class MapGenerator {
      * des cases non-vides
      * @param grayMap le tableau de densité de gris de chaque pixel d'une image
      * @param threshold le seuil de tolérance, plus il est haut et plus la case est suceptible d'être une case vide
-     * @return le tableau de la carte du niveau où 0 est une case vide et -1 une case obstacle
+     * @return le tableau de la carte du niveau où false est une case vide et true une case obstacle
      */
-    public static int[][] getLevelMap(int[][] grayMap, int threshold){
+    public static boolean[][] getLevelMap(int[][] grayMap, int threshold){
         // Vérifications de validités des arguments : 
         if (grayMap == null || grayMap.length == 0){
             throw new IllegalArgumentException("grayMap must not be null or empty");
@@ -76,10 +76,10 @@ public class MapGenerator {
             throw new IllegalArgumentException("The threshold must be between 0 and 100");
         }
 
-        int[][] levelMap = new int[grayMap.length][];
+        boolean[][] levelMap = new boolean[grayMap.length][];
 
         for (int i = 0; i < grayMap.length; i++) {
-            levelMap[i] = new int[grayMap[i].length];
+            levelMap[i] = new boolean[grayMap[i].length];
 
             for (int j = 0; j < grayMap[i].length; j++) {
                 if(grayMap[i][j] < 0 || grayMap[i][j] > 255){
@@ -88,9 +88,9 @@ public class MapGenerator {
                 int grayIntensity = (grayMap[i][j]*100)/255;
 
                 if(grayIntensity < threshold){
-                    levelMap[i][j] = -1;
+                    levelMap[i][j] = true;
                 }else{
-                    levelMap[i][j] = 0;
+                    levelMap[i][j] = false;
                 }
             }
         }
