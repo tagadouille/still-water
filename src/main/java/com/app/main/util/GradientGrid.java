@@ -57,6 +57,8 @@ public class GradientGrid {
     //Ouai c'est littéralement le BFS bluddy blud
     public void calculgradient(int targetx, int targety){
 
+        reset();
+
         if(!isValid(targetx, targety) || obstacle[targetx][targety]){
             throw new IllegalArgumentException("Case non valide");
         }
