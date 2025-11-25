@@ -80,14 +80,31 @@ public final class Team {
             myCell.y = ny;
             
             globalGrid[nx][ny] = myCell;
-        } 
-        //TODO CAS 2 : La case est occupée 
+        }
         else {
             if (occupant.teamId == this.teamId) {
-                //TODO C'est un AMI : On partage de l'énergie
+                heal(myCell, occupant);
             } else {
-                //TODO C'est un ENNEMI : On attaque
+                attack(occupant);
             }
+        }
+    }
+
+    public void attack(Cell target){
+        target.energy -= 10;
+
+        if(target.energy < 0) target.energy = 0;
+    }
+
+    public void heal(Cell healer, Cell receiver){
+
+        int minenergy = 20;
+
+        int maxenergy= 80;
+
+        if(healer.energy > minenergy && receiver.energy < maxenergy){
+            healer.energy --;
+            receiver.energy ++;
         }
     }
 
