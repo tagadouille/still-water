@@ -16,9 +16,9 @@ public class TestLevelMap {
 
         assertArrayEquals(
             MapGenerator.getLevelMap(grayMap, 0),
-            new int[][]{
-                    {0, 0},
-                    {0, 0}
+            new boolean[][]{
+                    {false, false},
+                    {false, false}
             }
         );
     }
@@ -32,9 +32,9 @@ public class TestLevelMap {
 
         assertArrayEquals(
             MapGenerator.getLevelMap(grayMap, 50),
-            new int[][]{
-                    {0, -1},
-                    {-1, -1}
+            new boolean[][]{
+                    {false, true},
+                    {true, true}
             }
         );
     }
@@ -47,9 +47,9 @@ public class TestLevelMap {
         };
         assertArrayEquals(
             MapGenerator.getLevelMap(grayMap, 100),
-            new int[][]{
-                    {0, -1},
-                    {-1, -1}
+            new boolean[][]{
+                    {false, true},
+                    {true, true}
             }
         );
     }
@@ -64,10 +64,10 @@ public class TestLevelMap {
 
         assertArrayEquals(
             MapGenerator.getLevelMap(grayMap, 30),
-            new int[][]{
-                    {0, 0, 0},
-                    {-1, -1, -1},
-                    {0, 0, 0}
+            new boolean[][]{
+                    {false, false, false},
+                    {true, true, true},
+                    {false, false, false}
             }
         );
     }
