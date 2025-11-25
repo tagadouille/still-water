@@ -3,7 +3,7 @@ package com.app.main.util;
 import java.util.ArrayDeque;
 import java.util.Queue;
 
-public class GradientGrid {
+public final class GradientGrid {
 
     public static int height, width;
 
@@ -52,6 +52,29 @@ public class GradientGrid {
             return distances[x][y];
         }
         return INFINITE_DISTANCE;
+    }
+
+    public Point BestNeighbors(int targetx, int targety){
+        Point p = null;
+
+        int minDistance = distances[targetx][targety];
+
+        for(int [] dir :  DIRECTIONS){
+            int nx = p.x + dir[0];
+            int ny = p.y + dir[1];
+
+            if(isValid(nx, ny) && !obstacle[nx][ny]){
+
+                int distneighbors = distances[nx][ny];
+
+                if(minDistance > distneighbors){
+                    minDistance = distneighbors;
+                    p = new Point(nx, ny);
+                }
+            }
+        }
+        
+        return p;
     }
 
     //Ouai c'est littéralement le BFS bluddy blud
