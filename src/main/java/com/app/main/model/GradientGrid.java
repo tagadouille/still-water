@@ -1,11 +1,11 @@
-package com.app.main.util;
+package com.app.main.model;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
 
 public final class GradientGrid {
 
-    public static int height, width;
+    public int height, width;
 
     private final int[][] distances;
 
@@ -17,8 +17,6 @@ public final class GradientGrid {
     private static final int[][] DIRECTIONS = {
         {0, 1}, {0, -1}, {1, 0}, {-1, 0}
     };
-
-    public record Point(int x, int y) {}
 
     public GradientGrid(int width, int height) {
         this.width = width;
@@ -40,8 +38,8 @@ public final class GradientGrid {
     }
 
     public void reset(){
-        for(int i = 0; i < distances.length ; i++){
-            for(int j = 0; j < distances.length; j++){
+        for(int i = 0; i < width ; i++){
+            for(int j = 0; j < height; j++){
                 distances[i][j] = INFINITE_DISTANCE;
             }
         }
@@ -60,8 +58,8 @@ public final class GradientGrid {
         int minDistance = distances[targetx][targety];
 
         for(int [] dir :  DIRECTIONS){
-            int nx = p.x + dir[0];
-            int ny = p.y + dir[1];
+            int nx = targetx + dir[0];
+            int ny = targety + dir[1];
 
             if(isValid(nx, ny) && !obstacle[nx][ny]){
 
@@ -77,13 +75,12 @@ public final class GradientGrid {
         return p;
     }
 
-    //Ouai c'est littéralement le BFS bluddy blud
     public void calculgradient(int targetx, int targety){
 
         reset();
 
         if(!isValid(targetx, targety) || obstacle[targetx][targety]){
-            throw new IllegalArgumentException("Case non valide");
+            return;
         }
 
         Queue<Point> file = new ArrayDeque<>();
@@ -93,11 +90,11 @@ public final class GradientGrid {
 
         while(!file.isEmpty()){
             Point p = file.poll();
-            int currentDist = distances[p.x][p.y];
+            int currentDist = distances[p.x()][p.y()];
 
             for(int [] dir : DIRECTIONS){
-                int nx = p.x + dir[0];
-                int ny = p.y + dir[1];
+                int nx = p.x() + dir[0];
+                int ny = p.y() + dir[1];
 
                 if(isValid(nx, ny) && !obstacle[nx][ny]){
 
