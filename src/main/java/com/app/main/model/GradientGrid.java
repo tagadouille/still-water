@@ -47,13 +47,24 @@ public final class GradientGrid {
      * @param width Largeur de la carte.
      * @param height Hauteur de la carte.
      */
-    public GradientGrid(int width, int height) {
+    private GradientGrid(int width, int height) {
         this.width = width;
         this.height = height;
         this.distances = new int[width][height];
         this.obstacle = new boolean[width][height];
         
         reset();
+    }
+
+    /**
+     * La Fabrique Statique
+     * 
+     * @param width
+     * @param height
+     * @return
+     */
+    public static GradientGrid createGradientGrid(int width, int height){
+        return new GradientGrid(width, height);
     }
 
     /**
