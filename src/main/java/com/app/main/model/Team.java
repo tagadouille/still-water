@@ -6,34 +6,31 @@ import java.util.List;
 public final class Team {
 
     private final List<Cell> army;
-
     public final GradientGrid gradient;
-
-    public final Color color;
-    public final int teamId;
-
+    public final Color team;
     private int targetX, targetY;
 
-    public Team(int id, Color c, int mapWidth, int mapHeight) {
-        this.teamId = id;
-        this.color = c;
+    public Team(Color team, int mapWidth, int mapHeight) {
+        this.team = team;
         this.army = new ArrayList<>();
         this.gradient = new GradientGrid(mapWidth, mapHeight);
     }
-    
+
     public static class Cell{
         public int x, y;
-
         public int energy;
-        public int teamId;
-        public final Color team;
+        public Color currentteam;
+        public Color nextteam = null;
         
-        public Cell(int x, int y, int teamId, Color team){
+        public Cell(int x, int y, Color team){
             this.x = x;
             this.y = y;
-            this.team = team;
-            this.teamId = teamId;
+            this.currentteam = team;
             this.energy = 100;
+        }
+
+        public boolean isAlive(){
+            return nextteam == null;
         }
     }
 
@@ -54,7 +51,7 @@ public final class Team {
         gradient.calculgradient(targetX, targetY);
 
         for (Cell myCell : army) {
-            if (myCell.energy > 0) {
+            if (myCell.energy > 0 && myCell.isAlive()) {
                 moveOneCell(myCell, globalGrid);
             }
         }
@@ -73,25 +70,30 @@ public final class Team {
 
         if (occupant == null) {
             globalGrid[myCell.x][myCell.y] = null;
-            
             myCell.x = nx;
             myCell.y = ny;
-            
             globalGrid[nx][ny] = myCell;
         }
         else {
-            if (occupant.teamId == this.teamId) {
+            if (occupant.currentteam == this.team) {
                 heal(myCell, occupant);
             } else {
-                attack(occupant);
+                attack(myCell, occupant);
             }
         }
     }
 
-    public void attack(Cell target){
-        target.energy -= 10;
+    public void attack(Cell attacker, Cell target){
 
-        if(target.energy < 0) target.energy = 0;
+        if(!target.isAlive()) return;
+
+        target.energy -= 5;
+        attacker.energy += 5;
+
+        if(target.energy <= 0){
+            target.energy = 0;
+            target.nextteam = this.team;
+        }
     }
 
     public void heal(Cell healer, Cell receiver){
