@@ -37,10 +37,67 @@ public final class Team {
      * @param mapWidth  Largeur de la carte (pour initialiser le gradient).
      * @param mapHeight Hauteur de la carte (pour initialiser le gradient).
      */
-    public Team(Color team, int mapWidth, int mapHeight) {
+    private Team(Color team, int mapWidth, int mapHeight) {
         this.team = team;
         this.army = new ArrayList<>();
         this.gradient = new GradientGrid(mapWidth, mapHeight);
+    }
+
+    /**
+     * La Fabrique Statique
+     * 
+     * @param c
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Team CreateTeam(Color team, int width, int height){
+        return new Team(team, width, height);
+    }
+
+    /**
+     * La Fabrique Statique Red team
+     * 
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Team CreateRedTeam(int width, int height){
+        return new Team(Color.RED, width, height);
+    }
+
+    /**
+     * La Fabrique Statique Green team
+     * 
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Team CreateGreenTeam(int width, int height){
+        return new Team(Color.GREEN, width, height);
+    }
+
+    /**
+     * La Fabrique Statique Purple team
+     * 
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Team CreatePurpleTeam(int width, int height){
+        return new Team(Color.PURPLE, width, height);
+    }
+
+
+    /**
+     * La Fabrique Statique Blue team
+     * 
+     * @param width
+     * @param height
+     * @return
+     */
+    public static Team CreateBlueTeam(int width, int height){
+        return new Team(Color.BLUE, width, height);
     }
 
     /**
@@ -72,11 +129,15 @@ public final class Team {
          * @param y Position Y initiale.
          * @param team L'équipe d'appartenance.
          */
-        public Cell(int x, int y, Color team){
+        private Cell(int x, int y, Color team){
             this.x = x;
             this.y = y;
             this.currentteam = team;
             this.energy = 100;
+        }
+
+        public static Cell CreateCell(int x, int y, Color team){
+            return new Cell(x, y, team);
         }
 
         /**
