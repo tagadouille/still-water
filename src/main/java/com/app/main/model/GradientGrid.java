@@ -18,19 +18,13 @@ public final class GradientGrid {
         {0, 1}, {0, -1}, {1, 0}, {-1, 0}
     };
 
-    public GradientGrid(int width, int height) {
+    public GradientGrid(int width, int height, boolean[][] obstacle) {
         this.width = width;
         this.height = height;
         this.distances = new int[width][height];
-        this.obstacle = new boolean[width][height];
+        this.obstacle = obstacle;
         
         reset();
-    }
-
-    public void setObstacle(int x, int y, boolean isObstacle) {
-        if (isValid(x, y)) {
-            obstacle[x][y] = isObstacle;
-        }
     }
 
     public boolean isValid(int x, int y) {
