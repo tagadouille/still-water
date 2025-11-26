@@ -1,9 +1,7 @@
-package com.app.main.core;
+package com.app.main.model;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import com.app.main.util.GradientGrid;
 
 public final class Team {
 

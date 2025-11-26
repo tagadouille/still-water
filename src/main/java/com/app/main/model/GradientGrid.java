@@ -1,9 +1,7 @@
-package com.app.main.util;
+package com.app.main.model;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
-
-import com.app.main.core.Point;
 
 public final class GradientGrid {
 
