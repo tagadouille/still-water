@@ -40,7 +40,7 @@ public final class Team {
     private Team(Color team, int mapWidth, int mapHeight) {
         this.team = team;
         this.army = new ArrayList<>();
-        this.gradient = new GradientGrid(mapWidth, mapHeight);
+        this.gradient = GradientGrid.createGradientGrid(mapWidth, mapHeight);
     }
 
     /**
