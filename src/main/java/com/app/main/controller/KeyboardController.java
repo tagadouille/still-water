@@ -6,7 +6,7 @@ import java.util.Set;
 import com.app.main.model.Team;
 import com.app.main.util.Controller;
 
-import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 
 //! Pas encore sur sur de l'implémentation, peut être qu'on peut faire plus simple avec moins d'attribus..
@@ -27,7 +27,7 @@ public final class KeyboardController implements Controller{
     //vitesse de mouvement
     public final double speed = 1.5;
 
-    private KeyboardController(Scene scene, Team team, int Mapwidth, int Mapheight, double Posx, double Posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+    private KeyboardController(Canvas canva, Team team, int Mapwidth, int Mapheight, double Posx, double Posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
         this.team = team;
 
         this.Posx = Posx;
@@ -41,12 +41,12 @@ public final class KeyboardController implements Controller{
         this.RIGHT = right;
         this.LEFT = left;
 
-        scene.setOnKeyPressed(e -> keylist.add(e.getCode()));
-        scene.setOnKeyReleased(e -> keylist.remove(e.getCode()));
+        canva.setOnKeyPressed(e -> keylist.add(e.getCode()));
+        canva.setOnKeyReleased(e -> keylist.remove(e.getCode()));
     }
 
-    public static KeyboardController createKeyboardController(Scene scene, Team team, int mapwidth, int mapheight, int posx, int posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-        return new KeyboardController(scene, team, mapwidth, mapheight, posx, posy, up, down, right, left);
+    public static KeyboardController createKeyboardController(Canvas canva, Team team, int mapwidth, int mapheight, int posx, int posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+        return new KeyboardController(canva, team, mapwidth, mapheight, posx, posy, up, down, right, left);
     }
 
     @Override
