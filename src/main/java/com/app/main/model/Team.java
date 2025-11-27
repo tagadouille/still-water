@@ -164,11 +164,20 @@ public final class Team {
          * @param team L'équipe d'appartenance.
          */
         private Cell(Point position, Color team){
-            position = new Point(position.x(), position.y());
+            this.position = new Point(position.x(), position.y());
             this.currentTeam = team;
             this.energy = 100;
         }
 
+        public int getEnergy() {
+            return energy;
+        }
+        public void setEnergy(int energy) {
+            if(energy < 0 || energy > 100){
+                throw new IllegalArgumentException("The energy must be between 0 and 100");
+            }
+            this.energy = energy;
+        }
         public Point getPosition() {
             return position;
         }
@@ -187,8 +196,13 @@ public final class Team {
 
         //TODO vérif si la position est valide
         public static Cell CreateCell(Point position, Color team){
+            if(position == null){
+                throw new IllegalArgumentException("The position can't be null");
+            }
             return new Cell(position, team);
         }
+
+
 
         /**
          * Vérifie si la cellule est stable dans son équipe.

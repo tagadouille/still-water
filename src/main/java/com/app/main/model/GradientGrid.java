@@ -68,6 +68,21 @@ public final class GradientGrid {
     }
 
     /**
+     * Définit ou supprime un obstacle à une position donnée.
+     * Les obstacles bloquent la propagation du gradient.
+     *
+     * @param x Coordonnée X.
+     * @param y Coordonnée Y.
+     * @param isObstacle true pour placer un mur, false pour libérer.
+     */
+    public void setObstacle(int x, int y, boolean isObstacle) {
+        if (isValid(x, y)) {
+            obstacle[x][y] = isObstacle;
+        }
+    }
+
+
+    /**
      * Vérifie si les coordonnées sont à l'intérieur des limites de la carte.
      * @param x Coordonnée X.
      * @param y Coordonnée Y.
