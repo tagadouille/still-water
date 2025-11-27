@@ -1,6 +1,6 @@
 package com.app.main.util;
 
-import com.app.main.model.Team;
+import com.app.main.model.core.Team;
 
 public interface Controller {
     
