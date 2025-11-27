@@ -1,6 +1,6 @@
 package com.app.main.controller;
 
-import com.app.main.model.Team;
+import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
 
 import javafx.scene.canvas.Canvas;
