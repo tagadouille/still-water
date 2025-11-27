@@ -18,7 +18,6 @@ public final class MouseController implements Controller{
         this.mousey = canva.getHeight() / scaley;
 
         canva.setOnMouseMoved(this::move);
-        canva.setOnMouseDragged(this::move);
     }
 
     public static MouseController createMouseController(Canvas canva, Team team, int mapwidth, int mapheight){
