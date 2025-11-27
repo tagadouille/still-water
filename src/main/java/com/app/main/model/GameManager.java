@@ -1,5 +1,8 @@
 package com.app.main.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.app.main.model.Team.Cell;
 
 //TODO tab de gradient créer pendant la lecture de niveau
@@ -7,9 +10,16 @@ public final class GameManager {
     public static final int GRID_DIM = 480;
     public static final int NB_CELL = 14400;
 
+    private static boolean[][] obstacles;
+
     private Cell[][] globalGrid;
-    private final boolean[][] obstacles; //! mettre dans la lecture de niveau ?
     private Team[] teams;
+
+    private int[] forces;
+    private int totalCell;
+
+    private int[] victories;
+
 
     private GameManager(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn){
         this.obstacles = obstacles;
@@ -18,6 +28,17 @@ public final class GameManager {
     
     public Cell[][] getGlobalGrid() {
         return globalGrid;
+    }
+
+    public static boolean[][] getObstacles() {
+        return obstacles;
+    }
+    public static void setObstacles(boolean[][] obstacles) {
+        GameManager.obstacles = obstacles;
+    }
+
+    public int[] getForces() {
+        return forces;
     }
     
     /**
@@ -28,7 +49,7 @@ public final class GameManager {
      * @return
      */
     public static GameManager gameManagerFactory(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn){
-        teamVerification(teams, teamsSpawn);
+        teamVerification(teams, teamsSpawn, false);
 
         GameManager gm = new GameManager(obstacles, teams, teamsSpawn);
         gm.globalGrid = new Cell[GRID_DIM][GRID_DIM];
@@ -43,7 +64,7 @@ public final class GameManager {
      * @return
      */
     public static GameManager gameManagerFactoryTest(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn, int dimension){
-        teamVerification(teams, teamsSpawn);
+        teamVerification(teams, teamsSpawn, true);
 
         GameManager gm = new GameManager(obstacles, teams, teamsSpawn);
         gm.globalGrid = new Cell[dimension][dimension];
@@ -57,7 +78,7 @@ public final class GameManager {
      * @param teams the teams of the game
      * @param teamsSpawn the spawn point of each team
      */
-    static void teamVerification(Team[] teams, Point[][] teamsSpawn){
+    static void teamVerification(Team[] teams, Point[][] teamsSpawn, boolean isTest){
         // Vérification de taille
         if(teams.length != teamsSpawn.length){
             throw new IllegalArgumentException("The number of teams and the number of teams's spawn point doesn't match");
@@ -70,6 +91,9 @@ public final class GameManager {
             if(teams[i].getTeam() == null){
                 throw new IllegalArgumentException("The team must have a color");
             }
+            if(teams[i].getTeam().ordinal() != i){
+                throw new IllegalArgumentException("The order of the teams if the array is not in function of the ordinal");
+            }
         }
         //Vérification d'unicité des équipes
         for (int i = 0; i < teams.length; i++) {
@@ -79,10 +103,10 @@ public final class GameManager {
                 }
             }
         }
-        spawnPointVerification(teamsSpawn);
+        spawnPointVerification(teamsSpawn, isTest);
     }
 
-    private static void spawnPointVerification(Point[][] teamsSpawn){
+    private static void spawnPointVerification(Point[][] teamsSpawn, boolean isTest){
         //Vérification de contenu et de taille des points d'apparitions
         for (int i = 0; i < teamsSpawn.length; i++) {
             Point[] pointArray = teamsSpawn[i];
@@ -104,10 +128,10 @@ public final class GameManager {
             if(lengthUp < 0){
                 throw new IllegalArgumentException("The first point must be lower to the second in term of x");
             }
-            /* (Pour les tests c'est peut être pas une bonne idée)
-            if(lengthUp * lengthDown != NB_CELL){
+            
+            if(!isTest && lengthUp * lengthDown != NB_CELL){
                 throw new IllegalArgumentException("The number of cell of a team must be " + NB_CELL);
-            }*/
+            }
         }
     }
 
@@ -115,6 +139,9 @@ public final class GameManager {
         
         this.teams = teams;
         int nbTeam = teams.length;
+
+        this.forces = new int[nbTeam];
+        this.totalCell = 0;
 
         for (int i = 0; i < nbTeam; i++) {
 
@@ -125,11 +152,14 @@ public final class GameManager {
                 int x = spawn[i].x();
                 int y = spawn[i].y();
 
-                Cell cell = new Cell(x, y, Color.values()[i]);
+                Cell cell = Cell.CreateCell(new Point(x, y), Color.values()[i]);
                 teams[i].addCell(cell);
                 globalGrid[y][x] = cell;
             }
+            this.totalCell += teams[i].getArmy().size();
         }
+        // Initialiser les rapports de forces
+        updateForces();
     }
 
     /**
@@ -139,10 +169,47 @@ public final class GameManager {
     public void update(){
         //! Provisoire, mettre des threads
         for (int i = 0; i < teams.length; i++) {
-            Team currTeam = this.teams[i];
+            teams[i].updateArmy(globalGrid);
+        }
+        clearAndRemanageTeam();
+        updateForces();
+    }
 
-            currTeam.gradient.calculgradient(currTeam.getTargetX(), currTeam.getTargetY());
-            currTeam.updateArmy(globalGrid);
+    /**
+     * For each team, iterate in the list of cell and if a cell will switch team,
+     * move it to her new team.
+     */
+    private void clearAndRemanageTeam(){
+
+        List<Cell>[] newArmies = new List[teams.length];
+        
+        for (int i = 0; i < newArmies.length; i++) {
+            newArmies[i] = new ArrayList<Cell>();
+        }
+
+        for (int i = 0; i < teams.length; i++) {
+            
+            for (Cell cell : teams[i].getArmy()) {
+
+                if(cell.getNextTeam() != null){
+                    cell.setCurrentTeam(cell.getNextTeam());
+                    cell.setNextTeam(null);
+                }
+                newArmies[cell.getCurrentTeam().ordinal()].add(cell);
+            }
+        }
+        for (int i = 0; i < teams.length; i++) {
+            teams[i].setArmy(newArmies[i]);
+        }
+    }
+
+    /**
+     * Update des rapports de forces
+     */
+    private void updateForces(){
+
+        for (int i = 0; i < teams.length; i++) {
+            forces[i] = (teams[i].getArmy().size() * 100) / totalCell;
         }
     }
 }
