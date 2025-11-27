@@ -3,12 +3,17 @@ package com.app.main.model;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
+import com.app.main.model.core.GradientGrid;
+import com.app.main.model.core.Point;
+
 public class GradientGridTest {
 
     @Test
     public void testPropagationSimple() {
         // Grille 5x5, cible au centre (2,2)
-        GradientGrid grid = GradientGrid.createGradientGrid(5, 5);
+        boolean[][] obstacles = new boolean[5][5];
+        GradientGrid grid = GradientGrid.createGradientGrid(5, 5, obstacles);
+        
         grid.calculgradient(2, 2);
 
         // La cible doit être à 0
@@ -25,10 +30,12 @@ public class GradientGridTest {
     @Test
     public void testObstacleAvoidance() {
         // Contournement de mur
-        GradientGrid grid = GradientGrid.createGradientGrid(3, 3);
+        boolean[][] obstacles = new boolean[3][3];
+        GradientGrid grid = GradientGrid.createGradientGrid(3, 3, obstacles);
         
         // Mur en (0,1) bloquant le chemin direct vers (0,0) depuis (0,2)
-        grid.setObstacle(0, 1, true);
+        // Attention : setObstacle met à jour le tableau partagé ET l'objet
+        grid.setObstacle(0, 1, true); 
 
         // Calcul depuis la cible (0,0)
         grid.calculgradient(0, 0);
@@ -39,10 +46,13 @@ public class GradientGridTest {
 
     @Test
     public void testGetBestNeighbor() {
-        GradientGrid grid = GradientGrid.createGradientGrid(3, 3);
+        boolean[][] obstacles = new boolean[3][3];
+        GradientGrid grid = GradientGrid.createGradientGrid(3, 3, obstacles);
+        
         grid.calculgradient(2, 2); // Cible en bas à droite
 
         // On est en (0,0), distance 4
+        // Appel de ta méthode (BestNeighbors)
         Point best = grid.BestNeighbors(0, 0);
         
         assertNotNull(best, "Un voisin doit être trouvé");
@@ -54,12 +64,13 @@ public class GradientGridTest {
     
     @Test
     public void testSafetyCheck() {
-        GradientGrid grid = GradientGrid.createGradientGrid(5, 5);
+        boolean[][] obstacles = new boolean[5][5];
+        GradientGrid grid = GradientGrid.createGradientGrid(5, 5, obstacles);
         
         // Test avec cible hors limites
         grid.calculgradient(-5, -5);
         
-        // Rien ne doit avoir changé (tout reste à l'infini)
+        // Rien ne doit avoir changé (tout reste à l'infini par défaut)
         assertEquals(GradientGrid.INFINITE_DISTANCE, grid.getDistance(0, 0));
     }
 }
