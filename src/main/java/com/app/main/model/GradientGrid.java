@@ -50,8 +50,8 @@ public final class GradientGrid {
     private GradientGrid(int width, int height) {
         this.width = width;
         this.height = height;
-        this.distances = new int[width][height];
-        this.obstacle = new boolean[width][height];
+        this.distances = new int[height][width];
+        this.obstacle = new boolean[height][width];
         
         reset();
     }
@@ -80,6 +80,7 @@ public final class GradientGrid {
             obstacle[x][y] = isObstacle;
         }
     }
+
 
     /**
      * Vérifie si les coordonnées sont à l'intérieur des limites de la carte.

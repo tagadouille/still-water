@@ -17,7 +17,7 @@ import java.util.List;
 public final class Team {
 
     /** Liste des cellules vivantes appartenant à cette équipe. */
-    private final List<Cell> army;
+    private List<Cell> army;
 
     /** * La grille de gradient utilisée pour le pathfinding de cette équipe.
      * Elle est recalculée à chaque tour en fonction de la position de la cible.
@@ -41,6 +41,40 @@ public final class Team {
         this.team = team;
         this.army = new ArrayList<>();
         this.gradient = GradientGrid.createGradientGrid(mapWidth, mapHeight);
+    }
+
+    /**
+     * @return La liste modifiable des cellules de l'armée.
+     */
+    public List<Cell> getArmy() {
+        return army;
+    }
+
+    public void setArmy(List<Cell> newArmy){
+        this.army = newArmy;
+    }
+
+    /**
+     * Définit la nouvelle cible vers laquelle toutes les particules de l'équipe doivent se diriger.
+     * Généralement appelé lors d'un mouvement de souris.
+     *
+     * @param x Coordonnée X de la cible.
+     * @param y Coordonnée Y de la cible.
+     */
+    public void setTarget(int x, int y) {
+        this.targetX = x;
+        this.targetY = y;
+    }
+
+    public int getTargetX() {
+        return targetX;
+    }
+    public int getTargetY() {
+        return targetY;
+    }
+
+    public Color getTeam() {
+        return team;
     }
 
     /**
@@ -107,21 +141,21 @@ public final class Team {
     public static class Cell{
 
         /** Position X, Y actuelle sur la grille. */
-        public int x, y;
+        private Point position;
 
         /** * Niveau d'énergie de la cellule (0 à 100). 
          * Détermine sa résistance et la brillance de sa couleur.
          */
-        public int energy;
+        private int energy;
 
         /** L'équipe à laquelle la cellule appartient actuellement. */
-        public Color currentteam;
+        private Color currentTeam;
 
         /** * Indique la prochaine équipe de la cellule si elle a été convertie.
          * Si {@code null}, la cellule reste dans son équipe actuelle.
          * Si non null, elle est considérée comme "morte" pour ce tour et attend le transfert.
          */
-        public Color nextteam = null;
+        private Color nextTeam = null;
         
         /**
          * Crée une nouvelle cellule.
@@ -129,36 +163,61 @@ public final class Team {
          * @param y Position Y initiale.
          * @param team L'équipe d'appartenance.
          */
-        private Cell(int x, int y, Color team){
-            this.x = x;
-            this.y = y;
-            this.currentteam = team;
+        private Cell(Point position, Color team){
+            this.position = new Point(position.x(), position.y());
+            this.currentTeam = team;
             this.energy = 100;
         }
 
-        public static Cell CreateCell(int x, int y, Color team){
-            return new Cell(x, y, team);
+        public int getEnergy() {
+            return energy;
         }
+        public void setEnergy(int energy) {
+            if(energy < 0 || energy > 100){
+                throw new IllegalArgumentException("The energy must be between 0 and 100");
+            }
+            this.energy = energy;
+        }
+        public Point getPosition() {
+            return position;
+        }
+        public Color getNextTeam() {
+            return nextTeam;
+        }
+        public Color getCurrentTeam() {
+            return currentTeam;
+        }
+        public void setCurrentTeam(Color currentTeam) {
+            this.currentTeam = currentTeam;
+        }
+        public void setNextTeam(Color nextTeam) {
+            this.nextTeam = nextTeam;
+        }
+
+        //TODO vérif si la position est valide
+        public static Cell CreateCell(Point position, Color team){
+            if(position == null){
+                throw new IllegalArgumentException("The position can't be null");
+            }
+            return new Cell(position, team);
+        }
+
+
 
         /**
          * Vérifie si la cellule est stable dans son équipe.
          * @return {@code true} si la cellule n'est pas en cours de conversion (nextteam est null).
          */
         public boolean isAlive(){
-            return nextteam == null;
+            return nextTeam == null;
         }
     }
-
-    /**
-     * Définit la nouvelle cible vers laquelle toutes les particules de l'équipe doivent se diriger.
-     * Généralement appelé lors d'un mouvement de souris.
-     *
-     * @param x Coordonnée X de la cible.
-     * @param y Coordonnée Y de la cible.
-     */
-    public void setTarget(int x, int y) {
-        this.targetX = x;
-        this.targetY = y;
+    public void setCellPosition(Cell cell, Point newPosition) {
+        if(this.gradient.isValid(newPosition.x(), newPosition.y())){
+            cell.position = newPosition;
+        }else{
+            throw new IllegalArgumentException("The new position is invalid");
+        }
     }
 
     /**
@@ -167,13 +226,6 @@ public final class Team {
      */
     public void addCell(Cell c) {
         this.army.add(c);
-    }
-    
-    /**
-     * @return La liste modifiable des cellules de l'armée.
-     */
-    public List<Cell> getArmy() {
-        return army;
     }
 
     /**
@@ -203,23 +255,19 @@ public final class Team {
      */
     private void moveOneCell(Cell myCell, Cell[][] globalGrid) {
 
-        Point nextPos = gradient.BestNeighbors(myCell.x, myCell.y);
+        Point nextPos = gradient.BestNeighbors(myCell.position.x(), myCell.position.y());
 
         if (nextPos == null) return;
 
-        int nx = nextPos.x();
-        int ny = nextPos.y();
-
-        Cell occupant = globalGrid[nx][ny];
+        Cell occupant = globalGrid[nextPos.y()][nextPos.x()];
 
         if (occupant == null) {
-            globalGrid[myCell.x][myCell.y] = null;
-            myCell.x = nx;
-            myCell.y = ny;
-            globalGrid[nx][ny] = myCell;
+            globalGrid[myCell.position.y()][myCell.position.x()] = null;
+            this.setCellPosition(myCell, nextPos);
+            globalGrid[nextPos.y()][nextPos.x()] = myCell;
         }
         else {
-            if (occupant.currentteam == this.team) {
+            if (occupant.currentTeam == this.team) {
                 heal(myCell, occupant);
             } else {
                 attack(myCell, occupant);
@@ -244,7 +292,7 @@ public final class Team {
 
         if(target.energy <= 0){
             target.energy = 0;
-            target.nextteam = this.team;
+            target.nextTeam = this.team;
         }
     }
 
@@ -256,6 +304,8 @@ public final class Team {
      * @param receiver La cellule qui reçoit.
      */
     public void heal(Cell healer, Cell receiver){
+
+        if(!receiver.isAlive()) return;
 
         int minenergy = 20;
 
