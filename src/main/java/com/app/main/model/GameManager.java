@@ -40,6 +40,10 @@ public final class GameManager {
     public int[] getForces() {
         return forces;
     }
+
+    public Team[] getTeams() {
+        return teams;
+    }
     
     /**
      * Static factory
@@ -152,7 +156,7 @@ public final class GameManager {
                 int x = spawn[i].x();
                 int y = spawn[i].y();
 
-                Cell cell = Cell.CreateCell(new Point(x, y), Color.values()[i]);
+                Cell cell = Cell.CreateCell(x, y, Color.values()[i]);
                 teams[i].addCell(cell);
                 globalGrid[y][x] = cell;
             }

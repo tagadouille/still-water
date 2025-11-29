@@ -4,7 +4,7 @@ module com.app.main {
     requires javafx.fxml;
     requires javafx.web;
     requires javafx.media;
-    requires javafx.graphics;
+    requires transitive javafx.graphics;
 
     requires java.desktop;
     requires javafx.swing;
@@ -13,7 +13,7 @@ module com.app.main {
     requires com.fasterxml.jackson.core;
     requires com.fasterxml.jackson.annotation;
 
-
+    opens com.app.main to javafx.fxml;
     opens com.app.main.controller to javafx.fxml; //! Rajouter les autres packages de controller si besoin
 
     exports com.app.main;

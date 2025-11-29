@@ -141,7 +141,7 @@ public final class Team {
     public static class Cell{
 
         /** Position X, Y actuelle sur la grille. */
-        private Point position;
+        private int x, y;
 
         /** * Niveau d'énergie de la cellule (0 à 100). 
          * Détermine sa résistance et la brillance de sa couleur.
@@ -163,8 +163,9 @@ public final class Team {
          * @param y Position Y initiale.
          * @param team L'équipe d'appartenance.
          */
-        private Cell(Point position, Color team){
-            this.position = new Point(position.x(), position.y());
+        private Cell(int x, int y, Color team){
+            this.x = x;
+            this.y = y;
             this.currentTeam = team;
             this.energy = 100;
         }
@@ -178,28 +179,34 @@ public final class Team {
             }
             this.energy = energy;
         }
-        public Point getPosition() {
-            return position;
+
+        public int getX() {
+            return x;
         }
+
+        public int getY() {
+            return y;
+        }
+
         public Color getNextTeam() {
             return nextTeam;
         }
+
         public Color getCurrentTeam() {
             return currentTeam;
         }
+
         public void setCurrentTeam(Color currentTeam) {
             this.currentTeam = currentTeam;
         }
+
         public void setNextTeam(Color nextTeam) {
             this.nextTeam = nextTeam;
         }
 
         //TODO vérif si la position est valide
-        public static Cell CreateCell(Point position, Color team){
-            if(position == null){
-                throw new IllegalArgumentException("The position can't be null");
-            }
-            return new Cell(position, team);
+        public static Cell CreateCell(int x, int y, Color team){
+            return new Cell(x, y, team);
         }
 
 
@@ -212,9 +219,10 @@ public final class Team {
             return nextTeam == null;
         }
     }
-    public void setCellPosition(Cell cell, Point newPosition) {
-        if(this.gradient.isValid(newPosition.x(), newPosition.y())){
-            cell.position = newPosition;
+    public void setCellPosition(Cell cell, int newX, int newY) {
+        if(this.gradient.isValid(newX, newY)){
+            cell.x = newX;
+            cell.y = newY;
         }else{
             throw new IllegalArgumentException("The new position is invalid");
         }
@@ -255,15 +263,18 @@ public final class Team {
      */
     private void moveOneCell(Cell myCell, Cell[][] globalGrid) {
 
-        Point nextPos = gradient.BestNeighbors(myCell.position.x(), myCell.position.y());
+        int x = myCell.x;
+        int y = myCell.y;
+
+        Point nextPos = gradient.BestNeighbors(x, y);
 
         if (nextPos == null) return;
 
         Cell occupant = globalGrid[nextPos.y()][nextPos.x()];
 
         if (occupant == null) {
-            globalGrid[myCell.position.y()][myCell.position.x()] = null;
-            this.setCellPosition(myCell, nextPos);
+            globalGrid[y][x] = null;
+            this.setCellPosition(myCell, nextPos.x(), nextPos.y());
             globalGrid[nextPos.y()][nextPos.x()] = myCell;
         }
         else {

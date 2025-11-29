@@ -8,14 +8,14 @@ import com.app.main.model.Team.Cell;
 
 public class TeamTest {
 
-    Cell attacker = Cell.CreateCell(new Point(0,0), Color.RED);
-    Cell victim = Cell.CreateCell(new Point(0,1), Color.BLUE);
+    Cell attacker = Cell.CreateCell(0, 0, Color.RED);
+    Cell victim = Cell.CreateCell(0, 1, Color.BLUE);
     Team redTeam = Team.CreateRedTeam(10, 10);
 
     @BeforeEach
     public void reset(){
-        attacker = Cell.CreateCell(new Point(0,0), Color.RED);
-        victim = Cell.CreateCell(new Point(0,1), Color.BLUE);
+        attacker = Cell.CreateCell(0, 0, Color.RED);
+        victim = Cell.CreateCell(0, 1, Color.BLUE);
         redTeam = Team.CreateRedTeam(10, 10);
     }
     @Test
@@ -30,8 +30,8 @@ public class TeamTest {
         assertEquals(Color.GREEN, custom.team, "La fabrique générique doit respecter la couleur");
         
         // Vérification de la création de Cellule via la fabrique
-        Cell c = Cell.CreateCell(new Point(5, 5), Color.RED);
-        assertEquals(5, c.getPosition().x());
+        Cell c = Cell.CreateCell(5, 5, Color.RED);
+        assertEquals(5, c.getX(), c.getY());
         assertEquals(100, c.getEnergy());
     }
 
@@ -52,8 +52,8 @@ public class TeamTest {
     @Test
     public void testHealLogic() {
         Team redTeam = Team.CreateRedTeam(10, 10);
-        Cell healer = Cell.CreateCell(new Point(0,0), Color.RED);
-        Cell receiver = Cell.CreateCell(new Point(0,1), Color.RED);
+        Cell healer = Cell.CreateCell(0, 0, Color.RED);
+        Cell receiver = Cell.CreateCell(0, 1, Color.RED);
 
         // Cas valide pour le soin
         healer.setEnergy(30);   // > 20
