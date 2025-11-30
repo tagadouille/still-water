@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.menu;
 
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Point;
@@ -22,7 +22,6 @@ public class MatchTypeController {
                 {new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
             }
         );
-        teams[0].setTarget(GameManager.GRID_DIM, GameManager.GRID_DIM);
         teams[1].setTarget(0, 0);
         MenuSwitcher.switchScene(new GameScene(gameManager));
     }

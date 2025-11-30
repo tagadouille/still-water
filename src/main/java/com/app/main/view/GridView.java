@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.app.main.controller.MouseController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 
@@ -27,19 +28,9 @@ public final class GridView extends StackPane {
     private GameManager gameManager;
     private int currentFps = 0;
 
-    /**
-     * Constructeur pour créer la zone de jeu
-     * @param size la taille de la zone de jeu
-     * @param gameManager le GameManager
-     */
-    public GridView(int size, GameManager gameManager) {
+    private GridView(int size, GameManager gameManager) {
         super();
-        if(size <= 0){
-            throw new IllegalArgumentException("The size of the game zone can't be nagative of null");
-        }
-        if(gameManager == null){
-            throw new IllegalArgumentException("The GameManager can't be null");
-        }
+        
         this.gameManager = gameManager;
         this.size = size;
         this.canvas = new Canvas(size, size);
@@ -47,10 +38,26 @@ public final class GridView extends StackPane {
 
         startGameLoop();
 
-        canvas.setOnMouseMoved(e -> {
-            gameManager.getTeams()[0].setTarget(((int) e.getX()) * (size / 480), ((int) e.getY()) * (size / 480));
-        });
+        MouseController mouseController = MouseController.createMouseController(
+            canvas, gameManager.getTeams()[0], size, size
+        );
+
         canvas.requestFocus();
+    }
+
+    /**
+     * Fabrique statique pour créer la zone de jeu
+     * @param size la taille de la zone de jeu
+     * @param gameManager le GameManager
+     */
+    public static GridView createGridView(int size, GameManager gameManager){
+        if(size <= 0){
+            throw new IllegalArgumentException("The size of the game zone can't be nagative of null");
+        }
+        if(gameManager == null){
+            throw new IllegalArgumentException("The GameManager can't be null");
+        }
+        return new GridView(size, gameManager);
     }
 
     /**
@@ -115,7 +122,6 @@ public final class GridView extends StackPane {
 
         }
         
-
         for (Team team : gameManager.getTeams()) {
             //! Utiliser le multi-threading
             ParticleView.renderParticles(gc, team, size);

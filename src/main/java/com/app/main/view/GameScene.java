@@ -29,7 +29,7 @@ public final class GameScene extends Scene {
     public GameScene(GameManager gameManager) {
         super(root, width, height);
 
-        StackPane gridview = new GridView(resolution, gameManager);
+        StackPane gridview = GridView.createGridView(resolution, gameManager);
         VBox gameInfoView = new GameInfoView();
 
         root.getChildren().addAll(gridview, gameInfoView);

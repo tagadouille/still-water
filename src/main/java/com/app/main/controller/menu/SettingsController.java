@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.menu;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.ChoiceBox;
