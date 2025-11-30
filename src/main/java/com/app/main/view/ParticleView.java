@@ -1,7 +1,7 @@
 package com.app.main.view;
 
-import com.app.main.model.Team;
-import com.app.main.model.Team.Cell;
+import com.app.main.model.core.Team;
+import com.app.main.model.core.Team.Cell;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
@@ -26,7 +26,12 @@ public final class ParticleView {
         for (Cell cell : team.getArmy()) {
 
             // Rendre la couleur plus ou moins foncé selon le niveau d'énergie de la cellule
-            double brightnessFactor = cell.getEnergy() / 100;
+            //! Soucis avec le cell energy
+            double brightnessFactor = cell.getEnergy() / 100.0;
+
+            brightnessFactor = Math.min(brightnessFactor, 1.0);
+            brightnessFactor = Math.max(brightnessFactor, 0.0);
+
 
             Color cellColor = new Color(
                 color.getRed() * brightnessFactor,
@@ -47,7 +52,8 @@ public final class ParticleView {
     }
 
     private static Color getTeamColor(Team team){
-        com.app.main.model.Color color = team.getTeam();
+        com.app.main.model.core.Color color = team.getTeam();
+
         switch (color) {
             case RED:
                 return Color.RED;

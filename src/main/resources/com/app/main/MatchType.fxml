@@ -6,6 +6,7 @@
 <?import javafx.scene.effect.DropShadow?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -20,8 +21,9 @@
       <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
    </rowConstraints>
    <children>
-      <VBox alignment="CENTER" prefHeight="283.0" prefWidth="640.0" spacing="30.0" GridPane.columnIndex="1">
+      <VBox alignment="CENTER" prefHeight="283.0" prefWidth="640.0" spacing="30.0" GridPane.columnIndex="1" GridPane.vgrow="ALWAYS">
          <children>
+            <Pane prefHeight="200.0" prefWidth="200.0" />
             <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#play" text="1v1 Game" textAlignment="CENTER">
                <font>
                   <Font name="Rubik Bold Italic" size="35.0" />

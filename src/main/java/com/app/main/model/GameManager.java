@@ -3,14 +3,20 @@ package com.app.main.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.main.model.Team.Cell;
+import com.app.main.model.core.Color;
+import com.app.main.model.core.Point;
+import com.app.main.model.core.Team;
+import com.app.main.model.core.Team.Cell;
+import com.app.main.util.GameLevelLoader;
 
-//TODO tab de gradient créer pendant la lecture de niveau
+/**
+ * Classe qui permet de 
+ */
 public final class GameManager {
     public static final int GRID_DIM = 480;
     public static final int NB_CELL = 14400;
 
-    private static boolean[][] obstacles;
+    private boolean[][] obstacles;
 
     private Cell[][] globalGrid;
     private Team[] teams;
@@ -23,6 +29,9 @@ public final class GameManager {
 
     private GameManager(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn){
         this.obstacles = obstacles;
+        
+        this.globalGrid = new Cell[GRID_DIM][GRID_DIM];
+        
         this.initTeam(teams, teamsSpawn);
     }
     
@@ -30,11 +39,11 @@ public final class GameManager {
         return globalGrid;
     }
 
-    public static boolean[][] getObstacles() {
-        return obstacles;
+    public boolean[][] getObstacles() {
+        return this.obstacles;
     }
-    public static void setObstacles(boolean[][] obstacles) {
-        GameManager.obstacles = obstacles;
+    public void setObstacles(boolean[][] obstacles) {
+        this.obstacles = obstacles;
     }
 
     public int[] getForces() {
@@ -56,7 +65,7 @@ public final class GameManager {
         teamVerification(teams, teamsSpawn, false);
 
         GameManager gm = new GameManager(obstacles, teams, teamsSpawn);
-        gm.globalGrid = new Cell[GRID_DIM][GRID_DIM];
+
         return gm;
     }
 
@@ -71,7 +80,7 @@ public final class GameManager {
         teamVerification(teams, teamsSpawn, true);
 
         GameManager gm = new GameManager(obstacles, teams, teamsSpawn);
-        gm.globalGrid = new Cell[dimension][dimension];
+
         return gm;
     }
 
@@ -95,14 +104,14 @@ public final class GameManager {
             if(teams[i].getTeam() == null){
                 throw new IllegalArgumentException("The team must have a color");
             }
-            if(teams[i].getTeam().ordinal() != i){
-                throw new IllegalArgumentException("The order of the teams if the array is not in function of the ordinal");
-            }
+            // if(teams[i].getTeam().ordinal() != i){
+            //     throw new IllegalArgumentException("The order of the teams if the array is not in function of the ordinal");
+            // }//!A revoir
         }
         //Vérification d'unicité des équipes
         for (int i = 0; i < teams.length; i++) {
             for (int j = i + 1; j < teams.length; j++) {
-                if(teams[i].getTeam() == teams[i].getTeam()){
+                if(teams[i].getTeam() == teams[j].getTeam()){
                     throw new IllegalArgumentException("Each team must have their own color.");
                 }
             }
@@ -152,15 +161,19 @@ public final class GameManager {
             //Faire apparaître les cellules : (remplir globalGrid + teams)
             Point[] spawn = teamsSpawn[i];
 
-            for (int j = 0; j < spawn.length; j++) {
-                int x = spawn[i].x();
-                int y = spawn[i].y();
+            int startX = Math.min(spawn[0].x(), spawn[1].x());
+            int endX   = Math.max(spawn[0].x(), spawn[1].x());
+            int startY = Math.min(spawn[0].y(), spawn[1].y());
+            int endY   = Math.max(spawn[0].y(), spawn[1].y());
 
-                Cell cell = Cell.CreateCell(x, y, Color.values()[i]);
-                teams[i].addCell(cell);
-                globalGrid[y][x] = cell;
-            }
-            this.totalCell += teams[i].getArmy().size();
+            for (int x = startX; x < endX; x++) {
+                for (int y = startY; y < endY; y++) {
+                        Cell cell = Cell.CreateCell(x, y, teams[i].getTeam());
+                        teams[i].addCell(cell);
+                        globalGrid[y][x] = cell; 
+                    } 
+                }
+                this.totalCell += teams[i].getArmy().size();
         }
         // Initialiser les rapports de forces
         updateForces();
@@ -199,12 +212,27 @@ public final class GameManager {
                     cell.setCurrentTeam(cell.getNextTeam());
                     cell.setNextTeam(null);
                 }
-                newArmies[cell.getCurrentTeam().ordinal()].add(cell);
+                int teamIndex = getTeamIndex(cell.getCurrentTeam());
+                if (teamIndex != -1) {
+                    newArmies[teamIndex].add(cell);
+                } else {
+                    // Cas d'erreur (ne devrait pas arriver si tes équipes sont cohérentes)
+                    throw new IllegalArgumentException("Erreur: Cellule avec couleur " + cell.getCurrentTeam() + " n'a pas d'équipe !");
+                }
             }
         }
         for (int i = 0; i < teams.length; i++) {
             teams[i].setArmy(newArmies[i]);
         }
+    }
+
+    private int getTeamIndex(Color c) {
+        for (int i = 0; i < teams.length; i++) {
+            if (teams[i].getTeam() == c) {
+                return i;
+            }
+        }
+        return -1; // Pas trouvé
     }
 
     /**
@@ -216,4 +244,27 @@ public final class GameManager {
             forces[i] = (teams[i].getArmy().size() * 100) / totalCell;
         }
     }
+
+    public static GameManager createFromJSON(String jsonPath) {
+
+        GameLevel level = GameLevelLoader.load(jsonPath);
+
+        int nbTeams = level.teamsInfo.size();
+        Team[] teams = new Team[nbTeams];
+        Point[][] spawns = new Point[nbTeams][2];
+
+        for (int i = 0; i < nbTeams; i++) {
+            GameLevel.TeamConfig config = level.teamsInfo.get(i);
+
+            spawns[i] = config.spawnArea;
+
+            teams[i] = Team.CreateTeam(
+                config.color, 
+                level.width, 
+                level.height, 
+                level.obstacles
+                );
+            }
+            return GameManager.gameManagerFactory(level.obstacles, teams, spawns);
+        }
 }

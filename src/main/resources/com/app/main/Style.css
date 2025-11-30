@@ -1,7 +1,15 @@
 GridPane {
-    -fx-background-color: black;
     -fx-background-image: url("../image/logo.png");
     -fx-background-size: cover;
     -fx-background-position: center;
     -fx-background-repeat: no-repeat;
+}
+
+Button {
+    -fx-background-color: #520021;
+    -fx-text-fill: white;
+}
+
+Button:hover {
+    -fx-background-color: #3d0000;
 }

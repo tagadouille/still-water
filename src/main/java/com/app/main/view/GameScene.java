@@ -1,5 +1,7 @@
 package com.app.main.view;
 
+import com.app.main.model.GameManager;
+
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -21,11 +23,13 @@ public final class GameScene extends Scene {
     /**
      * Constructeur de la classe permettant
      * d'initialiser la vue
+     * 
+     * @param gameManager le gameManager
      */
-    public GameScene() {
+    public GameScene(GameManager gameManager) {
         super(root, width, height);
 
-        StackPane gridview = new GridView(resolution);
+        StackPane gridview = new GridView(resolution, gameManager);
         VBox gameInfoView = new GameInfoView();
 
         root.getChildren().addAll(gridview, gameInfoView);
