@@ -9,17 +9,37 @@ import java.io.IOException;
 
 public class Game extends Application {
 
+    private static Scene scene;
+    private static Stage primaryStage;
+    private static String css;
+
     public static void main(String[] args) {
-        //launch(args);
-        System.out.println("Hello World!");
-        System.exit(0);
+        launch(args);
     }
     @Override
     public void start(Stage stage) throws IOException {
-        /*FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("Game.fxml"));
-        Scene scene = new Scene(fxmlLoader.load(), 320, 240);
-        stage.setTitle("Game");
-        stage.setScene(scene);
-        stage.show();*/
+        FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("MainMenu.fxml"));
+        scene = new Scene(fxmlLoader.load());
+
+        css = getClass().getResource("Style.css").toExternalForm();
+        scene.getStylesheets().add(css);
+
+        primaryStage = stage;
+
+        primaryStage.setTitle("Still Water??");
+        primaryStage.setResizable(false);
+
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+    public static Scene getScene() {
+        return scene;
+    }
+    public static void setScene(Scene scene) {
+        Game.scene = scene;
+        Game.scene.getStylesheets().add(css);
+    }
+    public static Stage getPrimaryStage() {
+        return primaryStage;
     }
 }

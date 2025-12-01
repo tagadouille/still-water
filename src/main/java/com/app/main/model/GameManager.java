@@ -9,7 +9,9 @@ import com.app.main.model.core.Team;
 import com.app.main.model.core.Team.Cell;
 import com.app.main.util.GameLevelLoader;
 
-//TODO tab de gradient créer pendant la lecture de niveau
+/**
+ * Classe qui permet de 
+ */
 public final class GameManager {
     public static final int GRID_DIM = 480;
     public static final int NB_CELL = 14400;
@@ -46,6 +48,10 @@ public final class GameManager {
 
     public int[] getForces() {
         return forces;
+    }
+
+    public Team[] getTeams() {
+        return teams;
     }
     
     /**
@@ -160,20 +166,18 @@ public final class GameManager {
             int startY = Math.min(spawn[0].y(), spawn[1].y());
             int endY   = Math.max(spawn[0].y(), spawn[1].y());
 
-            for (int x = startX; x <= endX; x++) {
-                for (int y = startY; y <= endY; y++) {
-                    
-            
-                    Cell cell = Cell.CreateCell(new Point(x, y), teams[i].getTeam());
-                    teams[i].addCell(cell);
-                    globalGrid[y][x] = cell; 
+            for (int x = startX; x < endX; x++) {
+                for (int y = startY; y < endY; y++) {
+                        Cell cell = Cell.CreateCell(x, y, teams[i].getTeam());
+                        teams[i].addCell(cell);
+                        globalGrid[y][x] = cell; 
                     } 
                 }
                 this.totalCell += teams[i].getArmy().size();
-            }
-            // Initialiser les rapports de forces
-            updateForces();
         }
+        // Initialiser les rapports de forces
+        updateForces();
+    }
 
     /**
      * Update the model by calculate the gradient grid of each team

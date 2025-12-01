@@ -7,7 +7,6 @@ import org.junit.jupiter.api.Test;
 import com.app.main.model.core.Team;
 import com.app.main.model.core.Team.Cell;
 import com.app.main.model.core.Color;
-import com.app.main.model.core.Point;
 
 public class TeamTest {
 
@@ -22,8 +21,8 @@ public class TeamTest {
     public void setup() {
         // Initialisation propre avant chaque test
         redTeam = Team.CreateRedTeam(10, 10, emptyObstacles);
-        attacker = Cell.CreateCell(new Point(0, 0), Color.RED);
-        victim = Cell.CreateCell(new Point(0, 1), Color.BLUE);
+        attacker = Cell.CreateCell(0, 0, Color.RED);
+        victim = Cell.CreateCell(0, 1, Color.BLUE);
     }
 
     @Test
@@ -40,8 +39,8 @@ public class TeamTest {
         assertEquals(Color.GREEN, custom.getTeam(), "La fabrique générique doit respecter la couleur");
         
         // Vérification de la création de Cellule via la fabrique
-        Cell c = Cell.CreateCell(new Point(5, 5), Color.RED);
-        assertEquals(5, c.getPosition().x()); // Utilisation de .getPosition().x()
+        Cell c = Cell.CreateCell(5, 5, Color.RED);
+        assertEquals(5, c.getX(), c.getY()); // Utilisation de .getPosition().x()
         assertEquals(100, c.getEnergy());     // Utilisation du Getter
     }
 
@@ -61,8 +60,8 @@ public class TeamTest {
     @Test
     public void testHealLogic() {
         // Pour le soin, il faut que les deux soient de la même équipe
-        Cell healer = Cell.CreateCell(new Point(0, 0), Color.RED);
-        Cell receiver = Cell.CreateCell(new Point(0, 1), Color.RED);
+        Cell healer = Cell.CreateCell(0, 0, Color.RED);
+        Cell receiver = Cell.CreateCell(0, 1, Color.RED);
 
         // Cas valide pour le soin
         healer.setEnergy(30);   // > 20
