@@ -1,5 +1,6 @@
 package com.app.main.controller;
 
+import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
 
@@ -12,16 +13,16 @@ public final class MouseController implements Controller{
     public Team team;
     public double mousex, mousey;
 
-    private MouseController(Canvas canva, Team team, double scalex, double scaley){
+    private MouseController(Canvas canva, Team team){
         this.team = team;
-        this.mousex = canva.getWidth() / scalex;
-        this.mousey = canva.getHeight() / scaley;
+        this.mousex = canva.getWidth() / GameManager.GRID_DIM;
+        this.mousey = canva.getHeight() / GameManager.GRID_DIM;
 
         canva.setOnMouseMoved(this::move);
     }
 
-    public static MouseController createMouseController(Canvas canva, Team team, int mapwidth, int mapheight){
-        return new MouseController(canva, team, mapwidth, mapheight);
+    public static MouseController createMouseController(Canvas canva, Team team){
+        return new MouseController(canva, team);
     }
     
     @Override

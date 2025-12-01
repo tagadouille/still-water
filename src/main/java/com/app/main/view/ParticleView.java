@@ -1,5 +1,6 @@
 package com.app.main.view;
 
+import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.model.core.Team.Cell;
 
@@ -19,7 +20,7 @@ public final class ParticleView {
      * @param team l'équipe dont les cellules seront affichés
      * @param screenSize la taille de l'écran
      */
-    public static void renderParticles(GraphicsContext gc, Team team, int screenSize){
+    public static void renderParticles(GraphicsContext gc, Team team, double width, double height){
 
         Color color = getTeamColor(team);
 
@@ -40,14 +41,23 @@ public final class ParticleView {
                 color.getOpacity()
             );
 
-            double factor = screenSize / 480; // Facteur multiplicatif pour l'affichage
+
+            double x = cell.getX() * GameScene.getxFactor();
+            double y = cell.getY() * GameScene.getyFactor(); 
+                
+            double w = GameScene.getxFactor();
+            double h = GameScene.getyFactor();
+
+            // Truncate the position if needed
+            if(x + w > width){
+                w = width - x;
+            }
+            if(y + h > height){
+                h = height -y;
+            }
 
             gc.setFill(cellColor);
-            gc.fillRect(
-                cell.getX() * factor,
-                cell.getY() * factor,
-                1 * factor,
-                1 * factor);
+            gc.fillRect(x, y, w, h);
         }
     }
 
