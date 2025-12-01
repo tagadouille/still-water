@@ -1,4 +1,4 @@
-package com.app.main.model;
+package com.app.main.model.core;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,10 +37,10 @@ public final class Team {
      * @param mapWidth  Largeur de la carte (pour initialiser le gradient).
      * @param mapHeight Hauteur de la carte (pour initialiser le gradient).
      */
-    private Team(Color team, int mapWidth, int mapHeight) {
+    private Team(Color team, int mapWidth, int mapHeight, boolean [][] sharedObstacles) {
         this.team = team;
         this.army = new ArrayList<>();
-        this.gradient = GradientGrid.createGradientGrid(mapWidth, mapHeight);
+        this.gradient = GradientGrid.createGradientGrid(mapWidth, mapHeight, sharedObstacles);
     }
 
     /**
@@ -85,8 +85,8 @@ public final class Team {
      * @param height
      * @return
      */
-    public static Team CreateTeam(Color team, int width, int height){
-        return new Team(team, width, height);
+    public static Team CreateTeam(Color team, int width, int height, boolean [][] sharedObstacles){
+        return new Team(team, width, height, sharedObstacles);
     }
 
     /**
@@ -96,8 +96,8 @@ public final class Team {
      * @param height
      * @return
      */
-    public static Team CreateRedTeam(int width, int height){
-        return new Team(Color.RED, width, height);
+    public static Team CreateRedTeam(int width, int height, boolean [][] sharedObstacles){
+        return new Team(Color.RED, width, height, sharedObstacles);
     }
 
     /**
@@ -107,8 +107,8 @@ public final class Team {
      * @param height
      * @return
      */
-    public static Team CreateGreenTeam(int width, int height){
-        return new Team(Color.GREEN, width, height);
+    public static Team CreateGreenTeam(int width, int height, boolean [][] sharedObstacles){
+        return new Team(Color.GREEN, width, height, sharedObstacles);
     }
 
     /**
@@ -118,8 +118,8 @@ public final class Team {
      * @param height
      * @return
      */
-    public static Team CreatePurpleTeam(int width, int height){
-        return new Team(Color.PURPLE, width, height);
+    public static Team CreatePurpleTeam(int width, int height, boolean [][] sharedObstacles){
+        return new Team(Color.PURPLE, width, height, sharedObstacles);
     }
 
 
@@ -130,8 +130,8 @@ public final class Team {
      * @param height
      * @return
      */
-    public static Team CreateBlueTeam(int width, int height){
-        return new Team(Color.BLUE, width, height);
+    public static Team CreateBlueTeam(int width, int height, boolean [][] sharedObstacles){
+        return new Team(Color.BLUE, width, height, sharedObstacles);
     }
 
     /**

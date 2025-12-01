@@ -1,4 +1,4 @@
-package com.app.main.model;
+package com.app.main.model.core;
 
 import java.util.ArrayDeque;
 import java.util.Queue;
@@ -47,11 +47,11 @@ public final class GradientGrid {
      * @param width Largeur de la carte.
      * @param height Hauteur de la carte.
      */
-    private GradientGrid(int width, int height) {
+    private GradientGrid(int width, int height, boolean[][] sharedObstacles) {
         this.width = width;
         this.height = height;
         this.distances = new int[height][width];
-        this.obstacle = new boolean[height][width];
+        this.obstacle = sharedObstacles;
         
         reset();
     }
@@ -63,8 +63,8 @@ public final class GradientGrid {
      * @param height
      * @return
      */
-    public static GradientGrid createGradientGrid(int width, int height){
-        return new GradientGrid(width, height);
+    public static GradientGrid createGradientGrid(int width, int height, boolean [][] sharedObstacles){
+        return new GradientGrid(width, height, sharedObstacles);
     }
 
     /**

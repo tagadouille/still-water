@@ -1,4 +1,4 @@
-package com.app.main.model;
+package com.app.main.model.core;
 
 public enum Color {
     RED,
