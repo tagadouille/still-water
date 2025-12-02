@@ -261,30 +261,84 @@ public final class Team {
      * @param myCell La cellule qui tente de bouger.
      * @param globalGrid La grille de référence pour vérifier l'occupation des cases.
      */
-    private void moveOneCell(Cell myCell, Cell[][] globalGrid) {
+    private synchronized void moveOneCell(Cell myCell, Cell[][] globalGrid){
+    int x = myCell.x;
+    int y = myCell.y;
+    int myDist = gradient.getDistance(x, y);
+    
+    List<Point> mainDirsFree = new ArrayList<>();
+    List<Point> acceptDirsFree = new ArrayList<>();
+    List<Cell> enemiesOnMain = new ArrayList<>();
+    List<Cell> enemiesOnAcceptDirs = new ArrayList<>();
+    List<Cell> friendsOnMain = new ArrayList<>();
 
-        int x = myCell.x;
-        int y = myCell.y;
+    int[][] directions = {{0,1}, {0,-1}, {1,0}, {-1,0}};
+    
+    for (int[] dir : directions) {
+        int nx = x + dir[0];
+        int ny = y + dir[1];
 
-        Point nextPos = gradient.BestNeighbors(x, y);
+        if (!gradient.isValid(nx, ny) || gradient.getDistance(nx, ny) == GradientGrid.INFINITE_DISTANCE) continue;
 
-        if (nextPos == null) return;
+        int distVoisin = gradient.getDistance(nx, ny);
+        Cell occupant = globalGrid[ny][nx]; 
 
-        Cell occupant = globalGrid[nextPos.y()][nextPos.x()];
+        // CLASSIFICATION DE LA DIRECTION
+        boolean isMain = (distVoisin < myDist);
+        boolean isAcceptable = (distVoisin == myDist);
 
         if (occupant == null) {
-            globalGrid[y][x] = null;
-            this.setCellPosition(myCell, nextPos.x(), nextPos.y());
-            globalGrid[nextPos.y()][nextPos.x()] = myCell;
-        }
-        else {
-            if (occupant.currentTeam == this.team) {
-                heal(myCell, occupant);
-            } else {
-                attack(myCell, occupant);
-            }
+            // Case Libre
+            if (isMain) mainDirsFree.add(new Point(nx, ny));
+            else if (isAcceptable) acceptDirsFree.add(new Point(nx, ny));
+        } else {
+            // Case Occupée
+            if (isMain) {
+                if (occupant.currentTeam != this.team) enemiesOnMain.add(occupant);
+                else friendsOnMain.add(occupant);
+            }else if(isAcceptable) enemiesOnAcceptDirs.add(occupant);
         }
     }
+    
+    // 1. Si une direction principale est libre, on y va.
+    if (!mainDirsFree.isEmpty()) {
+        // Astuce : Collections.shuffle(mainDirsFree) pour un mouvement moins robotique !
+        moveCellTo(myCell, mainDirsFree.get(0), globalGrid);
+        return;
+    }
+
+    // 2. & 3. Si une direction acceptable est libre (Cas 2/3 regroupés pour l'instant)
+    if (!acceptDirsFree.isEmpty()) {
+        moveCellTo(myCell, acceptDirsFree.get(0), globalGrid);
+        return;
+    }
+
+    // 4. Si direction principale occupée par ennemi -> Attaque
+    if (!enemiesOnMain.isEmpty()) {
+        attack(myCell, enemiesOnMain.get(0));
+        return;
+    }
+
+    //5. Si direction acceptable occupée par ennemi -> Attaque
+    if(!enemiesOnAcceptDirs.isEmpty()){
+        attack(myCell, enemiesOnAcceptDirs.get(0));
+        return;
+    }
+
+    // 6. Si direction principale occupée par ami -> Soin
+    if (!friendsOnMain.isEmpty()) {
+        heal(myCell, friendsOnMain.get(0));
+        return;
+    }
+    // 7. Sinon rien (reste sur place)
+}
+
+// Petite méthode helper pour ne pas dupliquer le code de déplacement
+private void moveCellTo(Cell c, Point p, Cell[][] grid) {
+    grid[c.y][c.x] = null;
+    setCellPosition(c, p.x(), p.y()); // Ta méthode existante
+    grid[p.y()][p.x()] = c;
+}
 
     /**
      * Logique d'attaque (Combat).

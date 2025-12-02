@@ -2,6 +2,9 @@ package com.app.main.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 import com.app.main.model.core.Color;
 import com.app.main.model.core.Point;
@@ -18,7 +21,7 @@ public final class GameManager {
 
     private boolean[][] obstacles;
 
-    private Cell[][] globalGrid;
+    private volatile Cell[][] globalGrid;
     private Team[] teams;
 
     private int[] forces;
@@ -184,9 +187,18 @@ public final class GameManager {
      * and apply the movements/heals/attacks of each teams
      */
     public void update(){
-        //! Provisoire, mettre des threads
-        for (int i = 0; i < teams.length; i++) {
-            teams[i].updateArmy(globalGrid);
+        ExecutorService executor = Executors.newVirtualThreadPerTaskExecutor();
+
+        for (Team team : teams) {
+            executor.submit(() -> team.updateArmy(globalGrid));
+        }
+        executor.shutdown();
+
+        try{
+            executor.awaitTermination(10, TimeUnit.MILLISECONDS);
+        }
+        catch(InterruptedException e){
+            executor.shutdownNow();
         }
         clearAndRemanageTeam();
         updateForces();
