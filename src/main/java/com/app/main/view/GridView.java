@@ -24,23 +24,23 @@ import javafx.scene.text.Font;
 public final class GridView extends StackPane {
 
     private Canvas canvas;
-    private int size;
+    private double width;
+    private double height;
     private GameManager gameManager;
     private int currentFps = 0;
 
-    private GridView(int size, GameManager gameManager) {
+    private GridView(double width, double height, GameManager gameManager) {
         super();
         
         this.gameManager = gameManager;
-        this.size = size;
-        this.canvas = new Canvas(size, size);
+        this.width = width;
+        this.height = height;
+        this.canvas = new Canvas(width, height);
         this.getChildren().add(canvas);
 
         startGameLoop();
 
-        MouseController mouseController = MouseController.createMouseController(
-            canvas, gameManager.getTeams()[0], size, size
-        );
+        MouseController mouseController = MouseController.createMouseController(canvas, gameManager.getTeams()[0]);
 
         canvas.requestFocus();
     }
@@ -50,14 +50,14 @@ public final class GridView extends StackPane {
      * @param size la taille de la zone de jeu
      * @param gameManager le GameManager
      */
-    public static GridView createGridView(int size, GameManager gameManager){
-        if(size <= 0){
-            throw new IllegalArgumentException("The size of the game zone can't be nagative of null");
+    public static GridView createGridView(double width, double height, GameManager gameManager){
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The size of the game zone can't be negative or null");
         }
         if(gameManager == null){
             throw new IllegalArgumentException("The GameManager can't be null");
         }
-        return new GridView(size, gameManager);
+        return new GridView(width, height, gameManager);
     }
 
     /**
@@ -117,14 +117,14 @@ public final class GridView extends StackPane {
      */
     private void render(GraphicsContext gc) {
         try{
-            gc.drawImage(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/john_pork.jpg"))), 0, 0, size, size);
+            gc.drawImage(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/john_pork.jpg"))), 0, 0, width, width);
         }catch(IOException e){
 
         }
         
         for (Team team : gameManager.getTeams()) {
             //! Utiliser le multi-threading
-            ParticleView.renderParticles(gc, team, size);
+            ParticleView.renderParticles(gc, team, width, height);
         }
 
         //!Affichage des fps provisoire

@@ -2,6 +2,7 @@ package com.app.main.view;
 
 import com.app.main.model.GameManager;
 
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
@@ -14,11 +15,14 @@ import javafx.scene.layout.VBox;
  */
 public final class GameScene extends Scene {
 
-    private static double width = 1280;
-    private static double height = 720;
-    private static int resolution = 720; //Resolution de la grille de jeu
+    private static int width = 1280;
+    private static int height = 720;
 
-    private static final HBox root = new HBox(10);
+    /**Scaling factor of the particles */
+    private static double yFactor;
+    private static double xFactor;
+
+    private static HBox root = new HBox();
 
     /**
      * Constructeur de la classe permettant
@@ -29,9 +33,41 @@ public final class GameScene extends Scene {
     public GameScene(GameManager gameManager) {
         super(root, width, height);
 
-        StackPane gridview = GridView.createGridView(resolution, gameManager);
-        VBox gameInfoView = new GameInfoView();
+        //Calculation for the proper canva size and the proper factor
+        int canvaWidth = (int) Math.floor(width * 0.7);
+        int canvaHeight = height;
 
+        if(canvaHeight > height){
+            canvaHeight = height;
+        }
+
+        xFactor = canvaWidth / (double) GameManager.GRID_DIM;
+        yFactor = canvaHeight / (double) GameManager.GRID_DIM;
+
+        StackPane gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager);
+        
+        int rightPaneWidth = (int) Math.max(0, (int) width - canvaWidth);
+
+        VBox gameInfoView = new GameInfoView(rightPaneWidth);
+
+        root.setSpacing(0);
+        root.setPadding(Insets.EMPTY);
         root.getChildren().addAll(gridview, gameInfoView);
+    }
+
+    public static double getScreenWidth() {
+        return width;
+    }
+
+    public static double getScreenHeight() {
+        return height;
+    }
+
+    public static double getxFactor() {
+        return xFactor;
+    }
+
+    public static double getyFactor() {
+        return yFactor;
     }
 }

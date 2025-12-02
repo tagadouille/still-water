@@ -20,10 +20,14 @@ public final class GameInfoView extends VBox{
      * Constructeur de la classe permettant d'initialiser ses
      * principaux composants
      */
-    public GameInfoView(){
+    public GameInfoView(int width){
         super();
         this.setBackground(new Background(new BackgroundFill(Color.BLACK, null, getInsets())));
         this.setSpacing(10);
         HBox.setHgrow(this, Priority.ALWAYS);
+
+        this.setPrefWidth(width);
+        this.setMinWidth(width);
+        this.setMaxWidth(width);
     }
 }
