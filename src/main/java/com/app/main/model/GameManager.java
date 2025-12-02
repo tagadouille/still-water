@@ -56,6 +56,14 @@ public final class GameManager {
     public Team[] getTeams() {
         return teams;
     }
+
+    public int getWidth(){
+        return obstacles[0].length;
+    }
+
+    public int getHeight(){
+        return obstacles.length;
+    }
     
     /**
      * Static factory

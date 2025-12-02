@@ -1,6 +1,7 @@
 package com.app.main.view;
 
 import com.app.main.model.GameManager;
+import com.app.main.util.Controller;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -9,8 +10,7 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 
 /**
- * Classe étendant Scene permettant de représenter la vue
- * du jeu
+ * Class extend Scene for representing the view of the game
  * @author Dai Elias
  */
 public final class GameScene extends Scene {
@@ -25,12 +25,13 @@ public final class GameScene extends Scene {
     private static HBox root = new HBox();
 
     /**
-     * Constructeur de la classe permettant
-     * d'initialiser la vue
+     * Constructor of the class for initiating the view
      * 
-     * @param gameManager le gameManager
+     * @param gameManager the gameManager
+     * @param controllers an array of all the controllers that will be used by the players. If the first
+     * element is null it's a player with a mouse.
      */
-    public GameScene(GameManager gameManager) {
+    public GameScene(GameManager gameManager, Controller[] controllers) {
         super(root, width, height);
 
         //Calculation for the proper canva size and the proper factor
@@ -44,7 +45,7 @@ public final class GameScene extends Scene {
         xFactor = canvaWidth / (double) GameManager.GRID_DIM;
         yFactor = canvaHeight / (double) GameManager.GRID_DIM;
 
-        StackPane gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager);
+        StackPane gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager, controllers);
         
         int rightPaneWidth = (int) Math.max(0, (int) width - canvaWidth);
 

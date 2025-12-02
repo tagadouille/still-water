@@ -1,8 +1,10 @@
 package com.app.main.controller.menu;
 
+import com.app.main.controller.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Point;
 import com.app.main.model.core.Team;
+import com.app.main.util.Controller;
 import com.app.main.view.GameScene;
 
 public class MatchTypeController {
@@ -22,8 +24,11 @@ public class MatchTypeController {
                 {new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
             }
         );
-        teams[1].setTarget(0, 0);
-        MenuSwitcher.switchScene(new GameScene(gameManager));
+
+        MenuSwitcher.switchScene(
+            new GameScene(gameManager,
+             new Controller[]{null, new BotController(gameManager.getWidth(), gameManager.getHeight())})
+        );
     }
 
     public void goBack(){
