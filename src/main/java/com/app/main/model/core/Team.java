@@ -261,11 +261,11 @@ public final class Team {
      * @param myCell La cellule qui tente de bouger.
      * @param globalGrid La grille de référence pour vérifier l'occupation des cases.
      */
-    private void moveOneCell(Cell myCell, Cell[][] globalGrid) {
+    private synchronized void moveOneCell(Cell myCell, Cell[][] globalGrid){
     int x = myCell.x;
     int y = myCell.y;
     int myDist = gradient.getDistance(x, y);
-
+    
     List<Point> mainDirsFree = new ArrayList<>();
     List<Point> acceptDirsFree = new ArrayList<>();
     List<Cell> enemiesOnMain = new ArrayList<>();
