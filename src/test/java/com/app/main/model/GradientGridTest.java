@@ -45,24 +45,6 @@ public class GradientGridTest {
     }
 
     @Test
-    public void testGetBestNeighbor() {
-        boolean[][] obstacles = new boolean[3][3];
-        GradientGrid grid = GradientGrid.createGradientGrid(3, 3, obstacles);
-        
-        grid.calculgradient(2, 2); // Cible en bas à droite
-
-        // On est en (0,0), distance 4
-        // Appel de ta méthode (BestNeighbors)
-        Point best = grid.BestNeighbors(0, 0);
-        
-        assertNotNull(best, "Un voisin doit être trouvé");
-        
-        // Le voisin doit réduire la distance (passer de 4 à 3)
-        int distVoisin = grid.getDistance(best.x(), best.y());
-        assertEquals(3, distVoisin);
-    }
-    
-    @Test
     public void testSafetyCheck() {
         boolean[][] obstacles = new boolean[5][5];
         GradientGrid grid = GradientGrid.createGradientGrid(5, 5, obstacles);

@@ -118,49 +118,14 @@ public final class GradientGrid {
     }
 
     /**
-     * Trouve le meilleur voisin vers lequel se déplacer (Descente de Gradient).
-     * <p>
-     * Regarde les 4 voisins de la position actuelle et retourne celui qui a 
-     * la plus petite valeur de distance. Cela correspond à la "direction principale" 
-     * [cite_start]mentionnée dans le sujet[cite: 34].
-     * </p>
-     *
-     * @param currentX Position X actuelle de l'entité.
-     * @param currentY Position Y actuelle de l'entité.
-     * @return Le Point vers lequel aller, ou null si aucun voisin n'est meilleur (ou bloqué).
-     */
-    public Point BestNeighbors(int targetx, int targety){
-        Point p = null;
-
-        int minDistance = distances[targetx][targety];
-
-        for(int [] dir :  DIRECTIONS){
-            int nx = targetx + dir[0];
-            int ny = targety + dir[1];
-
-            if(isValid(nx, ny) && !obstacle[nx][ny]){
-
-                int distneighbors = distances[nx][ny];
-
-                if(minDistance > distneighbors){
-                    minDistance = distneighbors;
-                    p = new Point(nx, ny);
-                }
-            }
-        }
-        
-        return p;
-    }
-
-    /**
      * Algorithme principal : Parcours en Largeur (BFS).
      * <p>
      * Calcule le plus court chemin depuis la cible (targetX, targetY) vers TOUTES
      * les autres cases accessibles de la carte.
      * </p>
      * <ol>
-     * [cite_start]<li>Initialise la cible à 0[cite: 23].</li>
-     * [cite_start]<li>Propage la valeur i+1 aux voisins des cases de valeur i[cite: 28, 29].</li>
+     * <li>Initialise la cible à 0.</li>
+     * <li>Propage la valeur i+1 aux voisins des cases de valeur i.</li>
      * </ol>
      *
      * @param targetX Coordonnée X de la cible (objectif).
