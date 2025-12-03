@@ -1,4 +1,4 @@
-package com.app.main.mapGenerator;
+package com.app.main.util.mapGenerator;
 
 import javafx.embed.swing.SwingFXUtils;
 import javafx.scene.image.Image;

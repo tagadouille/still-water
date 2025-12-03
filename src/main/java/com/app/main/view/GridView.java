@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.app.main.controller.MouseController;
+import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 

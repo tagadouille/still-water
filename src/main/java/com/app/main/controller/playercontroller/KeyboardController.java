@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.playercontroller;
 
 import java.util.HashSet;
 import java.util.Set;
