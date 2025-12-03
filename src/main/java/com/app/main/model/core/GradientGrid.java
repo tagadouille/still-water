@@ -34,13 +34,6 @@ public final class GradientGrid {
     /** Valeur pour le debug (non utilisé dans le calcul pur mais utile pour l'affichage). */
     public static final int WALL = -1;
 
-    /** * Les 4 directions de déplacement possibles (Haut, Bas, Gauche, Droite).
-     * Pas de diagonales pour l'instant (Connexité 4).
-     */
-    private static final int[][] DIRECTIONS = {
-        {0, 1}, {0, -1}, {1, 0}, {-1, 0}
-    };
-
     /**
      * Initialise une nouvelle grille de gradient.
      *
@@ -148,9 +141,9 @@ public final class GradientGrid {
             Point p = file.poll();
             int currentDist = distances[p.x()][p.y()];
 
-            for(int [] dir : DIRECTIONS){
-                int nx = p.x() + dir[0];
-                int ny = p.y() + dir[1];
+            for(Direction dir : Direction.ALL){
+                int nx = p.x() + dir.x;
+                int ny = p.y() + dir.y;
 
                 if(isValid(nx, ny) && !obstacle[nx][ny]){
 
