@@ -11,18 +11,19 @@ public class MatchTypeController {
         //! Provisoire : 
         boolean[][] obstacles = new boolean[GameManager.GRID_DIM][GameManager.GRID_DIM];
         Team[] teams = new Team[]{
-            Team.CreateBlueTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles), 
-            Team.CreateRedTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles)
+            Team.CreateBlueTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles)//, 
+            //Team.CreateRedTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles)
         };
-        GameManager gameManager = GameManager.gameManagerFactory(
+        GameManager gameManager = GameManager.gameManagerFactoryTest(
             obstacles,
             teams,
             new Point[][]{
-                {new Point(0, 0), new Point(100, 144)},
-                {new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
-            }
+                {new Point(0, 0), new Point(100, 144)}//,
+                //{new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
+            },
+            GameManager.GRID_DIM
         );
-        teams[1].setTarget(0, 0);
+        //teams[1].setTarget(0, 0);
         MenuSwitcher.switchScene(new GameScene(gameManager));
     }
 
