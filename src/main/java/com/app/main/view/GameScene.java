@@ -1,7 +1,9 @@
 package com.app.main.view;
 
+import com.app.main.controller.GameInfoViewController;
 import com.app.main.model.GameManager;
 import com.app.main.util.Controller;
+import com.app.main.util.Observable;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
@@ -45,11 +47,14 @@ public final class GameScene extends Scene {
         xFactor = canvaWidth / (double) GameManager.GRID_DIM;
         yFactor = canvaHeight / (double) GameManager.GRID_DIM;
 
-        StackPane gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager, controllers);
+        GridView gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager, controllers);
         
         int rightPaneWidth = (int) Math.max(0, (int) width - canvaWidth);
 
-        VBox gameInfoView = new GameInfoView(rightPaneWidth);
+        GameInfoView gameInfoView = new GameInfoView(rightPaneWidth);
+        GameInfoViewController gameInfoViewController = GameInfoViewController.creaInfoViewController(gameInfoView);
+
+        gridview.addObserver(gameInfoView);
 
         root.setSpacing(0);
         root.setPadding(Insets.EMPTY);

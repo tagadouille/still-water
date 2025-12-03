@@ -71,14 +71,14 @@ public interface Observable {
 	/**
 	 * Notifies all registered observers of a change or action.
 	 * 
-	 * @param clazz  The observable object that triggered the notification.
+	 * @param observable  The observable object that triggered the notification.
 	 * @param arg    An optional argument providing additional context for the
 	 *               notification.
 	 * @param action A string describing the action or event that occurred.
 	 */
-	default void notifyObservers(Observable clazz, Object arg, String action) {
+	default void notifyObservers(Observable observable, Object arg, String action) {
 		for (Observer observer : getObservers()) {
-			observer.update(clazz, arg, action);
+			observer.update(observable, arg, action);
 		}
 	}
 }

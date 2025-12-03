@@ -3,11 +3,15 @@ package com.app.main.view;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.app.main.controller.MouseController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.util.Observable;
+import com.app.main.util.Observer;
 
 import javafx.animation.AnimationTimer;
 import javafx.scene.canvas.Canvas;
@@ -22,7 +26,7 @@ import javafx.scene.text.Font;
  * are displayed
  * @author Dai Elias
  */
-public final class GridView extends StackPane {
+public final class GridView extends StackPane implements Observable{
 
     private Canvas canvas;
     private double width;
@@ -30,6 +34,8 @@ public final class GridView extends StackPane {
     private GameManager gameManager;
     private int currentFps = 0;
     Controller[] controllers;
+
+    List<Observer> observers = new ArrayList<>();
 
     private GridView(double width, double height, GameManager gameManager, Controller[] controllers) {
         super();
@@ -71,6 +77,9 @@ public final class GridView extends StackPane {
         if(controllers.length == 0){
             throw new IllegalArgumentException("The controllers can't be empty");
         }
+        if(gameManager.getTeams().length != controllers.length){
+            throw new IllegalArgumentException("The number of team must be the same as the number of controller");
+        }
         Controller[] newControllers = new Controller[controllers.length];
 
         for (int i = 0; i < controllers.length; i++) {
@@ -81,6 +90,14 @@ public final class GridView extends StackPane {
             newControllers[i] = controllers[i];
         }
         return new GridView(width, height, gameManager, newControllers);
+    }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    public int getCurrentFps() {
+        return currentFps;
     }
 
     /**
@@ -131,6 +148,8 @@ public final class GridView extends StackPane {
      * Update the model
      */
     private void update() {
+        this.notifyObservers(this, null, "info");
+
         for(Controller controller : controllers){
             controller.update();
         }
@@ -148,16 +167,27 @@ public final class GridView extends StackPane {
 
         }*/
 
-        gc.setFill(Color.BLACK);
+        gc.setFill(Color.WHITE);
         gc.fillRect(0, 0, width, height);
         
         for (Team team : gameManager.getTeams()) {
             ParticleView.renderParticles(gc, team, width, height);
         }
+        for (Team team : gameManager.getTeams()) {
+            TeamCursor.displayTeamCursor(gc, team);
+        }
+    }
 
-        //!Affichage des fps provisoire
-        gc.setFill(Color.YELLOW);
-        gc.setFont(new Font("comic sans ms", 15));
-        gc.fillText("FPS: " + currentFps, 10, 20);
+    @Override
+    public List<Observer> getObservers() {
+        return observers;
+    }
+
+    /**
+     * This record is used as a wrapper for transmit
+     * the current state of the game
+     */
+    //? inutile ?? Utilisé que this suffit ??
+    public record EventInformation(int fps, int[] forces) {
     }
 }

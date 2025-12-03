@@ -27,7 +27,9 @@ public class MatchTypeController {
 
         MenuSwitcher.switchScene(
             new GameScene(gameManager,
-             new Controller[]{null, new BotController(gameManager.getWidth(), gameManager.getHeight())})
+            new Controller[]{
+                null, 
+                new BotController(gameManager.getWidth(), gameManager.getHeight(), gameManager.getTeams()[1])})
         );
     }
 
