@@ -1,9 +1,7 @@
 package com.app.main.view;
 
-import com.app.main.model.core.Team;
 import com.app.main.util.Observable;
 import com.app.main.util.Observer;
-import com.fasterxml.jackson.annotation.PropertyAccessor;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
@@ -108,6 +106,10 @@ public final class GameInfoView extends VBox implements Observer{
         this.fps.setText("FPS : " + fps);
     }
 
+    private void updateTimer(String time){
+        this.timer.setText(time);
+    }
+
     @Override
     public void update(Observable o, Object arg, String action) {
 
@@ -121,8 +123,8 @@ public final class GameInfoView extends VBox implements Observer{
                 teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
             }
             updateForcesRepartition(forces, teamColors);
-
             updateFps(gridView.getCurrentFps());
+            updateTimer(gridView.getTimer().getTimeRemaining());
         }
     }
 }

@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.app.main.controller.TimerHandler;
 import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
@@ -31,9 +32,12 @@ public final class GridView extends StackPane implements Observable{
     private Canvas canvas;
     private double width;
     private double height;
+
     private GameManager gameManager;
     private int currentFps = 0;
-    Controller[] controllers;
+    private Controller[] controllers;
+
+    private TimerHandler timer;
 
     List<Observer> observers = new ArrayList<>();
 
@@ -46,13 +50,14 @@ public final class GridView extends StackPane implements Observable{
         this.canvas = new Canvas(width, height);
         this.getChildren().add(canvas);
 
-        startGameLoop();
         this.controllers = controllers;
 
         if(this.controllers[0] == null){
             this.controllers[0] = MouseController.createMouseController(canvas, gameManager.getTeams()[0]);
         }
+        this.timer = new TimerHandler();
 
+        startGameLoop();
         canvas.requestFocus();
     }
 
@@ -98,6 +103,10 @@ public final class GridView extends StackPane implements Observable{
 
     public int getCurrentFps() {
         return currentFps;
+    }
+
+    public TimerHandler getTimer() {
+        return timer;
     }
 
     /**
@@ -149,6 +158,10 @@ public final class GridView extends StackPane implements Observable{
      */
     private void update() {
         this.notifyObservers(this, null, "info");
+
+        if(timer.isTimePassed()){
+            System.exit(0);
+        }
 
         for(Controller controller : controllers){
             controller.update();
