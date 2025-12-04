@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.main.controller.MouseController;
+import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;

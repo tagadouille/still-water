@@ -5,6 +5,8 @@ import java.io.IOException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import com.app.main.util.mapGenerator.MapGenerator;
+
 public class testGrayMap {
     private static final String IMAGE_PATH = "src/test/java/com/app/test-resources/";
 
