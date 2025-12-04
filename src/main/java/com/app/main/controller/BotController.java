@@ -1,5 +1,6 @@
 package com.app.main.controller;
 
+import java.util.Comparator;
 import java.util.Random;
 
 import com.app.main.model.core.Team;
@@ -103,6 +104,9 @@ public final class BotController implements Controller{
     }
 
     @Override
+    //TODO ajouter la stratégie de cibler directement le cursuer du plus gros ennemie et faire de même pour le plus petit
+    // Faire la stratégie opposite pour la plus petite masse
+    
     public void update() {
         if (team == null) return;
 
@@ -117,11 +121,27 @@ public final class BotController implements Controller{
         if(strategy == null && enemy == null){
 
             Random rand = new Random();
+            int n = rand.nextInt(3);
 
-            if(rand.nextInt(2) == 0){
+            if(n == 0){
                 strategy = new OppositeStrategy();
-            }else{
+            }else if(n == 1){
                 strategy = new RandomStrategy();
+            }else{
+                strategy = new StickStrategy();
+            }
+
+            //Choose if the bot target : the weakest or the stronger
+            if(rand.nextInt() == 2){
+                findEnnemyByPower((x, y) -> {
+                    if (x > y) return true;
+                return false;
+                });
+            }else{
+                findEnnemyByPower((x, y) -> {
+                    if (x <= y) return true;
+                    return false;
+                });
             }
             
             strategy.applyStrategy(this);
@@ -147,5 +167,31 @@ public final class BotController implements Controller{
         else if(targetPos.getY() > team.getTargetY()){
             team.setTarget(team.getTargetX(), team.getTargetY() + speed);
         }
+    }
+
+    private void findEnnemyByPower(Comparer comp){
+        int greaterMass = 0;
+        Team bigEnemy = null;
+
+        for (int i = 0; i < allTeam.length; i++) {
+            
+            if(allTeam[i] != team && comp.compare(allTeam[i].getArmy().size(), greaterMass)){
+                greaterMass = allTeam[i].getArmy().size();
+                bigEnemy = allTeam[i];
+            }
+        }
+        this.enemy = bigEnemy;
+    }
+
+    private interface Comparer{
+
+        /**
+         * Tell if the comparaison between x and y is true
+         * For instance we can use it for tell if x is greater than y
+         * @param x
+         * @param y
+         * @return true if the comparaison is true, false otherwise
+         */
+        public boolean compare(int x, int y);
     }
 }
