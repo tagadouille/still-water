@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.playercontroller.botController;
 
 import com.app.main.model.core.Team;
 import com.app.main.util.BotStrategy;

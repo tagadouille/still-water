@@ -1,4 +1,4 @@
-package com.app.main.json;
+package com.app.main.util.json;
 
 import java.io.File;
 import java.io.FileWriter;

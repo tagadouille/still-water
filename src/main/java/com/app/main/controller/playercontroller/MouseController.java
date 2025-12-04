@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.playercontroller;
 
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;

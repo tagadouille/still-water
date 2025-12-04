@@ -1,4 +1,4 @@
-package com.app.main.controller;
+package com.app.main.controller.playercontroller.botController;
 
 import java.util.Random;
 

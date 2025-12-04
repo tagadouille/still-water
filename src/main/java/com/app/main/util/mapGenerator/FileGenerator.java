@@ -1,10 +1,10 @@
-package com.app.main.mapGenerator;
+package com.app.main.util.mapGenerator;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.main.json.JSONFileManager;
+import com.app.main.util.json.JSONFileManager;
 
 public final class FileGenerator{
 
@@ -42,9 +42,6 @@ public final class FileGenerator{
                 obst.add(ligne);
             }
             writer.writeLine("map", obst);
-
-            writer.writeLine("width", width);
-            writer.writeLine("height", height);
 
         }catch(Exception e){
             e.printStackTrace();

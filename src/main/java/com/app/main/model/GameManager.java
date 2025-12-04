@@ -17,7 +17,7 @@ import com.app.main.util.GameLevelLoader;
  */
 public final class GameManager {
     public static final int GRID_DIM = 480;
-    public static final int NB_CELL = 14400;
+    public static final int NB_CELL = 8000;
 
     private boolean[][] obstacles;
 

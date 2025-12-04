@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.app.main.model.core.Color;
 import com.app.main.model.core.Point;
-import com.app.main.json.JSONFileManager;
+import com.app.main.util.json.JSONFileManager;
 import com.app.main.model.GameLevel;
 
 public class GameLevelLoader {

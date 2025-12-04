@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.app.main.controller.BotController;
-import com.app.main.controller.MouseController;
+import com.app.main.controller.playercontroller.MouseController;
+import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
@@ -20,7 +20,6 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 /**
  * Classe which extends StackPane who represent the view of the game zone where the particules
