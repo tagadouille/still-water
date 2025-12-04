@@ -43,9 +43,6 @@ public final class FileGenerator{
             }
             writer.writeLine("map", obst);
 
-            writer.writeLine("width", width);
-            writer.writeLine("height", height);
-
         }catch(Exception e){
             e.printStackTrace();
             throw new IOException("writer failed" + e.getMessage());
