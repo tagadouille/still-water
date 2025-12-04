@@ -1,14 +1,21 @@
 package com.app.main.view;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+
 import com.app.main.util.Observable;
 import com.app.main.util.Observer;
 
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -52,10 +59,28 @@ public final class GameInfoView extends VBox implements Observer{
         this.setPrefWidth(width);
         this.setMinWidth(width);
         this.setMaxWidth(width);
+
+        this.setSpacing(20);
         
         this.initialiseInfoBox();
 
-        this.getChildren().addAll(infoBox, forcesRepartiton);
+        forcesRepartiton.setSpacing(10);
+
+        ImageView img = new ImageView();
+
+        try{
+            img = new ImageView(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/stillWater.png"))));
+        }catch(IOException e){
+            
+        }
+        img.setFitWidth(width);
+        img.setPreserveRatio(true);
+
+        // For forcing the image to be at the bottom
+        Region spacer = new Region();
+        VBox.setVgrow(spacer, Priority.ALWAYS);
+
+        this.getChildren().addAll(infoBox, forcesRepartiton, spacer, img);
     }
 
     public Button getQuitButton() {
@@ -73,12 +98,14 @@ public final class GameInfoView extends VBox implements Observer{
 
         textBox.getChildren().addAll(fps, timer);
 
-        
-        infoBox.getChildren().addAll(textBox, quitButton);
-        
-        quitButton.setMinSize(this.getWidth()/4, quitButton.getHeight());
-        
-        HBox.setHgrow(quitButton, Priority.ALWAYS);
+        // For forcing the button to be at the left
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        quitButton.setPrefSize(100, 40);
+        quitButton.setStyle("-fx-font-size: 22px;");
+
+        infoBox.getChildren().addAll(textBox, spacer, quitButton);
     }
 
     private void updateForcesRepartition(double[] forces, Color[] teamColor){
@@ -88,10 +115,10 @@ public final class GameInfoView extends VBox implements Observer{
 
             for (int i = 0; i < forces.length; i++) {
                 ProgressBar progressBar = new ProgressBar(forces[i]);
+                progressBar.setMaxWidth(Double.MAX_VALUE);
                 progressBar.setStyle("-fx-accent: " + teamColor[i].toString().replace("0x", "#") + ";");
 
                 forcesRepartiton.getChildren().add(progressBar);
-                progressBar.setMaxWidth(this.getWidth());
                 VBox.setVgrow(progressBar, Priority.ALWAYS);
             }
         }

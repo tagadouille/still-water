@@ -19,8 +19,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 /**
  * Classe which extends StackPane who represent the view of the game zone where the particules
@@ -174,14 +172,11 @@ public final class GridView extends StackPane implements Observable{
      * @param gc the GraphicsContext of the canva
      */
     private void render(GraphicsContext gc) {
-        /*try{
+        try{
             gc.drawImage(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/john_pork.jpg"))), 0, 0, width, width);
         }catch(IOException e){
 
-        }*/
-
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0, 0, width, height);
+        }
         
         for (Team team : gameManager.getTeams()) {
             ParticleView.renderParticles(gc, team, width, height);
