@@ -6,6 +6,10 @@ import com.app.main.util.BotStrategy;
 
 import javafx.geometry.Point2D;
 
+/**
+ * This class implements @see BotStrategy and describe a strategy
+ * where the bot will put his cursor at a random position in the grid
+ */
 public class RandomStrategy implements BotStrategy{
 
     @Override

@@ -8,6 +8,8 @@ import javafx.geometry.Point2D;
 /**
  * This class implements @see BotStrategy and describe a strategy
  * where the bot put his cursor at the opposite player cursor
+ * 
+ * @author Dai Elias
  */
 public final class OppositeStrategy implements BotStrategy{
 

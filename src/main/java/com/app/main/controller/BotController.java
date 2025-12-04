@@ -104,9 +104,7 @@ public final class BotController implements Controller{
     }
 
     @Override
-    //TODO ajouter la stratégie de cibler directement le cursuer du plus gros ennemie et faire de même pour le plus petit
-    // Faire la stratégie opposite pour la plus petite masse
-    
+    //TODO ajouter des niveaux de difficultés 
     public void update() {
         if (team == null) return;
 

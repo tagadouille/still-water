@@ -5,6 +5,13 @@ import com.app.main.util.BotStrategy;
 
 import javafx.geometry.Point2D;
 
+/**
+ * This class extends @see BotStrategy and describe a 
+ * strategy where the bot will try to put is cursor
+ * to the current position of one of his enemy
+ * 
+ * @author Dai Elias
+ */
 public class StickStrategy implements BotStrategy{
 
     @Override
