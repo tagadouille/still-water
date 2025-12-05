@@ -203,7 +203,7 @@ public final class GameManager {
         executor.shutdown();
 
         try{
-            executor.awaitTermination(10, TimeUnit.MILLISECONDS);
+            executor.awaitTermination(5, TimeUnit.MILLISECONDS);
         }
         catch(InterruptedException e){
             executor.shutdownNow();

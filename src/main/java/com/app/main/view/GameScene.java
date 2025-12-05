@@ -3,13 +3,10 @@ package com.app.main.view;
 import com.app.main.controller.GameInfoViewController;
 import com.app.main.model.GameManager;
 import com.app.main.util.Controller;
-import com.app.main.util.Observable;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 /**
  * Class extend Scene for representing the view of the game
@@ -24,8 +21,6 @@ public final class GameScene extends Scene {
     private static double yFactor;
     private static double xFactor;
 
-    private static HBox root = new HBox();
-
     /**
      * Constructor of the class for initiating the view
      * 
@@ -34,7 +29,7 @@ public final class GameScene extends Scene {
      * element is null it's a player with a mouse.
      */
     public GameScene(GameManager gameManager, Controller[] controllers) {
-        super(root, width, height);
+        super(new HBox(), width, height);
 
         //Calculation for the proper canva size and the proper factor
         int canvaWidth = (int) Math.floor(width * 0.7);
@@ -56,9 +51,9 @@ public final class GameScene extends Scene {
 
         gridview.addObserver(gameInfoView);
 
-        root.setSpacing(0);
-        root.setPadding(Insets.EMPTY);
-        root.getChildren().addAll(gridview, gameInfoView);
+        ((HBox) this.getRoot()).setSpacing(0);
+        ((HBox) this.getRoot()).setPadding(Insets.EMPTY);
+        ((HBox) this.getRoot()).getChildren().addAll(gridview, gameInfoView);
     }
 
     public static double getScreenWidth() {

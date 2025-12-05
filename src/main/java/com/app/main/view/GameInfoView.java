@@ -4,9 +4,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import com.app.main.Game;
+import com.app.main.controller.menu.MenuSwitcher;
+import com.app.main.controller.menu.WinnerController;
 import com.app.main.util.Observable;
 import com.app.main.util.Observer;
 
+import javafx.application.Platform;
+import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -140,18 +145,38 @@ public final class GameInfoView extends VBox implements Observer{
     @Override
     public void update(Observable o, Object arg, String action) {
 
-        if(o instanceof GridView && action.equals("info")){
+        if(o instanceof GridView){
             GridView gridView = (GridView) o;
 
-            double[] forces = gridView.getGameManager().getForces();
-            Color[] teamColors = new Color[forces.length];
+            if(action.equals("info")){
+                double[] forces = gridView.getGameManager().getForces();
+                Color[] teamColors = new Color[forces.length];
 
-            for (int i = 0; i < teamColors.length; i++) {
-                teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
+                for (int i = 0; i < teamColors.length; i++) {
+                    teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
+                }
+                updateForcesRepartition(forces, teamColors);
+                updateFps(gridView.getCurrentFps());
+                updateTimer(gridView.getTimer().getTimeRemaining());
             }
-            updateForcesRepartition(forces, teamColors);
-            updateFps(gridView.getCurrentFps());
-            updateTimer(gridView.getTimer().getTimeRemaining());
+
+            else if(action.equals("winner")){
+                
+                if(arg instanceof com.app.main.model.core.Color){
+
+                    com.app.main.model.core.Color c = (com.app.main.model.core.Color) arg;
+                    
+                    FXMLLoader loader = MenuSwitcher.switchScene("Winner.fxml");
+
+                    Object controller = loader.getController();
+
+                    if (controller instanceof WinnerController wc) {
+                        Platform.runLater(() -> Game.getScene().getRoot().setStyle("-fx-background-color: " + c.toString().replace("0x", "#") + " !important;"));
+                        Game.getScene().getRoot().requestFocus();
+                        wc.updateWinner(c.toString());
+                    }
+                }
+            }
         }
     }
 }

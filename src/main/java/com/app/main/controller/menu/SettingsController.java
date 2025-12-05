@@ -5,7 +5,7 @@ import javafx.scene.control.ChoiceBox;
 
 public class SettingsController {
     @FXML
-    ChoiceBox screenResolution;
+    private ChoiceBox screenResolution;
 
     public void goBack(){
         MenuSwitcher.switchScene("MainMenu.fxml");

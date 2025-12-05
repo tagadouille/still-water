@@ -21,7 +21,7 @@ public class MatchTypeController {
             teams,
             new Point[][]{
                 {new Point(0, 0), new Point(100, 144)},
-                {new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
+                {new Point(460, 460), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
             },
             GameManager.GRID_DIM
         );
