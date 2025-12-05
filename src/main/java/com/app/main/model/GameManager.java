@@ -218,6 +218,7 @@ public final class GameManager {
      */
     private void clearAndRemanageTeam(){
 
+        @SuppressWarnings("unchecked")
         List<Cell>[] newArmies = new List[teams.length];
         
         for (int i = 0; i < newArmies.length; i++) {
@@ -231,6 +232,7 @@ public final class GameManager {
                 if(cell.getNextTeam() != null){
                     cell.setCurrentTeam(cell.getNextTeam());
                     cell.setNextTeam(null);
+                    //! cell.setEnergy(20); Trouver un moyen de redonner de l'énergie tout en gardant l'énergie totale de départ
                 }
                 int teamIndex = getTeamIndex(cell.getCurrentTeam());
                 if (teamIndex != -1) {
