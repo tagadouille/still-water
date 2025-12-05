@@ -358,8 +358,8 @@ public final class Team {
         target.energy -= 5;
         attacker.energy += 5;
 
-        if(target.energy <= 0){
-            target.energy = 0;
+        if(target.energy <= 5){
+            target.energy = 5;
             target.nextTeam = this.team;
         }
     }
