@@ -24,7 +24,7 @@ public final class GameManager {
     private volatile Cell[][] globalGrid;
     private Team[] teams;
 
-    private int[] forces;
+    private double[] forces;
     private int totalCell;
 
     private int[] victories;
@@ -49,12 +49,20 @@ public final class GameManager {
         this.obstacles = obstacles;
     }
 
-    public int[] getForces() {
+    public double[] getForces() {
         return forces;
     }
 
     public Team[] getTeams() {
         return teams;
+    }
+
+    public int getWidth(){
+        return obstacles[0].length;
+    }
+
+    public int getHeight(){
+        return obstacles.length;
     }
     
     /**
@@ -156,7 +164,7 @@ public final class GameManager {
         this.teams = teams;
         int nbTeam = teams.length;
 
-        this.forces = new int[nbTeam];
+        this.forces = new double[nbTeam];
         this.totalCell = 0;
 
         for (int i = 0; i < nbTeam; i++) {
@@ -253,7 +261,8 @@ public final class GameManager {
     private void updateForces(){
 
         for (int i = 0; i < teams.length; i++) {
-            forces[i] = (teams[i].getArmy().size() * 100) / totalCell;
+
+            forces[i] = teams[i].getArmy().size() / (double) totalCell;
         }
     }
 

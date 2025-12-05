@@ -7,7 +7,6 @@ import com.app.main.util.Controller;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 
-//! Pas encore sur sur de l'implémentations..
 public final class MouseController implements Controller{
 
     public Team team;
@@ -22,6 +21,12 @@ public final class MouseController implements Controller{
     }
 
     public static MouseController createMouseController(Canvas canva, Team team){
+        if(canva == null){
+            throw new IllegalArgumentException("The canva can't be null");
+        }
+        if(team == null){
+            throw new IllegalArgumentException("The team can't be null");
+        }
         return new MouseController(canva, team);
     }
     
