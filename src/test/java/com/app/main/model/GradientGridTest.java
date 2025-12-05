@@ -20,7 +20,7 @@ public class GradientGridTest {
         assertEquals(1, grid.getDistance(2, 3)); 
         assertEquals(1, grid.getDistance(1, 2));
 
-        assertEquals(2, grid.getDistance(0, 0));//!probleme
+        assertEquals(2, grid.getDistance(0, 0));
     }
 
     @Test
@@ -62,7 +62,7 @@ public class GradientGridTest {
 
         assertEquals(1, grid.getDistance(2, 1), "Axe DROITE incorrect");
 
-        assertEquals(1, grid.getDistance(0, 0), "Le coin Haut-Gauche doit être à distance 2");//!probleme
+        assertEquals(1, grid.getDistance(0, 0), "Le coin Haut-Gauche doit être à distance 2");
 
         assertEquals(1, grid.getDistance(2, 0), "Le coin Haut-Droite doit être à distance 2");
 

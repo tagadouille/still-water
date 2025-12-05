@@ -17,7 +17,7 @@ import com.app.main.util.GameLevelLoader;
  */
 public final class GameManager {
     public static final int GRID_DIM = 480;
-    public static final int NB_CELL = 10000;
+    public static final int NB_CELL = 8000;
 
     private boolean[][] obstacles;
 
@@ -232,7 +232,6 @@ public final class GameManager {
                 if(cell.getNextTeam() != null){
                     cell.setCurrentTeam(cell.getNextTeam());
                     cell.setNextTeam(null);
-                    //! cell.setEnergy(20); Trouver un moyen de redonner de l'énergie tout en gardant l'énergie totale de départ
                 }
                 int teamIndex = getTeamIndex(cell.getCurrentTeam());
                 if (teamIndex != -1) {

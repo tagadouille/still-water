@@ -1,6 +1,6 @@
 package com.app.main.controller.menu;
 
-import com.app.main.controller.playercontroller.BotController;
+import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Point;
 import com.app.main.model.core.Team;

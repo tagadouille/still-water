@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.app.main.controller.TimerHandler;
 import com.app.main.controller.playercontroller.MouseController;
+import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
@@ -19,6 +20,8 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
 
 /**
  * Classe which extends StackPane who represent the view of the game zone where the particules
@@ -52,6 +55,15 @@ public final class GridView extends StackPane implements Observable{
 
         if(this.controllers[0] == null){
             this.controllers[0] = MouseController.createMouseController(canvas, gameManager.getTeams()[0]);
+        }
+
+        // Initialisation of the team array of the bots
+        for (Controller controller : controllers) {
+
+            if(controller instanceof BotController){
+                BotController bc = (BotController) controller;
+                bc.setAllTeam(gameManager.getTeams());
+            }
         }
         this.timer = new TimerHandler();
 

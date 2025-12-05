@@ -3,13 +3,10 @@ package com.app.main.view;
 import com.app.main.controller.GameInfoViewController;
 import com.app.main.model.GameManager;
 import com.app.main.util.Controller;
-import com.app.main.util.Observable;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
 
 /**
  * Class extend Scene for representing the view of the game
