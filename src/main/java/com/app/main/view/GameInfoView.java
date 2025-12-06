@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.app.main.Game;
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.menu.MenuSwitcher;
 import com.app.main.controller.menu.WinnerController;
 import com.app.main.util.Observable;
@@ -165,7 +166,9 @@ public final class GameInfoView extends VBox implements Observer{
                 if(arg instanceof com.app.main.model.core.Color){
 
                     com.app.main.model.core.Color c = (com.app.main.model.core.Color) arg;
-                    
+
+                    GamePlaylist.getPlaylist().playOnlyOne(0, true);
+
                     FXMLLoader loader = MenuSwitcher.switchScene("Winner.fxml");
 
                     Object controller = loader.getController();

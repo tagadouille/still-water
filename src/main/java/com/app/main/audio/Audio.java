@@ -31,22 +31,34 @@ public final class Audio {
         this.load(file);
     }
 
-    /** Enables or disables audio globally (useful for tests). */
+    /** 
+    * Enables or disables audio globally (useful for tests).
+    * @param enabled true if enable, false for disable
+    */
     public static void setAudioEnabled(boolean enabled) {
         audioEnabled = enabled;
     }
 
-    /** Returns whether the clip is loaded. */
+    /** 
+     * Returns whether the clip is loaded. 
+     * @return true if the clip is loaded
+     */
     public boolean isLoaded() {
         return clip != null;
     }
 
-    /** Returns whether the audio is currently playing. */
+    /** 
+     * Returns whether the audio is currently playing.
+     * @return true if the audio is playing, false otherwise
+     */
     public boolean isPlaying() {
         return playing;
     }
 
-    /** Loads an audio file from the resources folder. */
+    /**
+    * Loads an audio file from the resources folder.
+    * @param filename the filename
+    */
     public void load(String fileName) {
         if (!audioEnabled)
             return;
@@ -78,12 +90,14 @@ public final class Audio {
         } catch (UnsupportedAudioFileException | IOException e) {
             e.printStackTrace();
         } catch (LineUnavailableException e) {
-            System.out.println("Audio system not available, disabling audio.");
+            System.err.println("Audio system not available, disabling audio.");
             audioEnabled = false;
         }
     }
 
-    /** Plays the loaded audio once. */
+    /** 
+    * Plays the loaded audio once.
+    */
     public void play() {
         if (clip != null && audioEnabled) {
             clip.stop();
@@ -93,7 +107,9 @@ public final class Audio {
         }
     }
 
-    /** Loops the audio continuously. */
+    /** 
+    *Loops the audio continuously. 
+    */
     public void loop() {
         if (clip != null && audioEnabled) {
             clip.loop(Clip.LOOP_CONTINUOUSLY);
@@ -101,7 +117,9 @@ public final class Audio {
         }
     }
 
-    /** Stops playback (can be resumed later). */
+    /** 
+     * Stops playback (can be resumed later). 
+     */
     public void stop() {
         if (clip != null && clip.isRunning() && audioEnabled) {
             clip.stop();
@@ -109,7 +127,9 @@ public final class Audio {
         }
     }
 
-    /** Fully closes and releases the audio clip. */
+    /** 
+     * Fully closes and releases the audio clip. 
+    */
     public void close() {
         if (clip != null) {
             clip.stop();
@@ -120,13 +140,17 @@ public final class Audio {
         }
     }
 
-    /** Sets the volume in the range 0.0 → 1.0. */
+    /** 
+     * Sets the volume in the range 0.0 → 1.0.
+    */
     public void setVolume(float v) {
         this.volume = Math.max(0f, Math.min(v, 1f));
         applyVolume();
     }
 
-    /** Converts linear volume to decibels and applies it. */
+    /** 
+     * Converts linear volume to decibels and applies it.
+     */
     private void applyVolume() {
         if (volumeControl != null) {
             // Convert linear gain to dB
@@ -140,6 +164,8 @@ public final class Audio {
     /**
      * Static helper for quick SFX playback.
      * Creates a temporary Audio instance, plays it, and auto-frees afterwards.
+     * 
+     * @param file the file to play
      */
     public static void playSFX(String file) {
         Audio audio = new Audio(file);

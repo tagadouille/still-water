@@ -7,9 +7,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-import com.app.main.audio.Audio;
 import com.app.main.audio.GamePlaylist;
-import com.app.main.audio.Playlist;
 
 public final class Game extends Application {
 
@@ -33,9 +31,12 @@ public final class Game extends Application {
         primaryStage.setTitle("Still Water??");
         primaryStage.setResizable(false);
 
+        primaryStage.setOnCloseRequest(event -> System.exit(0));
+
+        GamePlaylist.getPlaylist().playOnlyOne(0, true);
+
         primaryStage.setScene(scene);
         primaryStage.show();
-        GamePlaylist.getPlaylist().play(0);
     }
     public static Scene getScene() {
         return scene;
