@@ -9,6 +9,11 @@ import java.io.IOException;
 
 import com.app.main.audio.GamePlaylist;
 
+/**
+ * This class is the entry point of the code
+ * 
+ * @author Dai Elias
+ */
 public final class Game extends Application {
 
     private static Scene scene;
@@ -18,6 +23,7 @@ public final class Game extends Application {
     public static void main(String[] args) {
         launch(args);
     }
+
     @Override
     public void start(Stage stage) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(Game.class.getResource("MainMenu.fxml"));
@@ -38,13 +44,16 @@ public final class Game extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
     public static Scene getScene() {
         return scene;
     }
+
     public static void setScene(Scene scene) {
         Game.scene = scene;
         Game.scene.getStylesheets().add(css);
     }
+
     public static Stage getPrimaryStage() {
         return primaryStage;
     }

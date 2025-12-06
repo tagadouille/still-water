@@ -13,7 +13,10 @@ import com.app.main.model.core.Team.Cell;
 import com.app.main.util.GameLevelLoader;
 
 /**
- * Classe qui permet de 
+ * Class for managing the models and makes update
+ * of the model
+ * 
+ * @author Dai Elias
  */
 public final class GameManager {
     public static final int GRID_DIM = 480;
@@ -26,8 +29,6 @@ public final class GameManager {
 
     private double[] forces;
     private int totalCell;
-
-    private int[] victories;
 
 
     private GameManager(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn){
@@ -66,11 +67,11 @@ public final class GameManager {
     }
     
     /**
-     * Static factory
-     * @param obstacles
-     * @param teams
-     * @param teamsSpawn
-     * @return
+     * Static factory for creating a GameManager
+     * @param obstacles the array of obstacles
+     * @param teams the array of team
+     * @param teamsSpawn the spawns point of each teams
+     * @return the GameManager
      */
     public static GameManager gameManagerFactory(boolean[][] obstacles, Team[] teams, Point[][] teamsSpawn){
         teamVerification(teams, teamsSpawn, false);
@@ -95,19 +96,18 @@ public final class GameManager {
         return gm;
     }
 
-    //! Package private pour l'utiliser pour la lecture de fichier
     // TODO créer ses propres exeptions ???
     /**
      * For do the verification of the validity of the arguments
      * @param teams the teams of the game
      * @param teamsSpawn the spawn point of each team
      */
-    static void teamVerification(Team[] teams, Point[][] teamsSpawn, boolean isTest){
-        // Vérification de taille
+    private static void teamVerification(Team[] teams, Point[][] teamsSpawn, boolean isTest){
+        // Size verification
         if(teams.length != teamsSpawn.length){
             throw new IllegalArgumentException("The number of teams and the number of teams's spawn point doesn't match");
         }
-        //Vérification de contenu de teams
+        // Verification of the content of teams
         for (int i = 0; i < teams.length; i++) {
             if(teams[i] == null){
                 throw new IllegalArgumentException("The team can't be null");
@@ -115,11 +115,8 @@ public final class GameManager {
             if(teams[i].getTeam() == null){
                 throw new IllegalArgumentException("The team must have a color");
             }
-            // if(teams[i].getTeam().ordinal() != i){
-            //     throw new IllegalArgumentException("The order of the teams if the array is not in function of the ordinal");
-            // }//!A revoir
         }
-        //Vérification d'unicité des équipes
+        // Verification of the team unicity
         for (int i = 0; i < teams.length; i++) {
             for (int j = i + 1; j < teams.length; j++) {
                 if(teams[i].getTeam() == teams[j].getTeam()){
@@ -131,7 +128,7 @@ public final class GameManager {
     }
 
     private static void spawnPointVerification(Point[][] teamsSpawn, boolean isTest){
-        //Vérification de contenu et de taille des points d'apparitions
+        //Verification of the content and the size of the spawns points
         for (int i = 0; i < teamsSpawn.length; i++) {
             Point[] pointArray = teamsSpawn[i];
 
@@ -169,7 +166,7 @@ public final class GameManager {
 
         for (int i = 0; i < nbTeam; i++) {
 
-            //Faire apparaître les cellules : (remplir globalGrid + teams)
+            // Spawning the cells : (fill globalGrid + teams)
             Point[] spawn = teamsSpawn[i];
 
             int startX = Math.min(spawn[0].x(), spawn[1].x());
@@ -253,11 +250,11 @@ public final class GameManager {
                 return i;
             }
         }
-        return -1; // Pas trouvé
+        return -1; // Not found
     }
 
     /**
-     * Update des rapports de forces
+     * Update of the balance of power
      */
     private void updateForces(){
 

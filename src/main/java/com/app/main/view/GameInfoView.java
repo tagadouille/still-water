@@ -4,15 +4,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.app.main.Game;
-import com.app.main.audio.GamePlaylist;
-import com.app.main.controller.menu.MenuSwitcher;
-import com.app.main.controller.menu.WinnerController;
 import com.app.main.util.Observable;
 import com.app.main.util.Observer;
 
-import javafx.application.Platform;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
@@ -159,26 +153,6 @@ public final class GameInfoView extends VBox implements Observer{
                 updateForcesRepartition(forces, teamColors);
                 updateFps(gridView.getCurrentFps());
                 updateTimer(gridView.getTimer().getTimeRemaining());
-            }
-
-            else if(action.equals("winner")){
-                
-                if(arg instanceof com.app.main.model.core.Color){
-
-                    com.app.main.model.core.Color c = (com.app.main.model.core.Color) arg;
-
-                    GamePlaylist.getPlaylist().playOnlyOne(0, true);
-
-                    FXMLLoader loader = MenuSwitcher.switchScene("Winner.fxml");
-
-                    Object controller = loader.getController();
-
-                    if (controller instanceof WinnerController wc) {
-                        Platform.runLater(() -> Game.getScene().getRoot().setStyle("-fx-background-color: " + c.toString().replace("0x", "#") + " !important;"));
-                        Game.getScene().getRoot().requestFocus();
-                        wc.updateWinner(c.toString());
-                    }
-                }
             }
         }
     }

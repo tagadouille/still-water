@@ -1,18 +1,27 @@
 package com.app.main.controller;
 
+import java.time.Clock;
+
 /**
- * 
+ * A Class for handling the time for the game
  * @author Dai Elias
  */
 public final class TimerHandler {
     
-    private static final long ONE_SEC = 1000;
+   private static final long ONE_SEC = 1000;
     private static final long GAME_DURATION = ((ONE_SEC * 60) * 2) + ONE_SEC / 2;
 
-    private long whenStarted;
+    private final Clock clock;
+    private final long whenStarted;
+
 
     public TimerHandler(){
-        this.whenStarted = System.currentTimeMillis();
+        this(Clock.systemUTC());
+    }
+
+    public TimerHandler(Clock clock) {
+        this.clock = clock;
+        this.whenStarted = clock.millis();
     }
 
     /**
@@ -20,7 +29,7 @@ public final class TimerHandler {
      * @return true if it's the case, false otherwise
      */
     public boolean isTimePassed(){
-        return whenStarted + GAME_DURATION <= System.currentTimeMillis();
+        return whenStarted + GAME_DURATION <= clock.millis();
     }
 
     /**
@@ -28,7 +37,7 @@ public final class TimerHandler {
      */
     public String getTimeRemaining() {
 
-        long timePassed = System.currentTimeMillis() - whenStarted;
+        long timePassed = clock.millis() - whenStarted;
         long secRemaining = (GAME_DURATION - timePassed) / ONE_SEC;
 
         if (secRemaining < 0){

@@ -1,6 +1,5 @@
 package com.app.main.view;
 
-import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.model.core.Team.Cell;
 
@@ -26,8 +25,7 @@ public final class ParticleView {
 
         for (Cell cell : team.getArmy()) {
 
-            // Rendre la couleur plus ou moins foncé selon le niveau d'énergie de la cellule
-            //! Soucis avec le cell energy
+            // Make the color more or less dark in function of the energy of the cell
             double brightnessFactor = cell.getEnergy() / 100.0;
 
             brightnessFactor = Math.min(brightnessFactor, 1.0);

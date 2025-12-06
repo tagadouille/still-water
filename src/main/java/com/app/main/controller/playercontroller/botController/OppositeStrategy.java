@@ -16,8 +16,6 @@ public final class OppositeStrategy implements BotStrategy{
     @Override
     public void applyStrategy(BotController botController) {
 
-        initialisation(botController);
-
         if(botController.getEnemy() == null){
             return;
         }
@@ -38,22 +36,5 @@ public final class OppositeStrategy implements BotStrategy{
 
         botController.setTargetPos(new Point2D(targetX, targetY));
     }
-
-    private void initialisation(BotController botController){
-        int greaterMass = 0;
-        Team bigEnemy = null;
-
-        Team[] allTeam = botController.getAllTeam();
-        Team team = botController.getTeam();
-
-        for (int i = 0; i < allTeam.length; i++) {
-            
-            if(allTeam[i] != team && allTeam[i].getArmy().size() > greaterMass){
-                greaterMass = allTeam[i].getArmy().size();
-                bigEnemy = allTeam[i];
-            }
-        }
-        botController.setEnemy(bigEnemy);
-    }
-    
+   
 }
