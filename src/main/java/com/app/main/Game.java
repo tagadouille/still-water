@@ -7,7 +7,11 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 
-public class Game extends Application {
+import com.app.main.audio.Audio;
+import com.app.main.audio.GamePlaylist;
+import com.app.main.audio.Playlist;
+
+public final class Game extends Application {
 
     private static Scene scene;
     private static Stage primaryStage;
@@ -31,6 +35,7 @@ public class Game extends Application {
 
         primaryStage.setScene(scene);
         primaryStage.show();
+        GamePlaylist.getPlaylist().play(0);
     }
     public static Scene getScene() {
         return scene;
