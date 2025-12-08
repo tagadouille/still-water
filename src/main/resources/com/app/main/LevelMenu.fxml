@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<HBox alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1280.0" styleClass="bg" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.app.main.controller.menu.LevelMenuController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="720.0" prefWidth="295.0" spacing="30.0">
+         <children>
+            <Button contentDisplay="CENTER" mnemonicParsing="false" onAction="#tolevel1" text="Level1" textAlignment="CENTER">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#tolevel2" text="Level2">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#tolevel3" text="Level3">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#tolevel4" text="Level4">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
+            <Button mnemonicParsing="false" onAction="#tolevel5" text="Level5">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
+         </children>
+      </VBox>
+   </children>
+</HBox>
