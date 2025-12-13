@@ -1,5 +1,8 @@
 package com.app.main.controller.menu;
 
+import java.util.Random;
+
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Point;
@@ -21,10 +24,11 @@ public class MatchTypeController {
             teams,
             new Point[][]{
                 {new Point(0, 0), new Point(100, 144)},
-                {new Point(336, 380), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
+                {new Point(460, 460), new Point(GameManager.GRID_DIM, GameManager.GRID_DIM)}
             },
             GameManager.GRID_DIM
         );
+        GamePlaylist.playLevelAudio();
 
         MenuSwitcher.switchScene(
             new GameScene(gameManager,

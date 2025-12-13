@@ -21,8 +21,6 @@ public final class GameScene extends Scene {
     private static double yFactor;
     private static double xFactor;
 
-    private static HBox root = new HBox();
-
     /**
      * Constructor of the class for initiating the view
      * 
@@ -31,7 +29,7 @@ public final class GameScene extends Scene {
      * element is null it's a player with a mouse.
      */
     public GameScene(GameManager gameManager, Controller[] controllers) {
-        super(root, width, height);
+        super(new HBox(), width, height);
 
         //Calculation for the proper canva size and the proper factor
         int canvaWidth = (int) Math.floor(width * 0.7);
@@ -52,10 +50,11 @@ public final class GameScene extends Scene {
         GameInfoViewController gameInfoViewController = GameInfoViewController.creaInfoViewController(gameInfoView);
 
         gridview.addObserver(gameInfoView);
+        gridview.addObserver(gameInfoViewController);
 
-        root.setSpacing(0);
-        root.setPadding(Insets.EMPTY);
-        root.getChildren().addAll(gridview, gameInfoView);
+        ((HBox) this.getRoot()).setSpacing(0);
+        ((HBox) this.getRoot()).setPadding(Insets.EMPTY);
+        ((HBox) this.getRoot()).getChildren().addAll(gridview, gameInfoView);
     }
 
     public static double getScreenWidth() {

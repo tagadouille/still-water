@@ -7,6 +7,8 @@ import javafx.scene.paint.Color;
 
 /**
  * This class is for display a cursor of a team
+ * 
+ * @author Dai Elias
  */
 public final class TeamCursor {
     
@@ -34,6 +36,8 @@ public final class TeamCursor {
             )
         );
         gc.setLineWidth(3);
-        gc.strokeOval(posX, posY, 10 * GameScene.getxFactor(), 10 * GameScene.getxFactor());
+        double size = 10 * GameScene.getxFactor();
+
+        gc.strokeOval(posX - size/2, posY - size/2, size, size);
     }
 }

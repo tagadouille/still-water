@@ -140,18 +140,20 @@ public final class GameInfoView extends VBox implements Observer{
     @Override
     public void update(Observable o, Object arg, String action) {
 
-        if(o instanceof GridView && action.equals("info")){
+        if(o instanceof GridView){
             GridView gridView = (GridView) o;
 
-            double[] forces = gridView.getGameManager().getForces();
-            Color[] teamColors = new Color[forces.length];
+            if(action.equals("info")){
+                double[] forces = gridView.getGameManager().getForces();
+                Color[] teamColors = new Color[forces.length];
 
-            for (int i = 0; i < teamColors.length; i++) {
-                teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
+                for (int i = 0; i < teamColors.length; i++) {
+                    teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
+                }
+                updateForcesRepartition(forces, teamColors);
+                updateFps(gridView.getCurrentFps());
+                updateTimer(gridView.getTimer().getTimeRemaining());
             }
-            updateForcesRepartition(forces, teamColors);
-            updateFps(gridView.getCurrentFps());
-            updateTimer(gridView.getTimer().getTimeRemaining());
         }
     }
 }

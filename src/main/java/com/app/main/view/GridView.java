@@ -7,10 +7,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.app.main.controller.TimerHandler;
+import com.app.main.controller.VictoryHandler;
 import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
+import com.app.main.model.core.Color;
 import com.app.main.util.Controller;
 import com.app.main.util.Observable;
 import com.app.main.util.Observer;
@@ -20,8 +22,6 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 
 /**
  * Classe which extends StackPane who represent the view of the game zone where the particules
@@ -39,6 +39,8 @@ public final class GridView extends StackPane implements Observable{
     private Controller[] controllers;
 
     private TimerHandler timer;
+
+    private AnimationTimer gameLoop;
 
     List<Observer> observers = new ArrayList<>();
 
@@ -124,7 +126,7 @@ public final class GridView extends StackPane implements Observable{
      */
     private void startGameLoop() {
 
-        AnimationTimer gameLoop = new AnimationTimer() {
+        gameLoop = new AnimationTimer() {
             // For run the game at max 60 FPS
             int fps = 60;
             double intervalMaj = 1000000000.0 / fps;
@@ -167,10 +169,20 @@ public final class GridView extends StackPane implements Observable{
      * Update the model
      */
     private void update() {
+        Color c = VictoryHandler.determineWinnerByDominance(gameManager);
+
+        if(c != Color.NO_COLOR){
+            this.notifyObservers(this, c, "winner");
+            gameLoop.stop();
+        }
         this.notifyObservers(this, null, "info");
 
         if(timer.isTimePassed()){
-            System.exit(0);
+
+            c = VictoryHandler.determineWinnerByPower(gameManager);
+            this.notifyObservers(this, c, "winner");
+            gameLoop.stop();
+            
         }
 
         for(Controller controller : controllers){
@@ -201,13 +213,5 @@ public final class GridView extends StackPane implements Observable{
     @Override
     public List<Observer> getObservers() {
         return observers;
-    }
-
-    /**
-     * This record is used as a wrapper for transmit
-     * the current state of the game
-     */
-    //? inutile ?? Utilisé que this suffit ??
-    public record EventInformation(int fps, int[] forces) {
     }
 }
