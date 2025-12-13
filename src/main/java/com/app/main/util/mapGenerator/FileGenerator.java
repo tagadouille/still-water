@@ -4,23 +4,19 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.app.main.model.GameManager;
 import com.app.main.util.json.JSONFileManager;
 
 public final class FileGenerator{
 
     public final boolean[][] obstacles;
 
-    public final int width;
-    public final int height;
-
-    private FileGenerator(boolean[][] obstacles, int width, int height){
+    private FileGenerator(boolean[][] obstacles){
         this.obstacles = obstacles;
-        this.width = width;
-        this.height = height;
     }
 
-    public static FileGenerator createFileGenerator(boolean[][] obstacles, int width, int height){
-        return new FileGenerator(obstacles, width, height);
+    public static FileGenerator createFileGenerator(boolean[][] obstacles){
+        return new FileGenerator(obstacles);
     }
 
     public void createfile(String nameoffile) throws IOException{
@@ -30,11 +26,11 @@ public final class FileGenerator{
 
             List<List<Boolean>> obst = new ArrayList<>();
 
-            for(int i = 0; i < height ; i++){
+            for(int i = 0; i < GameManager.GRID_DIM ; i++){
 
                 List<Boolean> ligne = new ArrayList<>();
 
-                for(int j = 0 ; j < width ; j++){
+                for(int j = 0 ; j < GameManager.GRID_DIM ; j++){
 
                     ligne.add(obstacles[i][j]);
 

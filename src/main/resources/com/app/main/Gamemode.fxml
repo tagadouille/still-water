@@ -29,12 +29,12 @@
                   <Font name="Rubik Bold Italic" size="35.0" />
                </font>
             </Button>
-            <Button contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" text="Local Multiplayer">
+            <Button contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#local" text="Local Multiplayer">
                <font>
                   <Font name="Rubik Bold Italic" size="35.0" />
                </font>
             </Button>
-            <Button contentDisplay="CENTER" layoutX="149.0" layoutY="328.0" mnemonicParsing="false" text="Online Multiplayer">
+            <Button contentDisplay="CENTER" layoutX="149.0" layoutY="328.0" mnemonicParsing="false" onAction="#online" text="Online Multiplayer">
                <font>
                   <Font name="Rubik Bold Italic" size="35.0" />
                </font>

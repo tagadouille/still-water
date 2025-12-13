@@ -1,4 +1,4 @@
-GridPane {
+GridPane, .bg {
     -fx-background-image: url("../image/logo.png");
     -fx-background-size: cover;
     -fx-background-position: center;
