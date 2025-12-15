@@ -55,10 +55,6 @@ public final class GridView extends StackPane implements Observable{
 
         this.controllers = controllers;
 
-        if(this.controllers[0] == null){
-            this.controllers[0] = MouseController.createMouseController(canvas, gameManager.getTeams()[0]);
-        }
-
         // Initialisation of the team array of the bots
         for (Controller controller : controllers) {
 
@@ -119,6 +115,10 @@ public final class GridView extends StackPane implements Observable{
 
     public TimerHandler getTimer() {
         return timer;
+    }
+
+    public Canvas getCanvas() {
+        return canvas;
     }
 
     /**
