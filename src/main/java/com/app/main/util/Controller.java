@@ -2,6 +2,9 @@ package com.app.main.util;
 
 import com.app.main.model.core.Team;
 
+import javafx.scene.Scene;
+import javafx.scene.canvas.Canvas;
+
 public interface Controller {
     
     /**
@@ -15,4 +18,6 @@ public interface Controller {
      * Pour la souris c'est événementiel, pour le clavier/IA c'est continu.
      */
     void update();
+
+    default void setupInput(Scene scene, Canvas canvas) {}
 }
