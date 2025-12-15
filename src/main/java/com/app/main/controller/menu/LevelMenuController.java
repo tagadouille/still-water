@@ -47,7 +47,7 @@ public class LevelMenuController {
 
             Controller[] controllers = new Controller[nbTeams];
 
-            controllers[0] = null;
+            controllers[0] = MouseController.createMouseController(loadedTeams[0]);
 
             for (int i = 1; i < nbTeams; i++) {
                 controllers[i] = new BotController(
@@ -56,7 +56,7 @@ public class LevelMenuController {
                     loadedTeams[i]
                 );
             }
-
+            
             GamePlaylist.playLevelAudio();
 
             MenuSwitcher.switchScene(
