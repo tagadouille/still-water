@@ -13,124 +13,32 @@ public class LevelMenuController {
 
     @FXML
     public void tolevel1() {
-        try {
-            GameManager gameManager = GameManager.createFromJSON("levels/lvl1.json");
-
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
-
-            Controller[] controllers = new Controller[nbTeams];
-
-            controllers[0] = null;
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
-            }
-
-            MenuSwitcher.switchScene(
-                new GameScene(gameManager, controllers)
-            );
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
-            e.printStackTrace();
-        }
+        loader("levels/lvl1.json");
     }
 
+    @FXML
     public void tolevel2(){
-        try {
-            GameManager gameManager = GameManager.createFromJSON("levels/lvl2.json");
-
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
-
-            Controller[] controllers = new Controller[nbTeams];
-
-            controllers[0] = null;
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
-            }
-
-            MenuSwitcher.switchScene(
-                new GameScene(gameManager, controllers)
-            );
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
-            e.printStackTrace();
-        }
+        loader("levels/lvl2.json");
     }
 
+    @FXML
     public void tolevel3(){
-        try {
-            GameManager gameManager = GameManager.createFromJSON("levels/lvl3.json");
-
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
-
-            Controller[] controllers = new Controller[nbTeams];
-
-            controllers[0] = null;
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
-            }
-
-            MenuSwitcher.switchScene(
-                new GameScene(gameManager, controllers)
-            );
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
-            e.printStackTrace();
-        }
+        loader("levels/lvl3.json");
     }
 
+    @FXML
     public void tolevel4(){
-        try {
-            GameManager gameManager = GameManager.createFromJSON("levels/lvl4.json");
-
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
-
-            Controller[] controllers = new Controller[nbTeams];
-
-            controllers[0] = null;
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
-            }
-
-            MenuSwitcher.switchScene(
-                new GameScene(gameManager, controllers)
-            );
-
-        } catch (Exception e) {
-            System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
-            e.printStackTrace();
-        }
+        loader("levels/lvl4.json");
     }
 
+    @FXML
     public void tolevel5(){
+        loader("levels/lvl5.json");
+    }
+
+    private void loader(String nameoffile){
         try {
-            GameManager gameManager = GameManager.createFromJSON("levels/lvl5.json");
+            GameManager gameManager = GameManager.createFromJSON(nameoffile);
 
             Team[] loadedTeams = gameManager.getTeams();
             int nbTeams = loadedTeams.length;
