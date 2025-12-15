@@ -3,7 +3,9 @@ package com.app.main.controller.playercontroller;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.view.GameScene;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.MouseEvent;
 
@@ -12,22 +14,15 @@ public final class MouseController implements Controller{
     public Team team;
     public double mousex, mousey;
 
-    private MouseController(Canvas canva, Team team){
+    private MouseController(Team team){
         this.team = team;
-        this.mousex = canva.getWidth() / GameManager.GRID_DIM;
-        this.mousey = canva.getHeight() / GameManager.GRID_DIM;
-
-        canva.setOnMouseMoved(this::move);
     }
 
-    public static MouseController createMouseController(Canvas canva, Team team){
-        if(canva == null){
-            throw new IllegalArgumentException("The canva can't be null");
-        }
+    public static MouseController createMouseController(Team team){
         if(team == null){
             throw new IllegalArgumentException("The team can't be null");
         }
-        return new MouseController(canva, team);
+        return new MouseController(team);
     }
     
     @Override
@@ -38,13 +33,18 @@ public final class MouseController implements Controller{
     @Override
     public void update() {}
 
-    public void move(MouseEvent e){
-        if(team == null) return;
+    @Override
+    public void setupInput(Scene scene, Canvas canvas) {
+        canvas.addEventHandler(MouseEvent.MOUSE_MOVED, e -> {
+            this.mousex = e.getX();
+            this.mousey = e.getY();
 
-        int gx = (int) (e.getX() / mousex); 
-        int gy = (int) (e.getY() / mousey);
+            if (team != null) {
+                int targetX = (int) (this.mousex / GameScene.getxFactor());
+                int targetY = (int) (this.mousey / GameScene.getyFactor());
 
-        team.setTarget(gx, gy);
+                team.setTarget(targetX, targetY);
+            }
+        });
     }
-
 }
