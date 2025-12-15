@@ -46,6 +46,12 @@ public final class GameScene extends Scene {
         
         int rightPaneWidth = (int) Math.max(0, (int) width - canvaWidth);
 
+        for (Controller c : controllers) {
+            if (c != null) {
+                c.setupInput(this, gridview.getCanvas());
+            }
+        }
+
         GameInfoView gameInfoView = new GameInfoView(rightPaneWidth);
         GameInfoViewController gameInfoViewController = GameInfoViewController.creaInfoViewController(gameInfoView);
 
