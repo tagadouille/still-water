@@ -1,5 +1,6 @@
 package com.app.main.controller.menu;
 
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
@@ -54,6 +55,8 @@ public class LevelMenuController {
                     loadedTeams[i]
                 );
             }
+
+            GamePlaylist.playLevelAudio();
 
             MenuSwitcher.switchScene(
                 new GameScene(gameManager, controllers)
