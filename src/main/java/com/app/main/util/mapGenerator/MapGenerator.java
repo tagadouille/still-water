@@ -10,16 +10,17 @@ import java.io.File;
 import java.io.IOException;
 
 /**
+ * This class is for get a grayscale map of an image of generate a level map of the game.
  * @author Dai Elias
  */
 public final class MapGenerator {
 
-    private final Image img; //L'image
-    private final int width, height; //Dimension de l'image
+    private final Image img; //The image
+    private final int width, height; //Image dimension
 
     /**
-     * Constructeur : charge une image depuis un fichier.
-     * @param imagePath le chemin vers l'image
+     * Constructor : load an image from a file.
+     * @param imagePath the path to the image
      */
     private MapGenerator(String imagePath) throws IOException {
         BufferedImage buff = ImageIO.read(new File(imagePath));
@@ -30,17 +31,18 @@ public final class MapGenerator {
     }
 
     /**
-     * Fonction renvoie le tableau en densité de gris de chaque pixel d'une image
-     * @param imagepath le chemin vers l'image
-     * @return un tableau où chaque case représente un pixel de l'image. Les valeurs des entiers sont
-        comprises entre 0 et 255, qui correspondent aux valeurs d’intensité du gris. Plus la valeur est 
-        proche de 255 et plus le pixel est blanc, et plus la valeur la valeur est proche de 0 et plus le pixel est noir.
+     * Return the array in density of gray of each pixels of an image
+     * @param imagepath the path to the image
+     * @return An array where each cell represents a pixel of the image. The integer values ​​are
+        between 0 and 255, which correspond to the grayscale intensity values. The closer the value is
+        to 255, the whiter the pixel, and the closer the value is to 0, the blacker the pixel.
      * @throws IOException
      */
     public static int[][] getGrayMap(String imagepath) throws IOException{
         MapGenerator mapGenerator = new MapGenerator(imagepath);
         return mapGenerator.getGrayMap();
     }
+
     private int[][] getGrayMap() {
         int[][] gray = new int[height][width];
         PixelReader reader = img.getPixelReader();
@@ -60,14 +62,14 @@ public final class MapGenerator {
         return gray;
     }
     /**
-     * En fonction d'un certain seuil de tolérance, génère la carte d'un niveau en spécifiant les cases vides
-     * des cases non-vides
-     * @param grayMap le tableau de densité de gris de chaque pixel d'une image
-     * @param threshold le seuil de tolérance, plus il est haut et plus la case est suceptible d'être une case vide
-     * @return le tableau de la carte du niveau où false est une case vide et true une case obstacle
+     * Based on a certain tolerance threshold, generates a map for a level, specifying empty cells
+     * non-empty cells
+     * @param grayMap the grayscale array of each pixel of an image
+     * @param threshold the tolerance thresshold, the higher is, the more likely the cell is to be empty.
+     * @return the array of the level map wher false is an empty tile and true a obstacle one
      */
     public static boolean[][] getLevelMap(int[][] grayMap, int threshold){
-        // Vérifications de validités des arguments : 
+        // Verification of the validity of the arguments :
         if (grayMap == null || grayMap.length == 0){
             throw new IllegalArgumentException("grayMap must not be null or empty");
         }
