@@ -29,6 +29,11 @@
                   <Font name="Rubik Bold Italic" size="35.0" />
                </font>
             </Button>
+            <Button mnemonicParsing="false" onAction="#toLevelEditor" text="Level Editor">
+               <font>
+                  <Font name="Rubik Bold Italic" size="35.0" />
+               </font>
+            </Button>
             <Button contentDisplay="CENTER" layoutX="10.0" layoutY="10.0" mnemonicParsing="false" onAction="#toSettings" text="Settings">
                <font>
                   <Font name="Rubik Bold Italic" size="35.0" />

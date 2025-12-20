@@ -1,4 +1,4 @@
-package com.app.main.view;
+package com.app.main.view.levelEditor;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -12,8 +12,6 @@ import javafx.scene.text.Text;
 
 public final class LevelEditorView extends Scene {
 
-    private static final HBox root = new HBox();
-
     private Button chooseBackgroundBtn;
     private Button chooseObstacleBtn;
 
@@ -23,14 +21,21 @@ public final class LevelEditorView extends Scene {
     private Button nextBtn;
     private Button cancelBtn;
 
+    private HBox root;
+
     public LevelEditorView() {
 
-        super(root);
-        root.setAlignment(Pos.CENTER);
-        root.setPrefHeight(720);
-        root.setPrefWidth(1280);
+        super(new HBox());
 
-        // Initialisation of the differents containers :
+        if(this.getRoot() instanceof HBox){
+            root = (HBox) this.getRoot();
+            root.setAlignment(Pos.CENTER);
+            root.setPrefHeight(720);
+            root.setPrefWidth(1280);
+        }
+        
+
+        // Initialization of the differents containers :
         VBox mainVBox = new VBox(15);
         mainVBox.setAlignment(Pos.TOP_CENTER);
         mainVBox.setPrefSize(633, 720);
@@ -112,5 +117,29 @@ public final class LevelEditorView extends Scene {
         previewBox.getChildren().addAll(backgroundPreview, obstaclePreview);
 
         return previewBox;
+    }
+
+    public Button getCancelBtn() {
+        return cancelBtn;
+    }
+
+    public ImageView getBackgroundPreview() {
+        return backgroundPreview;
+    }
+
+    public ImageView getObstaclePreview() {
+        return obstaclePreview;
+    }
+
+    public Button getNextBtn() {
+        return nextBtn;
+    }
+
+    public Button getChooseBackgroundBtn() {
+        return chooseBackgroundBtn;
+    }
+
+    public Button getChooseObstacleBtn() {
+        return chooseObstacleBtn;
     }
 }
