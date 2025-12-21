@@ -4,22 +4,26 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public class TeamEditorView extends Scene{
+public final class TeamEditorView extends Scene {
 
     private HBox root;
+    
+    private Button placeTeamBtn;
+    private Button goBackBtn;
 
-    private Button placeTeamButton;
-    private Button backButton;
-    private TextField fileNameField;
-    private Button saveButton;
+    private TeamCanvas teamCanvas;
+
+    private EditTeamBox editTeamBox;
 
     public TeamEditorView(){
+        
         super(new HBox());
 
         if(this.getRoot() instanceof HBox){
@@ -29,55 +33,141 @@ public class TeamEditorView extends Scene{
             root.setPrefWidth(1280);
         }
 
-        // Initialization of the differents containers : 
-        VBox mainVBox = new VBox(5);
-        mainVBox.setAlignment(Pos.TOP_CENTER);
-        mainVBox.setPrefSize(478, 720);
+        // Initialization of the differents panels :
+        VBox leftVBox = initializeLeftVBox();
+        editTeamBox = new EditTeamBox();
 
-        Text title = new Text("Place each team spawn points");
-        title.setFont(Font.font("System Bold", 28));
+        root.getChildren().addAll(leftVBox, editTeamBox);
+    }
 
-        Canvas canvas = new Canvas(480, 480); //TODO Team canva
+    private VBox initializeLeftVBox(){
 
-        // Buttons
-        buttonInit();
+        VBox leftVBox = new VBox(5);
+        leftVBox.setAlignment(Pos.TOP_CENTER);
+        leftVBox.setPrefSize(480, 720);
 
-        // Save area
-        HBox saveBox = saveInit();
+        Text leftTitle = new Text("Place each team spawn points");
+        leftTitle.setFont(Font.font("System Bold", 28));
 
-        // ===== Assemble layout =====
-        mainVBox.getChildren().addAll(
-                title,
-                canvas,
-                placeTeamButton,
-                backButton,
-                saveBox
+        teamCanvas = new TeamCanvas();
+
+        placeTeamBtn = new Button("Place a team");
+        placeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+
+        goBackBtn = new Button("Go Back");
+        goBackBtn.setFont(Font.font("Rubik Bold Italic", 25));
+
+        leftVBox.getChildren().addAll(
+                leftTitle,
+                teamCanvas,
+                placeTeamBtn,
+                goBackBtn
         );
 
-        root.getChildren().add(mainVBox);
+        return leftVBox;
     }
 
-    private void buttonInit(){
-        placeTeamButton = new Button("Place a team");
-        placeTeamButton.setFont(Font.font("Rubik Bold Italic", 25));
-
-        backButton = new Button("Go Back");
-        backButton.setFont(Font.font("Rubik Bold Italic", 25));
+    public TeamCanvas getTeamCanvas() {
+        return teamCanvas;
     }
 
-    private HBox saveInit(){
-        HBox saveBox = new HBox(10);
-        saveBox.setAlignment(Pos.CENTER);
+    public Button getGoBackBtn() {
+        return goBackBtn;
+    }
 
-        fileNameField = new TextField();
-        fileNameField.setPromptText("Enter the name of the file");
-        fileNameField.setFont(Font.font(21));
+    public Button getPlaceTeamBtn() {
+        return placeTeamBtn;
+    }
 
-        saveButton = new Button("Save");
-        saveButton.setFont(Font.font("Rubik Bold Italic", 25));
+    public EditTeamBox getEditTeamBox() {
+        return editTeamBox;
+    }
 
-        saveBox.getChildren().addAll(fileNameField, saveButton);
+    public class EditTeamBox extends VBox{
 
-        return saveBox;
+        private Slider teamSlider;
+        private Button removeTeamBtn;
+        private Button verifyBtn;
+
+        private TextField fileNameField;
+        private Button saveBtn;
+
+        public EditTeamBox(){
+            
+            super(15);
+            this.setAlignment(Pos.CENTER);
+            this.setPrefSize(480, 720);
+
+            Text rightTitle = new Text("Edit the selected spawn point :");
+            rightTitle.setFont(Font.font("System Bold", 28));
+
+            editPartInit();
+
+            // ===== Save area =====
+            HBox saveBox = saveAreaInit();
+
+            Text warningText = new Text(
+                    "Save only if you click on \"verify\" and if you are sure of what you did"
+            );
+            warningText.setFont(Font.font("System Italic", 16));
+
+            this.getChildren().addAll(
+                    rightTitle,
+                    teamSlider,
+                    removeTeamBtn,
+                    verifyBtn,
+                    saveBox,
+                    warningText
+            );
+        }
+
+        public Slider getTeamSlider() {
+            return teamSlider;
+        }
+
+        public Button getSaveBtn() {
+            return saveBtn;
+        }
+
+        public TextField getFileNameField() {
+            return fileNameField;
+        }
+
+        public Button getRemoveTeamBtn() {
+            return removeTeamBtn;
+        }
+
+        public Button getVerifyBtn() {
+            return verifyBtn;
+        }
+
+        private void editPartInit(){
+
+            teamSlider = new Slider();
+            teamSlider.setShowTickMarks(true);
+
+            removeTeamBtn = new Button("Remove the selected team");
+            removeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+
+            verifyBtn = new Button("Verify");
+            verifyBtn.setFont(Font.font("Lucida Console", 25));
+        }
+
+        private HBox saveAreaInit(){
+
+            HBox saveBox = new HBox(10);
+            saveBox.setAlignment(Pos.CENTER);
+
+            fileNameField = new TextField();
+            fileNameField.setPromptText("Enter the name of the file");
+            fileNameField.setFont(Font.font(21));
+
+            saveBtn = new Button("Save");
+            saveBtn.setFont(Font.font("Rubik Bold Italic", 25));
+
+            saveBox.getChildren().addAll(fileNameField, saveBtn);
+
+            return saveBox;
+        }
     }
 }

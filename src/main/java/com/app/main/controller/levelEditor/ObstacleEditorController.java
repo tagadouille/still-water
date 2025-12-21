@@ -6,8 +6,10 @@ import com.app.main.view.levelEditor.ObstacleEditorView;
 
 public final class ObstacleEditorController {
     
-    ObstacleEditorView obstacleEditorView;
-    FileWrapper fileWrapper;
+    private final ObstacleEditorView obstacleEditorView;
+    private final FileWrapper fileWrapper;
+
+    private boolean[][] obstacles;
 
     private ObstacleEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
         this.obstacleEditorView = obstacleEditorView;
@@ -30,7 +32,7 @@ public final class ObstacleEditorController {
         return new ObstacleEditorController(obstacleEditorView, fileWrapper);
     }
 
-    private static void verifyFileWrapper(FileWrapper fileWrapper){
+    static void verifyFileWrapper(FileWrapper fileWrapper){
 
         if(fileWrapper == null){
             throw new IllegalArgumentException("The FileWrapper parameter can't be null");
@@ -68,6 +70,7 @@ public final class ObstacleEditorController {
         {
             int threshold = newV.intValue();
             obstacleEditorView.getObstaclePreview().updateObstacles(threshold);
+            obstacles = obstacleEditorView.getObstaclePreview().getObstacles();
         });
     }
 }

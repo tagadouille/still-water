@@ -35,6 +35,10 @@ public class ObstaclePreview extends Canvas{
         }
     }
 
+    public boolean[][] getObstacles() {
+        return obstacles;
+    }
+
     public void updateObstacles(int threshold){
         obstacles = MapGenerator.getLevelMap(grayMap, threshold);
         render(this.getGraphicsContext2D());
