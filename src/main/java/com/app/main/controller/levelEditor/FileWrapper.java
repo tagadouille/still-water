@@ -2,6 +2,8 @@ package com.app.main.controller.levelEditor;
 
 import java.io.File;
 
+import javafx.scene.image.Image;
+
 /**
  * A wrapper for the file that has been choosed for 
  * the background image and the obstacle image
@@ -10,7 +12,7 @@ import java.io.File;
  */
 class FileWrapper{
     public File backgroundImage;
-    public File obstacleImage;
+    public Image obstacleImage;
     private int nbDef = 0;
 
     public int getNbDef() {

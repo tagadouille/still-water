@@ -1,13 +1,10 @@
 package com.app.main.view.levelEditor;
 
-import java.io.File;
-import java.io.IOException;
-
-import com.app.main.controller.levelEditor.LevelEditorController;
 import com.app.main.util.mapGenerator.MapGenerator;
 
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
 import javafx.scene.paint.Color;
 
 public class ObstaclePreview extends Canvas{
@@ -19,20 +16,12 @@ public class ObstaclePreview extends Canvas{
         super(480, 480);
     }
 
-    public void setObstacles(File obstacleImage){
+    public void setObstacles(Image obstacleImage){
         
-        if(LevelEditorController.isValidImage(obstacleImage)){
-            try{
-                grayMap = MapGenerator.getGrayMap(obstacleImage.getAbsolutePath());
-            }
-            catch(IOException e){
-                throw new IllegalArgumentException("The obstacle image is invalid");
-            }
-            
+        if(obstacleImage == null){
+            throw new IllegalArgumentException("The obstacle image can't be null");
         }
-        else{
-            throw new IllegalArgumentException("The obstacle image is invalid");
-        }
+        grayMap = MapGenerator.getGrayMap(obstacleImage);
     }
 
     public boolean[][] getObstacles() {
@@ -55,7 +44,7 @@ public class ObstaclePreview extends Canvas{
                 else{
                     gc.setFill(Color.WHITE);
                 }
-                gc.fillRect(i, j, 1, 1);
+                gc.fillRect(j, i, 1, 1);
             }
         }
     }

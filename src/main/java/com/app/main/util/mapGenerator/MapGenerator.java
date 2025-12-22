@@ -31,6 +31,17 @@ public final class MapGenerator {
     }
 
     /**
+     * Constructor : initialize image
+     * @param imagePath the path to the image
+     */
+    private MapGenerator(Image image) {
+       this.img = image;
+
+        width = (int) img.getWidth();
+        height = (int) img.getHeight();
+    }
+
+    /**
      * Return the array in density of gray of each pixels of an image
      * @param imagepath the path to the image
      * @return An array where each cell represents a pixel of the image. The integer values ​​are
@@ -40,6 +51,22 @@ public final class MapGenerator {
      */
     public static int[][] getGrayMap(String imagepath) throws IOException{
         MapGenerator mapGenerator = new MapGenerator(imagepath);
+        return mapGenerator.getGrayMap();
+    }
+
+    /**
+     * Return the array in density of gray of each pixels of an image
+     * @param image the image
+     * @return An array where each cell represents a pixel of the image. The integer values ​​are
+        between 0 and 255, which correspond to the grayscale intensity values. The closer the value is
+        to 255, the whiter the pixel, and the closer the value is to 0, the blacker the pixel.
+     */
+    public static int[][] getGrayMap(Image image) {
+
+        if(image == null){
+            throw new IllegalArgumentException("The image can't be null");
+        }
+        MapGenerator mapGenerator = new MapGenerator(image);
         return mapGenerator.getGrayMap();
     }
 

@@ -2,10 +2,12 @@ package com.app.main.controller.levelEditor;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.app.main.Game;
 import com.app.main.controller.menu.MenuSwitcher;
+import com.app.main.model.GameManager;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 
@@ -13,6 +15,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
 public class LevelEditorController {
@@ -48,7 +51,9 @@ public class LevelEditorController {
 
             // Test the validity
             if(!isValidImage(bg)){
-                showInvalidImage();
+                if(bg != null){
+                    showInvalidImage();
+                }
                 fileWrapper.decrementNbDef();
             }
             else{
@@ -70,14 +75,16 @@ public class LevelEditorController {
 
             // Test the validity
             if(!isValidImage(obs)){
-                showInvalidImage();
+                if(obs != null){
+                    showInvalidImage();
+                }
                 fileWrapper.decrementNbDef();
             }
             else{
                 try{
                     levelEditorView.getObstaclePreview().setImage(new Image(new FileInputStream(obs)));
                     fileWrapper.incrementNbDef();
-                    fileWrapper.obstacleImage = obs;
+                    fileWrapper.obstacleImage = new Image(new FileInputStream(obs));
                 }
                 catch(IOException exp){
 
@@ -119,8 +126,17 @@ public class LevelEditorController {
         levelEditorView.getNextBtn().setOnAction((e) -> {
 
             if(fileWrapper.allGood()){
+
+                //Modify the background image and rediTODO Modifier le fichier image pour le truncate
+                try{
+                    fileWrapper.obstacleImage = resizeImage(fileWrapper.obstacleImage, GameManager.GRID_DIM, GameManager.GRID_DIM);
+                }
+                catch(IOException exp){
+                    return;
+                }
+
                 ObstacleEditorView obstacleEditorView = new ObstacleEditorView();
-                ObstacleEditorController obstacleEditorController = ObstacleEditorController.buildEditorController(obstacleEditorView, fileWrapper);
+                ObstacleEditorController.buildEditorController(obstacleEditorView, fileWrapper);
 
                 MenuSwitcher.switchScene(obstacleEditorView);
             }
@@ -131,6 +147,19 @@ public class LevelEditorController {
 
         levelEditorView.getCancelBtn().setOnAction((e) -> MenuSwitcher.switchScene("MainMenu.fxml"));
     }
+
+    //TODO mettre ça autre part
+    public static Image resizeImage(Image image, double width, double height) throws FileNotFoundException {
+
+        ImageView imageView = new ImageView(image);
+        imageView.setFitWidth(width);
+        imageView.setFitHeight(height);
+        imageView.setPreserveRatio(false);
+        imageView.setSmooth(true);
+
+        return imageView.snapshot(null, null);
+    }
+
 
     private void showMustChoose(){
 

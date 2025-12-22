@@ -3,6 +3,7 @@ package com.app.main.controller.levelEditor;
 import com.app.main.controller.menu.MenuSwitcher;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
+import com.app.main.view.levelEditor.TeamEditorView;
 
 public final class ObstacleEditorController {
     
@@ -42,8 +43,8 @@ public final class ObstacleEditorController {
             throw new IllegalArgumentException("The background image of the file wrapper is not a valid file");
         }
 
-        if(!LevelEditorController.isValidImage(fileWrapper.obstacleImage)){
-            throw new IllegalArgumentException("The obstacle image of the file wrapper is not a valid file");
+        if(fileWrapper.obstacleImage == null){
+            throw new IllegalArgumentException("The obstacle image of the file wrapper is null");
         }
     }
 
@@ -51,12 +52,14 @@ public final class ObstacleEditorController {
 
         obstacleEditorView.getBackButton().setOnAction((e) -> {
             LevelEditorView editor = new LevelEditorView();
-            LevelEditorController controller = LevelEditorController.buildLevelEditorController(editor);
+            LevelEditorController.buildLevelEditorController(editor);
             MenuSwitcher.switchScene(editor);
         });
 
         obstacleEditorView.getNextButton().setOnAction((e) -> {
-            //TODO
+            TeamEditorView editorView = new TeamEditorView();
+            TeamEditorController.buildEditorController(editorView, fileWrapper, obstacles);
+            MenuSwitcher.switchScene(editorView);
         });
     }
 

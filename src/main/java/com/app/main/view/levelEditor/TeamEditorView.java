@@ -2,7 +2,6 @@ package com.app.main.view.levelEditor;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
-import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -87,7 +86,6 @@ public final class TeamEditorView extends Scene {
 
         private Slider teamSlider;
         private Button removeTeamBtn;
-        private Button verifyBtn;
 
         private TextField fileNameField;
         private Button saveBtn;
@@ -115,7 +113,6 @@ public final class TeamEditorView extends Scene {
                     rightTitle,
                     teamSlider,
                     removeTeamBtn,
-                    verifyBtn,
                     saveBox,
                     warningText
             );
@@ -137,10 +134,6 @@ public final class TeamEditorView extends Scene {
             return removeTeamBtn;
         }
 
-        public Button getVerifyBtn() {
-            return verifyBtn;
-        }
-
         private void editPartInit(){
 
             teamSlider = new Slider();
@@ -148,9 +141,6 @@ public final class TeamEditorView extends Scene {
 
             removeTeamBtn = new Button("Remove the selected team");
             removeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
-
-            verifyBtn = new Button("Verify");
-            verifyBtn.setFont(Font.font("Lucida Console", 25));
         }
 
         private HBox saveAreaInit(){

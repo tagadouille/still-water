@@ -1,13 +1,20 @@
 package com.app.main.controller.levelEditor;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.app.main.controller.menu.MenuSwitcher;
+import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
+import com.app.main.util.mapGenerator.FileGenerator;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 import com.app.main.view.levelEditor.TeamEditorView;
 import com.app.main.view.levelEditor.TeamEditorView.EditTeamBox;
+
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Alert.AlertType;
 
 public class TeamEditorController {
     
@@ -26,10 +33,11 @@ public class TeamEditorController {
         this.teamCanvasController = TeamCanvasController.buildCanvasController(teamEditorView.getTeamCanvas(), obstacles);
         this.obstacles = obstacles;
 
-        this.rectangleSizePossibility = rectanglesForSurface(GameManager.NB_CELL);
+        this.rectangleSizePossibility = rectanglesForSurface();
 
         buttonBehavior();
         editTeamBoxBehavior();
+        saveBehavior();
     }
 
     public static TeamEditorController buildEditorController(TeamEditorView teamEditorView, FileWrapper fileWrapper, boolean[][] obstacles){
@@ -50,7 +58,7 @@ public class TeamEditorController {
 
         teamEditorView.getGoBackBtn().setOnAction((e) -> {
             ObstacleEditorView obstacleEditorView = new ObstacleEditorView();
-            ObstacleEditorController obstacleEditorController = ObstacleEditorController.buildEditorController(obstacleEditorView, fileWrapper);
+            ObstacleEditorController.buildEditorController(obstacleEditorView, fileWrapper);
 
             MenuSwitcher.switchScene(obstacleEditorView);
         });
@@ -68,11 +76,62 @@ public class TeamEditorController {
             teamCanvasController.removeTeamRectangle();
         });
 
-        teamBox.getVerifyBtn().setOnAction((e) -> {
-            //TODO
-        });
+        teamBox.getTeamSlider().valueProperty().addListener((obs, oldV, newV) -> 
+        {
+            int possibilty = Math.min(rectangleSizePossibility.length - 1, newV.intValue());
+            int[] size = rectangleSizePossibility[possibilty];
 
-        //TODO teamBox.getTeamSlider()
+            teamCanvasController.updateRectangleSize(size[0], size[1]);
+        });
+    }
+
+    private void saveBehavior(){
+
+        teamEditorView.getEditTeamBox().getSaveBtn().setOnAction((e) -> {
+
+            String filename = teamEditorView.getEditTeamBox().getFileNameField().getText();
+
+            // Verify the validity of filename :
+            if(filename == null || filename.isBlank() || filename.matches(".*[\\\\/:*?\"<>|].*")){
+
+                Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
+
+                warning.showAndWait();
+                return;
+            }
+
+            // Verification of the validity of the spawn point of each team : 
+            if(!teamCanvasController.verifyOverlapping()){
+                Alert warning = new Alert(
+                    AlertType.WARNING,
+                    "A team spawn point can't overlapp to another. And can't overlapp an obstacle",
+                    ButtonType.CLOSE);
+                warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
+                warning.showAndWait();
+                return;
+            }
+            
+            // Save :
+            GameLevel gameLevel = new GameLevel(obstacles, teamCanvasController.getTeamConfig());
+
+            try{
+                FileGenerator.createFileGenerator(gameLevel).createfile(filename);
+            }
+            catch(IOException ex){
+                Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
+                error.setHeaderText("An error occured 😱😨😭🙏");
+                error.showAndWait();
+
+                return;
+            }
+
+            //TODO Copie du fichier de fond vers son folder dédier :
+
+            Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
+            finish.setHeaderText("The save is succesful ! 😎✌️");
+            finish.showAndWait();
+            MenuSwitcher.switchScene("MainMenu.fxml");
+        });
     }
 
     /**
@@ -102,11 +161,9 @@ public class TeamEditorController {
      4 x 3
      * </pre>
      */
-    private static int[][] rectanglesForSurface(int surface) {
+    static int[][] rectanglesForSurface() {
 
-        if (surface <= 0) {
-            throw new IllegalArgumentException("The surface must be a positive int");
-        }
+        int surface = GameManager.NB_CELL;
 
         List<int[]> result = new ArrayList<>();
 
