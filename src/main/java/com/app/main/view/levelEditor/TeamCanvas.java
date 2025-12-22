@@ -116,7 +116,7 @@ public final class TeamCanvas extends Canvas {
 
     public boolean addTeamRectangle(int sizeX, int sizeY){
 
-        if(com.app.main.model.core.Color.values().length <= rectangles.size()){
+        if(com.app.main.model.core.Color.values().length <= rectangles.size() + 1){
             return false;
         }
 
