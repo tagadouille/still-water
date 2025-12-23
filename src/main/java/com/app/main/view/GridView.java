@@ -8,7 +8,6 @@ import java.util.List;
 
 import com.app.main.controller.TimerHandler;
 import com.app.main.controller.VictoryHandler;
-import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
@@ -196,11 +195,11 @@ public final class GridView extends StackPane implements Observable{
      * @param gc the GraphicsContext of the canva
      */
     private void render(GraphicsContext gc) {
-        /*try{
+        try{
             gc.drawImage(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/john_pork.jpg"))), 0, 0, width, width);
         }catch(IOException e){
 
-        }*/
+        }
 
         gc.fillRect(0, 0, width, height);
         
