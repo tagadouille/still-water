@@ -1,0 +1,107 @@
+package com.app.main.view.levelEditor;
+
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Slider;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+
+public final class ObstacleEditorView extends Scene {
+
+    private HBox root;
+    
+    private ObstaclePreview obstaclePreview;
+
+    private Slider thresholdSlider;
+    private Button backButton;
+    private Button nextButton;
+
+    public ObstacleEditorView() {
+        super(new HBox());
+
+        if(this.getRoot() instanceof HBox){
+            root = (HBox) this.getRoot();
+            root.setAlignment(Pos.CENTER);
+            root.setPrefHeight(720);
+            root.setPrefWidth(1280);
+        }
+
+        // Initialization of the differents containers : 
+        VBox mainVBox = new VBox();
+        mainVBox.setAlignment(Pos.TOP_CENTER);
+        mainVBox.setPrefSize(657, 720);
+        mainVBox.setSpacing(10);
+
+        Text title = new Text("Edit the obstacles of the map");
+        title.setFont(Font.font("System Bold", 30));
+
+        obstaclePreview = new ObstaclePreview();
+
+        // Threshold :
+        Text thresholdText = new Text("Obstacles threshold :");
+        thresholdText.setFont(Font.font(25));
+
+        thresholdInit();
+
+        // Buttons :
+        HBox buttonBox = buttonInit();
+        
+        mainVBox.getChildren().addAll(
+                title,
+                obstaclePreview,
+                thresholdText,
+                thresholdSlider,
+                buttonBox
+        );
+
+        root.getChildren().add(mainVBox);
+    }
+
+    private void thresholdInit(){
+
+        thresholdSlider = new Slider();
+        thresholdSlider.setPrefSize(658, 71);
+        thresholdSlider.setBlockIncrement(5);
+        thresholdSlider.setShowTickMarks(true);
+        thresholdSlider.setShowTickLabels(true);
+
+        thresholdSlider.setMin(0);
+        thresholdSlider.setMax(100);
+    }
+
+    private HBox buttonInit(){
+
+        HBox buttonBox = new HBox(15);
+        buttonBox.setAlignment(Pos.CENTER);
+
+        backButton = new Button("Go Back");
+        backButton.setFont(Font.font("Rubik Bold Italic", 28));
+
+        nextButton = new Button("Next");
+        nextButton.setFont(Font.font("Rubik Bold Italic", 28));
+
+        buttonBox.getChildren().addAll(backButton, nextButton);
+
+        return buttonBox;
+    }
+
+    public ObstaclePreview getObstaclePreview() {
+        return obstaclePreview;
+    }
+
+    public Slider getThresholdSlider() {
+        return thresholdSlider;
+    }
+
+    public Button getBackButton() {
+        return backButton;
+    }
+
+    public Button getNextButton() {
+        return nextButton;
+    }
+}
+

@@ -67,6 +67,16 @@ public final class ParticleView {
     public static Color getTeamColor(Team team){
         com.app.main.model.core.Color color = team.getTeam();
 
+        return getTeamColor(color);
+    }
+
+    /**
+     * Give the javafx color of a team color for the view
+     * @param color the color team for get it color
+     * @return the javafx color of the team
+     */
+    public static Color getTeamColor(com.app.main.model.core.Color color){
+
         switch (color) {
             case RED:
                 return Color.RED;
