@@ -6,10 +6,11 @@ import java.util.Set;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
 
+import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 
-//! Pas encore sur sur de l'implémentation, peut être qu'on peut faire plus simple avec moins d'attribus..
 public final class KeyboardController implements Controller{
 
     public Team team;
@@ -25,28 +26,36 @@ public final class KeyboardController implements Controller{
     public final Set<KeyCode> keylist = new HashSet<>();
 
     //vitesse de mouvement
-    public final double speed = 1.5;
+    public final double speed = 5;
 
-    private KeyboardController(Canvas canva, Team team, int Mapwidth, int Mapheight, double Posx, double Posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+    private KeyboardController(Team team, int Mapwidth, int Mapheight, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
         this.team = team;
-
-        this.Posx = Posx;
-        this.Posy = Posy;
 
         this.mapwidth = Mapwidth;
         this.mapheight = Mapheight;
+
+        this.Posx = Mapwidth/2.0;
+        this.Posy = Mapheight/2.0;
 
         this.UP = up;
         this.DOWN = down;
         this.RIGHT = right;
         this.LEFT = left;
-
-        canva.setOnKeyPressed(e -> keylist.add(e.getCode()));
-        canva.setOnKeyReleased(e -> keylist.remove(e.getCode()));
     }
 
-    public static KeyboardController createKeyboardController(Canvas canva, Team team, int mapwidth, int mapheight, int posx, int posy, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
-        return new KeyboardController(canva, team, mapwidth, mapheight, posx, posy, up, down, right, left);
+    public static KeyboardController createKeyboardController(Team team, int Mapwidth, int Mapheight, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
+        return new KeyboardController(team, Mapwidth, Mapheight, up, down, right, left);
+    }
+
+    @Override
+    public void setupInput(Scene scene, Canvas canvas) {
+        scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
+            keylist.add(e.getCode());
+        });
+
+        scene.addEventHandler(KeyEvent.KEY_RELEASED, e -> {
+            keylist.remove(e.getCode());
+        });
     }
 
     @Override
@@ -61,7 +70,7 @@ public final class KeyboardController implements Controller{
         if(keylist.contains(UP)) this.Posy -= speed;
         if(keylist.contains(DOWN)) this.Posy += speed;
         if(keylist.contains(RIGHT)) this.Posx += speed;
-        if(keylist.contains(UP)) this.Posx -= speed;
+        if(keylist.contains(LEFT)) this.Posx -= speed;
 
         this.Posx = Math.max(0, Math.min(Posx, mapwidth - 1));
         this.Posy = Math.max(0, Math.min(Posy, mapheight - 1));

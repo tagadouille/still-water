@@ -11,7 +11,7 @@ public class GamemodeController {
     }
 
     public void local(){
-         MenuSwitcher.switchScene("MatchType.fxml"); //! pour l'instant
+         MenuSwitcher.switchScene("Multilocal.fxml"); //! pour l'instant
     }
 
      public void online(){
