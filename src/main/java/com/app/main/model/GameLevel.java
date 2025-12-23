@@ -21,6 +21,19 @@ public class GameLevel {
         this.teamsInfo = teamsInfo;
     }
 
+    public int getHeight() {
+        return height;
+    }
+    public boolean[][] getObstacles() {
+        return obstacles;
+    }
+    public List<TeamConfig> getTeamsInfo() {
+        return teamsInfo;
+    }
+    public int getWidth() {
+        return width;
+    }
+
     public static class TeamConfig {
         public final Color color;
         public final Point[] spawnArea;

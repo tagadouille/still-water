@@ -1,0 +1,79 @@
+package com.app.main.controller.levelEditor;
+
+import com.app.main.controller.menu.MenuSwitcher;
+import com.app.main.view.levelEditor.LevelEditorView;
+import com.app.main.view.levelEditor.ObstacleEditorView;
+import com.app.main.view.levelEditor.TeamEditorView;
+
+public final class ObstacleEditorController {
+    
+    private final ObstacleEditorView obstacleEditorView;
+    private final FileWrapper fileWrapper;
+
+    private boolean[][] obstacles;
+
+    private ObstacleEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
+        this.obstacleEditorView = obstacleEditorView;
+        this.fileWrapper = fileWrapper;
+
+        buttonBehavior();
+        sliderBehavior();
+        previewInit();
+    }
+
+    public static ObstacleEditorController buildEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
+
+        // Verification of the validity of the parameters
+        if(obstacleEditorView == null){
+            throw new IllegalArgumentException("The ObstacleEditorView parameter can't be null");
+        }
+
+        verifyFileWrapper(fileWrapper);
+
+        return new ObstacleEditorController(obstacleEditorView, fileWrapper);
+    }
+
+    static void verifyFileWrapper(FileWrapper fileWrapper){
+
+        if(fileWrapper == null){
+            throw new IllegalArgumentException("The FileWrapper parameter can't be null");
+        }
+
+        if(!LevelEditorController.isValidImage(fileWrapper.backgroundImage)){
+            throw new IllegalArgumentException("The background image of the file wrapper is not a valid file");
+        }
+
+        if(fileWrapper.obstacleImage == null){
+            throw new IllegalArgumentException("The obstacle image of the file wrapper is null");
+        }
+    }
+
+    private void buttonBehavior(){
+
+        obstacleEditorView.getBackButton().setOnAction((e) -> {
+            LevelEditorView editor = new LevelEditorView();
+            LevelEditorController.buildLevelEditorController(editor);
+            MenuSwitcher.switchScene(editor);
+        });
+
+        obstacleEditorView.getNextButton().setOnAction((e) -> {
+            TeamEditorView editorView = new TeamEditorView();
+            TeamEditorController.buildEditorController(editorView, fileWrapper, obstacles);
+            MenuSwitcher.switchScene(editorView);
+        });
+    }
+
+    private void previewInit(){
+        obstacleEditorView.getObstaclePreview().setObstacles(fileWrapper.obstacleImage);
+        obstacleEditorView.getObstaclePreview().updateObstacles(0);
+    }
+
+    private void sliderBehavior(){
+        obstacleEditorView.getThresholdSlider().valueProperty().addListener((obs, oldV, newV) -> 
+        {
+            int threshold = newV.intValue();
+            obstacleEditorView.getObstaclePreview().updateObstacles(threshold);
+            obstacles = obstacleEditorView.getObstaclePreview().getObstacles();
+        });
+    }
+}
