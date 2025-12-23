@@ -49,19 +49,19 @@ public class TeamCanvasController {
 
         // Team rectangle drag :
         canvas.addEventHandler(MouseEvent.MOUSE_DRAGGED, e -> {
-            if (selectedRectangle != null) {
+            if (selectedRectangle == null) return;
 
-                // Determine if the position is legal
-                if(
-                    e.getX() - offsetX >= 0 && e.getX() - offsetX < canvas.getWidth() &&
-                    e.getY() - offsetY >= 0 && e.getY() - offsetY < canvas.getHeight()
-                ){
-                    selectedRectangle.setX(e.getX() - offsetX);
-                    selectedRectangle.setY(e.getY() - offsetY);
-                    canvas.draw(gc);
-                }
-                
-            }
+            double newX = e.getX() - offsetX;
+            double newY = e.getY() - offsetY;
+
+            // Verification if the position is legal :
+            if (newX < 0 || newY < 0) return;
+            if (newX + selectedRectangle.getSizeX() > canvas.getWidth()) return;
+            if (newY + selectedRectangle.getSizeY() > canvas.getHeight()) return;
+
+            selectedRectangle.setX(newX);
+            selectedRectangle.setY(newY);
+            canvas.draw(gc);
         });
     }
 

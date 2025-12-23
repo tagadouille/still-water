@@ -1,6 +1,10 @@
 package com.app.main.controller.levelEditor;
 
+import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -116,6 +120,9 @@ public class TeamEditorController {
 
             try{
                 FileGenerator.createFileGenerator(gameLevel).createfile(filename);
+
+                // Copy of the background level image at the path where the level were saved :
+                copyFile(fileWrapper.backgroundImage, Path.of("levels")); //TODO changer le chemin
             }
             catch(IOException ex){
                 Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
@@ -125,13 +132,32 @@ public class TeamEditorController {
                 return;
             }
 
-            //TODO Copie du fichier de fond vers son folder dédier :
-
             Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
             finish.setHeaderText("The save is succesful ! 😎✌️");
             finish.showAndWait();
             MenuSwitcher.switchScene("MainMenu.fxml");
         });
+    }
+
+    //TODO Déplacer quelque part
+
+    public static void copyFile(File file, Path dstFolder) throws IOException {
+
+        if (file == null || !file.exists()) {
+            throw new IllegalArgumentException("The source file doesn't exit");
+        }
+
+        // Creation if the folder if it doesn't exist
+        Files.createDirectories(dstFolder);
+
+        Path destination = dstFolder.resolve(file.getName());
+
+        // Copy of the file
+        Files.copy(
+            file.toPath(),
+            destination,
+            StandardCopyOption.REPLACE_EXISTING
+        );
     }
 
     /**
