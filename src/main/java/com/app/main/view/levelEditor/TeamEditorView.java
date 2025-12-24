@@ -2,7 +2,10 @@ package com.app.main.view.levelEditor;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -94,6 +97,49 @@ public final class TeamEditorView extends Scene {
 
     public EditTeamBox getEditTeamBox() {
         return editTeamBox;
+    }
+
+    /**
+     * Display an error Alert that informs the user
+     * that the save of the level file is a failure
+     */
+    public static void showCannotSave(){
+        Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
+        error.setHeaderText("An error occured 😱😨😭🙏");
+        error.showAndWait();
+    }
+
+    /**
+     * Display a warning Alert that inform the user that
+     * the spawns points of the teams are invalid
+     */
+    public static void showTeamInvalid(){
+        Alert warning = new Alert(
+            AlertType.WARNING,
+            "There must be at least 2 team spoint point. 🤓☝️ A team spawn point can't overlapp to another. And can't overlapp an obstacle",
+            ButtonType.CLOSE);
+        warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
+        warning.showAndWait();
+    }
+
+    /**
+     * Display a warning Alert that inform the user that
+     * the filename that he entered is not correct
+     */
+    public static void showFileNameIncorrect(){
+        Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
+
+        warning.showAndWait();
+    }
+
+    /**
+     * Display a information Alert that inform the user
+     * that the save is successful
+     */
+    public static void showSaveSuccess(){
+        Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
+        finish.setHeaderText("The save is succesful ! 😎✌️");
+        finish.showAndWait();
     }
 
     /**

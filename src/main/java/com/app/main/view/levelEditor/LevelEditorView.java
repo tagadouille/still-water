@@ -2,7 +2,10 @@ package com.app.main.view.levelEditor;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -158,5 +161,28 @@ public final class LevelEditorView extends Scene {
 
     public Button getChooseObstacleBtn() {
         return chooseObstacleBtn;
+    }
+
+    /**
+     * Display a warning Alert that informs the user that he
+     * doesn't choose 2 images.
+     */
+    public static void showMustChoose(){
+
+        Alert mustChoose = new Alert(AlertType.WARNING, "You must choose the two image before going to the next step 🗿👍", ButtonType.OK);
+        mustChoose.setHeaderText("Something happends ;)");
+        mustChoose.showAndWait();
+    }
+
+    /**
+     * Display an error Alert that informs the user that the
+     * file that he choosed is not a valid image
+     */
+    public static void showInvalidImage(){
+
+        Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect 💀🙏✌️🎋💔", ButtonType.OK);
+        wrongImage.setHeaderText("☣️☣️☣️Something wents wrong..☣️☣️☣️");
+        wrongImage.showAndWait();
+        
     }
 }

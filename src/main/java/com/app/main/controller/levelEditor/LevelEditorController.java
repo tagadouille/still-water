@@ -11,9 +11,6 @@ import com.app.main.util.ImageUtil;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
 
@@ -65,7 +62,7 @@ public final class LevelEditorController {
             // Test the validity
             if(!ImageUtil.isValidImage(bg)){
                 if(bg != null){
-                    showInvalidImage();
+                    LevelEditorView.showInvalidImage();
                 }
             }
             else{
@@ -88,7 +85,7 @@ public final class LevelEditorController {
             // Test the validity
             if(!ImageUtil.isValidImage(obs)){
                 if(obs != null){
-                    showInvalidImage();
+                    LevelEditorView.showInvalidImage();
                 }
             }
             else{
@@ -101,14 +98,6 @@ public final class LevelEditorController {
                 }
             }
         });
-    }
-
-    private void showInvalidImage(){
-
-        Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect 💀🙏✌️🎋💔", ButtonType.OK);
-        wrongImage.setHeaderText("☣️☣️☣️Something wents wrong..☣️☣️☣️");
-        wrongImage.showAndWait();
-        
     }
 
     private void buttonBehavior(){
@@ -131,18 +120,10 @@ public final class LevelEditorController {
                 MenuSwitcher.switchScene(obstacleEditorView);
             }
             else{
-                showMustChoose();
+                LevelEditorView.showMustChoose();
             }
         });
 
         levelEditorView.getCancelBtn().setOnAction((e) -> MenuSwitcher.switchScene("MainMenu.fxml"));
-    }
-
-
-    private void showMustChoose(){
-
-        Alert mustChoose = new Alert(AlertType.WARNING, "You must choose the two image before going to the next step 🗿👍", ButtonType.OK);
-        mustChoose.setHeaderText("Something happends ;)");
-        mustChoose.showAndWait();
     }
 }

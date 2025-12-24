@@ -14,10 +14,6 @@ import com.app.main.view.levelEditor.ObstacleEditorView;
 import com.app.main.view.levelEditor.TeamEditorView;
 import com.app.main.view.levelEditor.TeamEditorView.EditTeamBox;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
-
 /**
  * The TeamEditorController is the controller of the TeamEditorView.
  * It initialize the behavior of each interactable component of the TeamEditorView
@@ -112,20 +108,13 @@ final class TeamEditorController {
             // Verify the validity of filename :
             if(filename == null || filename.isBlank() || filename.matches(".*[\\\\/:*?\"<>|].*")){
 
-                Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
-
-                warning.showAndWait();
+                TeamEditorView.showFileNameIncorrect();
                 return;
             }
 
             // Verification of the validity of the spawn point of each team : 
             if(!teamCanvasController.verifyOverlapping()){
-                Alert warning = new Alert(
-                    AlertType.WARNING,
-                    "There must be at least 2 team spoint point. 🤓☝️ A team spawn point can't overlapp to another. And can't overlapp an obstacle",
-                    ButtonType.CLOSE);
-                warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
-                warning.showAndWait();
+                TeamEditorView.showTeamInvalid();
                 return;
             }
             
@@ -139,16 +128,12 @@ final class TeamEditorController {
                 ImageUtil.copyFile(fileWrapper.getBackgroundImage(), Path.of("levels")); //TODO changer le chemin
             }
             catch(IOException ex){
-                Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
-                error.setHeaderText("An error occured 😱😨😭🙏");
-                error.showAndWait();
 
+                TeamEditorView.showCannotSave();
                 return;
             }
 
-            Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
-            finish.setHeaderText("The save is succesful ! 😎✌️");
-            finish.showAndWait();
+            TeamEditorView.showSaveSuccess();
             MenuSwitcher.switchScene("MainMenu.fxml");
         });
     }
