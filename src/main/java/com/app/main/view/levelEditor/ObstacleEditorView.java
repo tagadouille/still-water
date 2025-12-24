@@ -1,5 +1,7 @@
 package com.app.main.view.levelEditor;
 
+import com.app.main.util.mapGenerator.MapGenerator;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -9,6 +11,17 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * The ObstacleEditorView is the second page of the level editor. 
+ * It allows the user to edit the obstacle image that he choose before.
+ * He have to use a slider to determine which pixel of the image
+ * will represents an obstacles according to the brightness of the pixel.
+ * The user can see a preview with the ObstaclePreview Canvas.
+ * 
+ * @see MapGenerator
+ * @see ObstaclePreview
+ * @author Dai Elias
+ */
 public final class ObstacleEditorView extends Scene {
 
     private HBox root;
@@ -19,6 +32,10 @@ public final class ObstacleEditorView extends Scene {
     private Button backButton;
     private Button nextButton;
 
+    /**
+    * The construtor of the class that initialize
+    * the components and do the layout of the UI
+    */
     public ObstacleEditorView() {
         super(new HBox());
 
@@ -60,6 +77,8 @@ public final class ObstacleEditorView extends Scene {
         root.getChildren().add(mainVBox);
     }
 
+    /* Some helpers for initializing the components */
+
     private void thresholdInit(){
 
         thresholdSlider = new Slider();
@@ -87,6 +106,8 @@ public final class ObstacleEditorView extends Scene {
 
         return buttonBox;
     }
+
+    /* Getters */
 
     public ObstaclePreview getObstaclePreview() {
         return obstaclePreview;

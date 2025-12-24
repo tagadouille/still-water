@@ -5,7 +5,14 @@ import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 import com.app.main.view.levelEditor.TeamEditorView;
 
-public final class ObstacleEditorController {
+/**
+ * The ObstacleEditorController define the behavior of each interactable
+ * component of the ObstacleEditorView
+ * 
+ * @see ObstacleEditorView
+ * @author Dai Elias
+ */
+final class ObstacleEditorController {
     
     private final ObstacleEditorView obstacleEditorView;
     private final FileWrapper fileWrapper;
@@ -21,6 +28,12 @@ public final class ObstacleEditorController {
         previewInit();
     }
 
+    /**
+     * The static fabric of the class for creating a new instance of the class
+     * @param obstacleEditorView the ObstacleEditorView
+     * @param fileWrapper the fileWrapper that contains the obstacle map and the background of the level
+     * @return a new instance of the class
+     */
     public static ObstacleEditorController buildEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
 
         // Verification of the validity of the parameters
@@ -28,25 +41,12 @@ public final class ObstacleEditorController {
             throw new IllegalArgumentException("The ObstacleEditorView parameter can't be null");
         }
 
-        verifyFileWrapper(fileWrapper);
+        FileWrapper.verifyFileWrapper(fileWrapper);
 
         return new ObstacleEditorController(obstacleEditorView, fileWrapper);
     }
 
-    static void verifyFileWrapper(FileWrapper fileWrapper){
-
-        if(fileWrapper == null){
-            throw new IllegalArgumentException("The FileWrapper parameter can't be null");
-        }
-
-        if(!LevelEditorController.isValidImage(fileWrapper.backgroundImage)){
-            throw new IllegalArgumentException("The background image of the file wrapper is not a valid file");
-        }
-
-        if(fileWrapper.obstacleImage == null){
-            throw new IllegalArgumentException("The obstacle image of the file wrapper is null");
-        }
-    }
+    /* Method for setting the behavior of the components */
 
     private void buttonBehavior(){
 
@@ -64,8 +64,9 @@ public final class ObstacleEditorController {
     }
 
     private void previewInit(){
-        obstacleEditorView.getObstaclePreview().setObstacles(fileWrapper.obstacleImage);
+        obstacleEditorView.getObstaclePreview().setObstacles(fileWrapper.getObstacleImage());
         obstacleEditorView.getObstaclePreview().updateObstacles(0);
+        obstacles = obstacleEditorView.getObstaclePreview().getObstacles();
     }
 
     private void sliderBehavior(){

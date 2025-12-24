@@ -10,6 +10,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * The TeamEditorView is the last page of the level editor that allows the user
+ * to place the spawn point of each team and dimension it and save the level.
+ * 
+ * @author Dai Elias
+ */
 public final class TeamEditorView extends Scene {
 
     private HBox root;
@@ -21,6 +27,10 @@ public final class TeamEditorView extends Scene {
 
     private EditTeamBox editTeamBox;
 
+    /**
+    * The construtor of the class that initialize
+    * the components and do the layout of the UI
+    */
     public TeamEditorView(){
         
         super(new HBox());
@@ -38,6 +48,8 @@ public final class TeamEditorView extends Scene {
 
         root.getChildren().addAll(leftVBox, editTeamBox);
     }
+
+    /* Helper for initialize the components */
 
     private VBox initializeLeftVBox(){
 
@@ -66,6 +78,8 @@ public final class TeamEditorView extends Scene {
         return leftVBox;
     }
 
+    /* Getters */
+
     public TeamCanvas getTeamCanvas() {
         return teamCanvas;
     }
@@ -82,6 +96,13 @@ public final class TeamEditorView extends Scene {
         return editTeamBox;
     }
 
+    /**
+     * The EditTeamBox represents the right panel of the TeamEditorView.
+     * In this panel there are the components for edit a team spawn point and save the level.
+     * 
+     * @see TeamEditorView
+     * @author Dai Elias
+     */
     public class EditTeamBox extends VBox{
 
         private Slider teamSlider;
@@ -90,6 +111,10 @@ public final class TeamEditorView extends Scene {
         private TextField fileNameField;
         private Button saveBtn;
 
+        /**
+        * The construtor of the class that initialize
+        * the components and do the layout of the UI
+        */
         public EditTeamBox(){
             
             super(15);
@@ -118,6 +143,8 @@ public final class TeamEditorView extends Scene {
             );
         }
 
+        /* Getters */
+
         public Slider getTeamSlider() {
             return teamSlider;
         }
@@ -133,6 +160,8 @@ public final class TeamEditorView extends Scene {
         public Button getRemoveTeamBtn() {
             return removeTeamBtn;
         }
+
+        /* Helpers for initialize the components of the UI */
 
         private void editPartInit(){
 

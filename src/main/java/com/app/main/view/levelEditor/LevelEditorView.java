@@ -10,6 +10,15 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
+/**
+ * The LevelEditorView represents the first page of the level editor.
+ * The purpose of it is to initialize the 2 file that are images that are
+ * used for a level : the background and the obstacles map. The background is just
+ * an image used for the background of the level and the obstacle one is for determine
+ * where are the obstacles.
+ * 
+ * @author Dai Elias
+ */
 public final class LevelEditorView extends Scene {
 
     private Button chooseBackgroundBtn;
@@ -23,6 +32,10 @@ public final class LevelEditorView extends Scene {
 
     private HBox root;
 
+    /**
+     * The construtor of the class that initialize
+     * the components and do the layout of the UI
+     */
     public LevelEditorView() {
 
         super(new HBox());
@@ -75,6 +88,8 @@ public final class LevelEditorView extends Scene {
         root.getChildren().add(mainVBox);
     }
 
+    /* Some helpers for initializing the components */
+
     private void initTitlePane(VBox topVBox){
 
         Text title = new Text("Level Editor");
@@ -118,6 +133,8 @@ public final class LevelEditorView extends Scene {
 
         return previewBox;
     }
+
+    /* Getters */
 
     public Button getCancelBtn() {
         return cancelBtn;
