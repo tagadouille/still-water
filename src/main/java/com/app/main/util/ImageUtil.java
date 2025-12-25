@@ -14,6 +14,8 @@ import javafx.scene.image.ImageView;
 /**
  * The ImageUtil is an utilitary class that has some
  * methods for images.
+ * 
+ * @author Dai Elias
  */
 public final class ImageUtil {
     
@@ -46,6 +48,13 @@ public final class ImageUtil {
      * @throws FileNotFoundException
      */
     public static Image resizeImage(Image image, double width, double height) throws FileNotFoundException {
+
+        if (image == null) {
+            throw new IllegalArgumentException("Image cannot be null");
+        }
+        if (width < 0 || height < 0) {
+            throw new IllegalArgumentException("Width and height must be non-negative");
+        }
 
         ImageView imageView = new ImageView(image);
         imageView.setFitWidth(width);

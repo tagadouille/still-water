@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
  * @see ObstaclePreview
  * @author Dai Elias
  */
-public final class ObstacleEditorView extends Scene {
+public final class ObstacleEditorView extends Scene implements LevelEditorConstant{
 
     private HBox root;
     
@@ -97,10 +97,10 @@ public final class ObstacleEditorView extends Scene {
         buttonBox.setAlignment(Pos.CENTER);
 
         backButton = new Button("Go Back");
-        backButton.setFont(Font.font("Rubik Bold Italic", 28));
+        backButton.setFont(BUTTON_FONT);
 
         nextButton = new Button("Next");
-        nextButton.setFont(Font.font("Rubik Bold Italic", 28));
+        nextButton.setFont(BUTTON_FONT);
 
         buttonBox.getChildren().addAll(backButton, nextButton);
 

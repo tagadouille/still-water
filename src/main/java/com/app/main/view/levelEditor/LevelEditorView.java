@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
  * 
  * @author Dai Elias
  */
-public final class LevelEditorView extends Scene {
+public final class LevelEditorView extends Scene implements LevelEditorConstant{
 
     private Button chooseBackgroundBtn;
     private Button chooseObstacleBtn;
@@ -49,7 +49,6 @@ public final class LevelEditorView extends Scene {
             root.setPrefHeight(720);
             root.setPrefWidth(1280);
         }
-        
 
         // Initialization of the differents containers :
         VBox mainVBox = new VBox(15);
@@ -75,10 +74,10 @@ public final class LevelEditorView extends Scene {
 
         // Buttons for canceling or go to the next step
         nextBtn = new Button("Next");
-        nextBtn.setFont(Font.font(26));
+        nextBtn.setFont(BUTTON_FONT);
 
         cancelBtn = new Button("Cancel");
-        cancelBtn.setFont(Font.font(26));
+        cancelBtn.setFont(BUTTON_FONT);
 
         bottomVBox.getChildren().addAll(
                 previewText,
@@ -102,10 +101,10 @@ public final class LevelEditorView extends Scene {
         spacer.setPrefSize(200, 200);
 
         chooseBackgroundBtn = new Button("Choose the background");
-        chooseBackgroundBtn.setFont(Font.font("Rubik Bold Italic", 26));
+        chooseBackgroundBtn.setFont(BUTTON_FONT);
 
         chooseObstacleBtn = new Button("Choose the obstacle map");
-        chooseObstacleBtn.setFont(Font.font("Rubik Bold Italic", 26));
+        chooseObstacleBtn.setFont(BUTTON_FONT);
 
         topVBox.getChildren().addAll(
                 title,

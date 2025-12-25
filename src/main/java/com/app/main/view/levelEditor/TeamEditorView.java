@@ -19,7 +19,7 @@ import javafx.scene.text.Text;
  * 
  * @author Dai Elias
  */
-public final class TeamEditorView extends Scene {
+public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
     private HBox root;
     
@@ -66,10 +66,10 @@ public final class TeamEditorView extends Scene {
         teamCanvas = new TeamCanvas();
 
         placeTeamBtn = new Button("Place a team");
-        placeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+        placeTeamBtn.setFont(BUTTON_FONT);
 
         goBackBtn = new Button("Go Back");
-        goBackBtn.setFont(Font.font("Rubik Bold Italic", 25));
+        goBackBtn.setFont(BUTTON_FONT);
 
         leftVBox.getChildren().addAll(
                 leftTitle,
@@ -215,7 +215,7 @@ public final class TeamEditorView extends Scene {
             teamSlider.setShowTickMarks(true);
 
             removeTeamBtn = new Button("Remove the selected team");
-            removeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+            removeTeamBtn.setFont(BUTTON_FONT);
         }
 
         private HBox saveAreaInit(){
@@ -228,7 +228,7 @@ public final class TeamEditorView extends Scene {
             fileNameField.setFont(Font.font(21));
 
             saveBtn = new Button("Save");
-            saveBtn.setFont(Font.font("Rubik Bold Italic", 25));
+            saveBtn.setFont(BUTTON_FONT);
 
             saveBox.getChildren().addAll(fileNameField, saveBtn);
 
