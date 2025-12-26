@@ -10,6 +10,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -43,6 +44,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
             root.setAlignment(Pos.CENTER);
             root.setPrefHeight(720);
             root.setPrefWidth(1280);
+            root.getStyleClass().add("levelEdit");
         }
 
         // Initialization of the differents panels :
@@ -62,6 +64,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
         Text leftTitle = new Text("Place each team spawn points");
         leftTitle.setFont(Font.font("System Bold", 28));
+        leftTitle.setFill(Color.WHITE);
 
         teamCanvas = new TeamCanvas();
 
@@ -169,6 +172,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
             Text rightTitle = new Text("Edit the selected spawn point :");
             rightTitle.setFont(Font.font("System Bold", 28));
+            rightTitle.setFill(Color.WHITE);
 
             editPartInit();
 

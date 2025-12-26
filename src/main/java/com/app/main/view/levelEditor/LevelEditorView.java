@@ -10,6 +10,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
@@ -48,6 +49,7 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
             root.setAlignment(Pos.CENTER);
             root.setPrefHeight(720);
             root.setPrefWidth(1280);
+            root.getStyleClass().add("levelEdit");
         }
 
         // Initialization of the differents containers :
@@ -69,6 +71,7 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
         // Preview Pane :
         Text previewText = new Text("Preview");
         previewText.setFont(Font.font("Arial Bold", 32));
+        previewText.setFill(Color.WHITE);
 
         HBox previewBox = initPreviewPane();
 
@@ -96,6 +99,7 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
 
         Text title = new Text("Level Editor");
         title.setFont(Font.font("Arial Bold", 45));
+        title.setFill(Color.WHITE);
 
         Pane spacer = new Pane();
         spacer.setPrefSize(200, 200);

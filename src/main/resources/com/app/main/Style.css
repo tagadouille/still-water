@@ -13,3 +13,9 @@ Button {
 Button:hover {
     -fx-background-color: #3d0000;
 }
+
+.levelEdit {
+    -fx-background-image: url("../image/leveledit.jpg");
+    -fx-background-position: center;
+    -fx-background-repeat: repeat;
+}
