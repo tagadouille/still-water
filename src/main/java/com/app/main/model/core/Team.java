@@ -205,7 +205,6 @@ public final class Team {
             this.nextTeam = nextTeam;
         }
 
-        //TODO vérif si la position est valide
         public static Cell CreateCell(int x, int y, Color team){
             return new Cell(x, y, team);
         }

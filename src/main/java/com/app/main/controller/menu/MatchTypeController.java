@@ -1,7 +1,5 @@
 package com.app.main.controller.menu;
 
-import java.util.Random;
-
 import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
