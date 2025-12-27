@@ -32,7 +32,7 @@ public final class FileGenerator{
 
     public void createfile(String nameoffile) throws IOException{
         try{
-            JSONFileManager writer = new JSONFileManager("levels/" + nameoffile + ".json");
+            JSONFileManager writer = new JSONFileManager("editorlevels/" + nameoffile + ".json");
             writer.create();
 
             List<List<Boolean>> obst = new ArrayList<>();
