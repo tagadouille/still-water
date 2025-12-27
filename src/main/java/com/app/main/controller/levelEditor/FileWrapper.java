@@ -12,6 +12,7 @@ import javafx.scene.image.Image;
  */
 class FileWrapper{
     public File backgroundImage;
+    public File obstacleImageFile;
     public Image obstacleImage;
     private int nbDef = 0;
 

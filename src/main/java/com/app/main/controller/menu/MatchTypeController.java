@@ -14,7 +14,7 @@ public class MatchTypeController {
 
     public void play(){
         //! Provisoire : 
-        boolean[][] obstacles = new boolean[GameManager.GRID_DIM][GameManager.GRID_DIM];
+        /*boolean[][] obstacles = new boolean[GameManager.GRID_DIM][GameManager.GRID_DIM];
         Team[] teams = new Team[]{
             Team.CreateBlueTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles), 
             Team.CreateRedTeam(GameManager.GRID_DIM, GameManager.GRID_DIM, obstacles)
@@ -35,7 +35,7 @@ public class MatchTypeController {
             new Controller[]{
                 null, 
                 new BotController(gameManager.getWidth(), gameManager.getHeight(), gameManager.getTeams()[1])})
-        );
+        );*/
     }
 
     public void goBack(){
