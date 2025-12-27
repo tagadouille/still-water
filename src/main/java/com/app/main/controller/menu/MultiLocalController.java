@@ -1,5 +1,6 @@
 package com.app.main.controller.menu;
 
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.KeyboardController;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
@@ -65,6 +66,8 @@ public class MultiLocalController {
             for (int i = 2; i < nbTeams; i++) {
                 controllers[i] = new BotController(GameManager.GRID_DIM, GameManager.GRID_DIM, teams[i]);
             }
+
+            GamePlaylist.playLevelAudio();
 
             MenuSwitcher.switchScene(new GameScene(gm, controllers));
 

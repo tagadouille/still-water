@@ -59,8 +59,6 @@ public class LevelMenuController {
             
             GamePlaylist.playLevelAudio();
 
-            GamePlaylist.playLevelAudio();
-
             MenuSwitcher.switchScene(
                 new GameScene(gameManager, controllers)
             );
