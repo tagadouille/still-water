@@ -6,9 +6,16 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import com.app.main.Game;
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.menu.MenuSwitcher;
+import com.app.main.controller.playercontroller.MouseController;
+import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
+import com.app.main.model.core.Team;
+import com.app.main.util.Controller;
+import com.app.main.view.GameScene;
 import com.app.main.view.levelEditor.LevelEditorView;
+import com.app.main.view.levelEditor.LevelListView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 
 import javafx.scene.control.Alert;
@@ -29,6 +36,40 @@ public class LevelEditorController {
         // Definition of the behavior of each components :
         imageSelectBehavior();
         buttonBehavior();
+
+        LevelListView list = new LevelListView();
+        list.setPrefWidth(220);
+        list.setOnLevelSelected(path -> {
+            try {
+                GameManager gameManager = GameManager.createFromJSON(path.toString());
+
+                Team[] loadedTeams = gameManager.getTeams();
+                int nbTeams = loadedTeams.length;
+
+                Controller[] controllers = new Controller[nbTeams];
+
+                controllers[0] = MouseController.createMouseController(loadedTeams[0]);
+
+                for (int i = 1; i < nbTeams; i++) {
+                    controllers[i] = new BotController(
+                        gameManager.getWidth(),
+                        gameManager.getHeight(),
+                        loadedTeams[i]
+                    );
+                }
+
+                GamePlaylist.playLevelAudio();
+
+                MenuSwitcher.switchScene(
+                    new GameScene(gameManager, controllers)
+                );
+
+            } catch (Exception e) {
+                System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
+                e.printStackTrace();
+            }
+        });
+        levelEditorView.getRootContainer().getChildren().add(0, list);
     }
 
     public static LevelEditorController buildLevelEditorController(LevelEditorView levelEditorView){
@@ -85,6 +126,7 @@ public class LevelEditorController {
                     levelEditorView.getObstaclePreview().setImage(new Image(new FileInputStream(obs)));
                     fileWrapper.incrementNbDef();
                     fileWrapper.obstacleImage = new Image(new FileInputStream(obs));
+                    fileWrapper.obstacleImageFile = obs;
                 }
                 catch(IOException exp){
 
