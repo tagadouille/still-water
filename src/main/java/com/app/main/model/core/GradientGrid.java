@@ -1,8 +1,5 @@
 package com.app.main.model.core;
 
-import java.util.ArrayDeque;
-import java.util.Queue;
-
 /**
  * Gère la carte des distances (Heatmap / Flow Field) pour une équipe donnée.
  * <p>
@@ -34,6 +31,9 @@ public final class GradientGrid {
     /** Valeur pour le debug (non utilisé dans le calcul pur mais utile pour l'affichage). */
     public static final int WALL = -1;
 
+    private final int[] queueX;
+    private final int[] queueY;
+
     /**
      * Initialise une nouvelle grille de gradient.
      *
@@ -45,6 +45,9 @@ public final class GradientGrid {
         this.height = height;
         this.distances = new int[height][width];
         this.obstacle = sharedObstacles;
+
+        this.queueX = new int[width * height];
+        this.queueY = new int[width * height];
         
         reset();
     }
@@ -119,6 +122,7 @@ public final class GradientGrid {
      * <ol>
      * <li>Initialise la cible à 0.</li>
      * <li>Propage la valeur i+1 aux voisins des cases de valeur i.</li>
+     * <LI>Version Améliorée : Gère les murs ET utilise des tableaux primitifs pour la performance.</li>
      * </ol>
      *
      * @param targetX Coordonnée X de la cible (objectif).
@@ -128,33 +132,99 @@ public final class GradientGrid {
 
         reset();
 
-        if(!isValid(targetx, targety) || obstacle[targetx][targety]){
+        if(!isValid(targetx, targety)){
             return;
         }
 
-        Queue<Point> file = new ArrayDeque<>();
+        if (obstacle[targetx][targety]) {
+            int[] validTarget = findNearestNonObstacle(targetx, targety);
+            
+            if (validTarget != null) {
+                targetx = validTarget[0];
+                targety = validTarget[1];
+            } else {
+                return;
+            }
+        }
+
+        int head = 0;
+        int tail = 0;
 
         distances[targetx][targety] = 0;
-        file.add(new Point(targetx, targety));
 
-        while(!file.isEmpty()){
-            Point p = file.poll();
-            int currentDist = distances[p.x()][p.y()];
+        queueX[tail] = targetx;
+        queueY[tail] = targety;
+        tail++;
+
+        while(head < tail){
+
+            int cx = queueX[head];
+            int cy = queueY[head];
+            head++;
+
+            int currentDist = distances[cx][cy];
 
             for(Direction dir : Direction.ALL){
-                int nx = p.x() + dir.x;
-                int ny = p.y() + dir.y;
+                int nx = cx + dir.x;
+                int ny = cy + dir.y;
 
                 if(isValid(nx, ny) && !obstacle[nx][ny]){
 
                     if(distances[nx][ny] == INFINITE_DISTANCE){
-
+                        
                         distances[nx][ny] = currentDist + 1;
 
-                        file.add(new Point(nx, ny));
+                        queueX[tail] = nx;
+                        queueY[tail] = ny;
+                        tail++;
                     }
                 }
             }
         }
     }
+    
+    /**
+     * Trouve la case vide la plus proche (BFS local).
+     * Optimisé pour ne pas utiliser d'objets Point.
+     * @return int[]{x, y} ou null
+     */
+    private int[] findNearestNonObstacle(int startX, int startY) {
+        
+        int[] qX = new int[width * height];
+        int[] qY = new int[width * height];
+        boolean[][] visited = new boolean[width][height];
+        
+        int head = 0;
+        int tail = 0;
+        
+        qX[tail] = startX;
+        qY[tail] = startY;
+        tail++;
+        visited[startX][startY] = true;
+
+        while (head < tail) {
+            int cx = qX[head];
+            int cy = qY[head];
+            head++;
+
+            // Trouvé !
+            if (!obstacle[cx][cy]) {
+                return new int[]{cx, cy};
+            }
+
+            for (Direction dir : Direction.ALL) {
+                int nx = cx + dir.x;
+                int ny = cy + dir.y;
+
+                if (isValid(nx, ny) && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    qX[tail] = nx;
+                    qY[tail] = ny;
+                    tail++;
+                }
+            }
+        }
+        return null; 
+    }
+
 }
