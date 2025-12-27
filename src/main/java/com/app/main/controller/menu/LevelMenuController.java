@@ -9,6 +9,7 @@ import com.app.main.util.Controller;
 import com.app.main.view.GameScene;
 
 import javafx.fxml.FXML;
+import javafx.scene.image.Image;
 
 public class LevelMenuController {
 
@@ -40,6 +41,8 @@ public class LevelMenuController {
 
     private void loader(String nameoffile){
         try {
+
+            // Load the level : 
             GameManager gameManager = GameManager.createFromJSON(nameoffile);
 
             Team[] loadedTeams = gameManager.getTeams();
@@ -56,11 +59,14 @@ public class LevelMenuController {
                     loadedTeams[i]
                 );
             }
+
+            //Load the image :
+            Image levelBackground = null;
             
             GamePlaylist.playLevelAudio();
 
             MenuSwitcher.switchScene(
-                new GameScene(gameManager, controllers)
+                GameScene.buildGameScene(gameManager, controllers, levelBackground)
             );
 
         } catch (Exception e) {

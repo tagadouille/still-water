@@ -61,7 +61,7 @@ public class LevelEditorController {
                 GamePlaylist.playLevelAudio();
 
                 MenuSwitcher.switchScene(
-                    new GameScene(gameManager, controllers)
+                    GameScene.buildGameScene(gameManager, controllers)
                 );
 
             } catch (Exception e) {

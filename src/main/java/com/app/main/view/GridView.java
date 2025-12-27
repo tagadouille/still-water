@@ -1,8 +1,5 @@
 package com.app.main.view;
 
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +24,7 @@ import javafx.scene.layout.StackPane;
  * are displayed
  * @author Dai Elias
  */
-public final class GridView extends StackPane implements Observable{
+final class GridView extends StackPane implements Observable{
 
     private Canvas canvas;
     private double width;
@@ -41,9 +38,11 @@ public final class GridView extends StackPane implements Observable{
 
     private AnimationTimer gameLoop;
 
+    private Image levelBackground;
+
     List<Observer> observers = new ArrayList<>();
 
-    private GridView(double width, double height, GameManager gameManager, Controller[] controllers) {
+    private GridView(double width, double height, GameManager gameManager, Controller[] controllers, Image levelBackground) {
         super();
         
         this.gameManager = gameManager;
@@ -51,6 +50,13 @@ public final class GridView extends StackPane implements Observable{
         this.height = height;
         this.canvas = new Canvas(width, height);
         this.getChildren().add(canvas);
+
+        this.levelBackground = levelBackground;
+
+        // Replacement image
+        if(this.levelBackground == null){
+            this.levelBackground = new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAANSURBVBhXY2BgYPgPAAEEAQBwIGULAAAAAElFTkSuQmCC");
+        }
 
         this.controllers = controllers;
 
@@ -76,47 +82,30 @@ public final class GridView extends StackPane implements Observable{
      * @param controllers an array of all the controllers that will be used by the players. If the first
      * element is null it's a player with a mouse.
      */
-    public static GridView createGridView(double width, double height, GameManager gameManager, Controller[] controllers){ 
+    static GridView createGridView(double width, double height, GameManager gameManager, Controller[] controllers, Image levelBackground){ 
+
         if(width <= 0 || height <= 0){
             throw new IllegalArgumentException("The size of the game zone can't be negative or null");
         }
-        if(gameManager == null){
-            throw new IllegalArgumentException("The GameManager can't be null");
-        }
-        if(controllers == null){
-            throw new IllegalArgumentException("The controller array can't be null");
-        }
-        if(controllers.length == 0){
-            throw new IllegalArgumentException("The controllers can't be empty");
-        }
-        if(gameManager.getTeams().length != controllers.length){
-            throw new IllegalArgumentException("The number of team must be the same as the number of controller");
-        }
-        Controller[] newControllers = new Controller[controllers.length];
 
-        for (int i = 0; i < controllers.length; i++) {
+        GameScene.verifyInfo(gameManager, controllers);
 
-            if(i != 0 && controllers[i] == null){
-                throw new IllegalArgumentException("A controller can't be null in the array of controller");
-            }
-            newControllers[i] = controllers[i];
-        }
-        return new GridView(width, height, gameManager, newControllers);
+        return new GridView(width, height, gameManager, controllers, levelBackground);
     }
 
-    public GameManager getGameManager() {
+    GameManager getGameManager() {
         return gameManager;
     }
 
-    public int getCurrentFps() {
+    int getCurrentFps() {
         return currentFps;
     }
 
-    public TimerHandler getTimer() {
+    TimerHandler getTimer() {
         return timer;
     }
 
-    public Canvas getCanvas() {
+    Canvas getCanvas() {
         return canvas;
     }
 
@@ -195,13 +184,8 @@ public final class GridView extends StackPane implements Observable{
      * @param gc the GraphicsContext of the canva
      */
     private void render(GraphicsContext gc) {
-        try{
-            gc.drawImage(new Image(Files.newInputStream(Paths.get("src/main/resources/com/app/image/john_pork.jpg"))), 0, 0, width, width);
-        }catch(IOException e){
 
-        }
-
-        gc.fillRect(0, 0, width, height);
+        gc.drawImage(levelBackground, 0, 0, width, height);
         
         for (Team team : gameManager.getTeams()) {
             ParticleView.renderParticles(gc, team, width, height);

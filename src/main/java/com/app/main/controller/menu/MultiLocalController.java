@@ -69,7 +69,7 @@ public class MultiLocalController {
 
             GamePlaylist.playLevelAudio();
 
-            MenuSwitcher.switchScene(new GameScene(gm, controllers));
+            MenuSwitcher.switchScene(GameScene.buildGameScene(gm, controllers));
 
         } catch (Exception e) {
             System.err.println("Erreur création partie custom : " + e.getMessage());
