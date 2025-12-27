@@ -122,7 +122,7 @@ public class TeamEditorController {
                 FileGenerator.createFileGenerator(gameLevel).createfile(filename);
 
                 // Copy of the background level image at the path where the level were saved :
-                copyFile(fileWrapper.backgroundImage, Path.of("levels")); //TODO changer le chemin
+                copyFile(fileWrapper.backgroundImage, Path.of("editorimages"));
             }
             catch(IOException ex){
                 Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
