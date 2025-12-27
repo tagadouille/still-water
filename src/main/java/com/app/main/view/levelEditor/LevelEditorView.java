@@ -9,6 +9,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.Node; // ajouter en tête du fichier si nécessaire
+
 
 public final class LevelEditorView extends Scene {
 
@@ -141,5 +143,14 @@ public final class LevelEditorView extends Scene {
 
     public Button getChooseObstacleBtn() {
         return chooseObstacleBtn;
+    }
+
+    public HBox getRootContainer() {
+        return root;
+    }
+
+    public void addLeftNode(Node node) {
+        if (node == null) throw new IllegalArgumentException("node can't be null");
+        root.getChildren().add(0, node);
     }
 }
