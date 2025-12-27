@@ -53,11 +53,6 @@ final class GridView extends StackPane implements Observable{
 
         this.levelBackground = levelBackground;
 
-        // Replacement image
-        if(this.levelBackground == null){
-            this.levelBackground = new Image("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAANSURBVBhXY2BgYPgPAAEEAQBwIGULAAAAAElFTkSuQmCC");
-        }
-
         this.controllers = controllers;
 
         // Initialisation of the team array of the bots
@@ -185,7 +180,13 @@ final class GridView extends StackPane implements Observable{
      */
     private void render(GraphicsContext gc) {
 
-        gc.drawImage(levelBackground, 0, 0, width, height);
+        if(levelBackground != null) {
+            gc.drawImage(levelBackground, 0, 0, width, height);
+        }
+        else{
+            gc.setFill(javafx.scene.paint.Color.WHITE);
+            gc.fillRect(0, 0, width, height);
+        }
         
         for (Team team : gameManager.getTeams()) {
             ParticleView.renderParticles(gc, team, width, height);
