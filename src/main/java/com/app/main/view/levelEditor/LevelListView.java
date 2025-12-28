@@ -12,11 +12,13 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-public class LevelListView extends ScrollPane {
+public final class LevelListView extends ScrollPane {
 
     private final VBox container = new VBox(6);
     private Path levelsDir;
     private Consumer<Path> onLevelSelected;
+    private static final int VISIBLE_LEVELS = 3;
+    private static final double BUTTON_HEIGHT = 48.0;
 
     public LevelListView() {
         this(Paths.get(System.getProperty("user.dir")).resolve("editorlevels"));
@@ -26,6 +28,12 @@ public class LevelListView extends ScrollPane {
         this.levelsDir = levelsDir;
         setFitToWidth(true);
         container.setPadding(new Insets(8));
+        double totalHeight = container.getPadding().getTop()
+                + container.getPadding().getBottom()
+                + container.getSpacing() * (VISIBLE_LEVELS - 1)
+                + VISIBLE_LEVELS * BUTTON_HEIGHT;
+        setPrefHeight(totalHeight);
+        setMaxHeight(totalHeight);
         setContent(container);
         refresh();
     }
@@ -54,6 +62,8 @@ public class LevelListView extends ScrollPane {
                           String name = stripExtension(p.getFileName().toString());
                           Button btn = new Button(name);
                           btn.setMaxWidth(Double.MAX_VALUE);
+                              btn.setPrefHeight(BUTTON_HEIGHT);
+                              btn.setStyle("-fx-font-size:14px;");
                           btn.getStyleClass().add("level-item");
                           btn.setOnAction(e -> {
                               if (onLevelSelected != null) onLevelSelected.accept(p);
