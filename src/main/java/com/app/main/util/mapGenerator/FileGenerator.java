@@ -30,9 +30,9 @@ public final class FileGenerator{
         return new FileGenerator(gameLevel);
     }
 
-    public void createfile(String nameoffile) throws IOException{
+    public void createfile(String nameoffile, String backgroundFilename) throws IOException{
         try{
-            JSONFileManager writer = new JSONFileManager("levels/" + nameoffile + ".json");
+            JSONFileManager writer = new JSONFileManager("editorlevels/" + nameoffile + ".json");
             writer.create();
 
             List<List<Boolean>> obst = new ArrayList<>();
@@ -72,7 +72,8 @@ public final class FileGenerator{
                 teams.add(team);
             }
             writer.writeLine("team", teams);
-            
+
+            writer.writeLine("backgroundImage", backgroundFilename);
 
         }catch(Exception e){
             e.printStackTrace();

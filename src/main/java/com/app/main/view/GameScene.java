@@ -6,6 +6,7 @@ import com.app.main.util.Controller;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 
 /**
@@ -28,7 +29,7 @@ public final class GameScene extends Scene {
      * @param controllers an array of all the controllers that will be used by the players. If the first
      * element is null it's a player with a mouse.
      */
-    public GameScene(GameManager gameManager, Controller[] controllers) {
+    private GameScene(GameManager gameManager, Controller[] controllers, Image levelBackground) {
         super(new HBox(), width, height);
 
         //Calculation for the proper canva size and the proper factor
@@ -42,7 +43,7 @@ public final class GameScene extends Scene {
         xFactor = canvaWidth / (double) GameManager.GRID_DIM;
         yFactor = canvaHeight / (double) GameManager.GRID_DIM;
 
-        GridView gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager, controllers);
+        GridView gridview = GridView.createGridView(canvaWidth, canvaHeight, gameManager, controllers, levelBackground);
         
         int rightPaneWidth = (int) Math.max(0, (int) width - canvaWidth);
 
@@ -61,6 +62,65 @@ public final class GameScene extends Scene {
         ((HBox) this.getRoot()).setSpacing(0);
         ((HBox) this.getRoot()).setPadding(Insets.EMPTY);
         ((HBox) this.getRoot()).getChildren().addAll(gridview, gameInfoView);
+    }
+
+    /**
+     * Static fabric that create a new instance of GameScene
+     * @param gameManager the gameManager
+     * @param controllers all the players controllers
+     * @param levelBackground the background of the level
+     * @return a new instance of GameScene
+     */
+    public static GameScene buildGameScene(GameManager gameManager, Controller[] controllers, Image levelBackground){
+
+        verifyInfo(gameManager, controllers);
+
+        return new GameScene(gameManager, controllers, levelBackground);
+    }
+
+    /**
+     * Static fabric that create a new instance of GameScene but with no background image
+     * @param gameManager the gameManager
+     * @param controllers all the players controllers
+     * @return a new instance of GameScene
+     */
+    public static GameScene buildGameScene(GameManager gameManager, Controller[] controllers){
+
+        verifyInfo(gameManager, controllers);
+
+        return new GameScene(gameManager, controllers, null);
+    }
+
+    /**
+     * Verify the validity of the parameters for creating a view for a game
+     * @param gameManager gameManager
+     * @param controllers all the players controllers
+     * @param levelBackground the background of the level
+     */
+    public static void verifyInfo(GameManager gameManager, Controller[] controllers){
+
+        if(gameManager == null){
+            throw new IllegalArgumentException("The GameManager can't be null");
+        }
+
+        if(controllers == null){
+            throw new IllegalArgumentException("The controller array can't be null");
+        }
+
+        if(controllers.length == 0){
+            throw new IllegalArgumentException("The controllers can't be empty");
+        }
+
+        if(gameManager.getTeams().length != controllers.length){
+            throw new IllegalArgumentException("The number of team must be the same as the number of controller");
+        }
+
+        for (int i = 0; i < controllers.length; i++) {
+
+            if(i != 0 && controllers[i] == null){
+                throw new IllegalArgumentException("A controller can't be null in the array of controller");
+            }
+        }
     }
 
     public static double getScreenWidth() {

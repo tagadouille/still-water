@@ -122,10 +122,10 @@ final class TeamEditorController {
             GameLevel gameLevel = new GameLevel(obstacles, teamCanvasController.getTeamConfig());
 
             try{
-                FileGenerator.createFileGenerator(gameLevel).createfile(filename);
+                FileGenerator.createFileGenerator(gameLevel).createfile(filename, fileWrapper.getBackgroundImage().getName());
 
                 // Copy of the background level image at the path where the level were saved :
-                ImageUtil.copyFile(fileWrapper.getBackgroundImage(), Path.of("levels")); //TODO changer le chemin
+                ImageUtil.copyFile(fileWrapper.getBackgroundImage(), Path.of("editorimages"));
             }
             catch(IOException ex){
 

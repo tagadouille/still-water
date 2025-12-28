@@ -1,5 +1,6 @@
 package com.app.main.controller.menu;
 
+import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.KeyboardController;
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameManager;
@@ -66,7 +67,9 @@ public class MultiLocalController {
                 controllers[i] = new BotController(GameManager.GRID_DIM, GameManager.GRID_DIM, teams[i]);
             }
 
-            MenuSwitcher.switchScene(new GameScene(gm, controllers));
+            GamePlaylist.playLevelAudio();
+
+            MenuSwitcher.switchScene(GameScene.buildGameScene(gm, controllers));
 
         } catch (Exception e) {
             System.err.println("Erreur création partie custom : " + e.getMessage());

@@ -13,6 +13,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
+import javafx.scene.Node; // ajouter en tête du fichier si nécessaire
+
 
 /**
  * The LevelEditorView represents the first page of the level editor.
@@ -186,6 +188,14 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
         Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect 💀🙏✌️🎋💔", ButtonType.OK);
         wrongImage.setHeaderText("☣️☣️☣️Something wents wrong..☣️☣️☣️");
         wrongImage.showAndWait();
+    }
         
+    public HBox getRootContainer() {
+        return root;
+    }
+
+    public void addLeftNode(Node node) {
+        if (node == null) throw new IllegalArgumentException("node can't be null");
+        root.getChildren().add(0, node);
     }
 }

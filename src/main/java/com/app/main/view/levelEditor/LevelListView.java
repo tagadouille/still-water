@@ -1,0 +1,83 @@
+package com.app.main.view.levelEditor;
+
+import javafx.application.Platform;
+import javafx.geometry.Insets;
+import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
+
+import java.io.IOException;
+import java.nio.file.*;
+import java.util.Comparator;
+import java.util.function.Consumer;
+import java.util.stream.Stream;
+
+public final class LevelListView extends ScrollPane {
+
+    private final VBox container = new VBox(6);
+    private Path levelsDir;
+    private Consumer<Path> onLevelSelected;
+    private static final int VISIBLE_LEVELS = 3;
+    private static final double BUTTON_HEIGHT = 48.0;
+
+    public LevelListView() {
+        this(Paths.get(System.getProperty("user.dir")).resolve("editorlevels"));
+    }
+
+    public LevelListView(Path levelsDir) {
+        this.levelsDir = levelsDir;
+        setFitToWidth(true);
+        container.setPadding(new Insets(8));
+        double totalHeight = container.getPadding().getTop()
+                + container.getPadding().getBottom()
+                + container.getSpacing() * (VISIBLE_LEVELS - 1)
+                + VISIBLE_LEVELS * BUTTON_HEIGHT;
+        setPrefHeight(totalHeight);
+        setMaxHeight(totalHeight);
+        setContent(container);
+        refresh();
+    }
+
+    public void setLevelsDirectory(Path dir) {
+        if (dir == null) throw new IllegalArgumentException("dir can't be null");
+        this.levelsDir = dir;
+        refresh();
+    }
+
+    public void setOnLevelSelected(Consumer<Path> callback) {
+        this.onLevelSelected = callback;
+    }
+
+    public void refresh() {
+        Platform.runLater(() -> {
+            container.getChildren().clear();
+            if (levelsDir == null) return;
+            if (!Files.exists(levelsDir) || !Files.isDirectory(levelsDir)) return;
+
+            try (Stream<Path> stream = Files.list(levelsDir)) {
+                stream.filter(p -> !Files.isDirectory(p))
+                      .filter(p -> p.getFileName().toString().toLowerCase().endsWith(".json"))
+                      .sorted(Comparator.comparing(Path::getFileName))
+                      .forEach(p -> {
+                          String name = stripExtension(p.getFileName().toString());
+                          Button btn = new Button(name);
+                          btn.setMaxWidth(Double.MAX_VALUE);
+                              btn.setPrefHeight(BUTTON_HEIGHT);
+                              btn.setStyle("-fx-font-size:14px;");
+                          btn.getStyleClass().add("level-item");
+                          btn.setOnAction(e -> {
+                              if (onLevelSelected != null) onLevelSelected.accept(p);
+                          });
+                          container.getChildren().add(btn);
+                      });
+            } catch (IOException e) {
+                // silently ignore here; consuming code may provide logging if needed
+            }
+        });
+    }
+
+    private String stripExtension(String s) {
+        int i = s.lastIndexOf('.');
+        return (i > 0) ? s.substring(0, i) : s;
+    }
+}
