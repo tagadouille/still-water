@@ -82,6 +82,8 @@ public final class TeamCanvas extends Canvas {
 
     private Image background;
 
+    private final boolean[] isColorTaken = new boolean[com.app.main.model.core.Color.values().length - 1];
+
     /**
      * The constructor of the class that initialize the Canvas
      */
@@ -154,7 +156,17 @@ public final class TeamCanvas extends Canvas {
             return false;
         }
 
-        Color tmp = ParticleView.getTeamColor(com.app.main.model.core.Color.values()[rectangles.size()]);
+        Color tmp = Color.WHITE;
+
+        // Determine the non taken color :
+        for (int i = 0; i < isColorTaken.length; i++) {
+            
+            if(!isColorTaken[i]){
+                isColorTaken[i] = true;
+                tmp = ParticleView.getTeamColor(com.app.main.model.core.Color.values()[i]);
+                break;
+            }
+        }
         
         Color color = new Color(tmp.getRed(), tmp.getGreen(), tmp.getBlue(), tmp.getOpacity() * 0.75);
 
@@ -172,6 +184,7 @@ public final class TeamCanvas extends Canvas {
     public void removeTeamRectangle(TeamRectangle teamRectangle){
 
         if(rectangles.size() != 0 && teamRectangle != null){
+            isColorTaken[rectangles.indexOf(teamRectangle)] = false;
             rectangles.remove(teamRectangle);
             draw();
         }
