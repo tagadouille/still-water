@@ -76,7 +76,7 @@ public final class FileGenerator{
             }
             writer.writeLine("team", teams);
 
-            writer.writeLine("backgroundImage", backgroundFilename);
+            writer.writeLine("background", backgroundFilename);
 
         }catch(Exception e){
             e.printStackTrace();

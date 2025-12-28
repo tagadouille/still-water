@@ -192,6 +192,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
                     "Save only if you click on \"verify\" and if you are sure of what you did"
             );
             warningText.setFont(Font.font("System Italic", 16));
+            warningText.setFill(Color.WHITE);
 
             this.getChildren().addAll(
                     rightTitle,
@@ -226,6 +227,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
             teamSlider = new Slider();
             teamSlider.setShowTickMarks(true);
+            
 
             removeTeamBtn = new Button("Remove the selected team");
             removeTeamBtn.setFont(BUTTON_FONT);

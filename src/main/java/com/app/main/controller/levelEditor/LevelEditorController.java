@@ -3,16 +3,20 @@ package com.app.main.controller.levelEditor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.app.main.Game;
 import com.app.main.audio.GamePlaylist;
+import com.app.main.controller.ControllerInit;
 import com.app.main.controller.menu.MenuSwitcher;
 import com.app.main.controller.playercontroller.MouseController;
-import com.app.main.controller.playercontroller.botController.BotController;
+import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
 import com.app.main.util.ImageUtil;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.LevelListView;
@@ -29,7 +33,7 @@ import javafx.stage.FileChooser;
  * @see LevelEditorView
  * @author Dai Elias
  */
-public final class LevelEditorController {
+public final class LevelEditorController implements ControllerInit{
     
     private LevelEditorView levelEditorView;
     private FileWrapper fileWrapper = new FileWrapper();
@@ -41,32 +45,24 @@ public final class LevelEditorController {
         imageSelectBehavior();
         buttonBehavior();
 
-        //TODO Mettre ça autre part
-        /*LevelListView list = new LevelListView();
+        LevelListView list = new LevelListView();
         list.setPrefWidth(220);
         list.setOnLevelSelected(path -> {
             try {
-                GameManager gameManager = GameManager.createFromJSON(path.toString());
+                GameLevel gameLevel = GameLevelLoader.load(path.toString());
 
-                Team[] loadedTeams = gameManager.getTeams();
-                int nbTeams = loadedTeams.length;
+                GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-                Controller[] controllers = new Controller[nbTeams];
+                Controller[] controllers = initializeControllers(gameLevel, gameManager.getTeams());
 
-                controllers[0] = MouseController.createMouseController(loadedTeams[0]);
+                System.out.println(gameLevel.backgroundImageFilename);
 
-                for (int i = 1; i < nbTeams; i++) {
-                    controllers[i] = new BotController(
-                        gameManager.getWidth(),
-                        gameManager.getHeight(),
-                        loadedTeams[i]
-                    );
-                }
+                Image background = new Image(Files.newInputStream(Paths.get("editorimages/"+ gameLevel.backgroundImageFilename)));
 
                 GamePlaylist.playLevelAudio();
 
                 MenuSwitcher.switchScene(
-                    GameScene.buildGameScene(gameManager, controllers)
+                    GameScene.buildGameScene(gameManager, controllers, background)
                 );
 
             } catch (Exception e) {
@@ -74,7 +70,7 @@ public final class LevelEditorController {
                 e.printStackTrace();
             }
         });
-        levelEditorView.getRootContainer().getChildren().add(0, list);*/
+        levelEditorView.getRootContainer().getChildren().add(0, list);
     }
 
     /**
@@ -167,5 +163,11 @@ public final class LevelEditorController {
         });
 
         levelEditorView.getCancelBtn().setOnAction((e) -> MenuSwitcher.switchScene("MainMenu.fxml"));
+    }
+
+    @Override
+    public int initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
+        controllers[0] = MouseController.createMouseController(loadedTeams[0]);
+        return 1;
     }
 }

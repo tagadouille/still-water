@@ -16,3 +16,24 @@ Button:hover {
     -fx-background-position: center;
     -fx-background-repeat: repeat;
 }
+
+Slider .track {
+    -fx-background-color: linear-gradient(to right, #00078b, #1e0030);
+    -fx-background-radius: 5;
+}
+
+Slider .thumb {
+    -fx-background-color: #880000;
+    -fx-background-radius: 10;
+    -fx-padding: 10;
+}
+
+
+Slider .axis {
+    -fx-tick-mark-fill: white;
+}
+
+Slider .axis .tick-label {
+    -fx-fill: white;
+    -fx-font-weight: bold;
+}

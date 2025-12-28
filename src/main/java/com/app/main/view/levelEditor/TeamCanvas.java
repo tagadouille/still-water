@@ -150,7 +150,7 @@ public final class TeamCanvas extends Canvas {
             throw new IllegalArgumentException("The surface of the rectangle must be equal to GameManager.NB_CELL");
         }
 
-        if(com.app.main.model.core.Color.values().length <= rectangles.size() + 1){
+        if(com.app.main.model.core.Color.values().length - 1 < rectangles.size() + 1){
             return false;
         }
 
@@ -158,7 +158,7 @@ public final class TeamCanvas extends Canvas {
         
         Color color = new Color(tmp.getRed(), tmp.getGreen(), tmp.getBlue(), tmp.getOpacity() * 0.75);
 
-        TeamRectangle rectangle = new TeamRectangle(0, 0, sizeX, sizeY, color);
+        TeamRectangle rectangle = new TeamRectangle(GameManager.GRID_DIM/2, GameManager.GRID_DIM/2, sizeX, sizeY, color);
         rectangles.add(rectangle);
         draw();
 
