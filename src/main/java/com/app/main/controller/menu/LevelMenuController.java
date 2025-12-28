@@ -1,15 +1,17 @@
 package com.app.main.controller.menu;
 
-import java.io.File;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.controller.playercontroller.botController.BotController;
+import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 
 import javafx.fxml.FXML;
@@ -46,7 +48,9 @@ public class LevelMenuController {
         try {
 
             // Load the level : 
-            GameManager gameManager = GameManager.createFromJSON("levels/" + nameoffile + ".json");
+            GameLevel gameLevel = GameLevelLoader.load("levels/" + nameoffile + ".json");
+
+            GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
             Team[] loadedTeams = gameManager.getTeams();
             int nbTeams = loadedTeams.length;
@@ -64,7 +68,8 @@ public class LevelMenuController {
             }
 
             //Load the image :
-            Image levelBackground = levelImageLoader(nameoffile);
+            System.out.println(gameLevel.backgroundImageFilename); //! <-- null
+            Image levelBackground = new Image(Files.newInputStream(Paths.get("levelimages/"+ gameLevel.backgroundImageFilename)));
             
             GamePlaylist.playLevelAudio();
 
@@ -72,33 +77,9 @@ public class LevelMenuController {
                 GameScene.buildGameScene(gameManager, controllers, levelBackground)
             );
 
-        } catch (Exception e) {
+        } catch (Exception e ) {
             System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
             e.printStackTrace();
-        }
-    }
-
-    private Image levelImageLoader(String nameoffile) {
-        
-        String[] imageType = {"png", "jpg", "jpeg", "gif", "bmp"};
-
-        String imgPath = nameoffile;
-
-        for (int i = 0; i < imageType.length; i++) {
-            
-            String tmp = "levelimages/" + imgPath + "." + imageType[i];
-
-            if(new File(tmp).exists()){
-                imgPath = tmp;
-                break;
-            }
-        }
-
-        try {
-            Image ret = new Image(Files.newInputStream(Paths.get(imgPath)));
-            return ret;
-        } catch (Exception e) {
-            return null;
         }
     }
 

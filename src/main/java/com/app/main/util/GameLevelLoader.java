@@ -60,10 +60,9 @@ public class GameLevelLoader {
             }
         }
 
-        // TODO String bgFilename = (String) json.read("background");
-        // TODO String obstacleFilename = (String) json.read("obstacle"); Quand le Manager est adapté pour charger les images de chaque mode.
+        String bgFilename = (String) json.read("background");
        
-        return new GameLevel(obstacles, teamConfigs);
+        return new GameLevel(obstacles, teamConfigs, bgFilename);
     }
 
     private static Color parseColor(String s) {

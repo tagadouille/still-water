@@ -41,7 +41,8 @@ public final class LevelEditorController {
         imageSelectBehavior();
         buttonBehavior();
 
-        LevelListView list = new LevelListView();
+        //TODO Mettre ça autre part
+        /*LevelListView list = new LevelListView();
         list.setPrefWidth(220);
         list.setOnLevelSelected(path -> {
             try {
@@ -73,7 +74,7 @@ public final class LevelEditorController {
                 e.printStackTrace();
             }
         });
-        levelEditorView.getRootContainer().getChildren().add(0, list);
+        levelEditorView.getRootContainer().getChildren().add(0, list);*/
     }
 
     /**

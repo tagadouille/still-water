@@ -265,9 +265,16 @@ public final class GameManager {
         }
     }
 
-    public static GameManager createFromJSON(String jsonPath) {
+    /**
+     * Create an instance of GameManager from a GameLevel instance
+     * @param level the GameLevel instance
+     * @return an instance of GameManager
+     */
+    public static GameManager createFromJSON(GameLevel level) {
 
-        GameLevel level = GameLevelLoader.load(jsonPath);
+        if(level == null){
+            throw new IllegalArgumentException("The gamelevel can't be null");
+        }
 
         int nbTeams = level.teamsInfo.size();
         Team[] teams = new Team[nbTeams];
@@ -283,8 +290,8 @@ public final class GameManager {
                 level.width, 
                 level.height, 
                 level.obstacles
-                );
-            }
-            return GameManager.gameManagerFactory(level.obstacles, teams, spawns);
+            );
         }
+        return GameManager.gameManagerFactory(level.obstacles, teams, spawns);
+    }
 }

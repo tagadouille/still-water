@@ -15,7 +15,6 @@ public class GameLevel {
     public final List<TeamConfig> teamsInfo;
 
     public final String backgroundImageFilename;
-    public final String obstacleImageFilename;
 
     public GameLevel(boolean[][] obstacles, List<TeamConfig> teamsInfo) {
         this.obstacles = obstacles;
@@ -23,16 +22,14 @@ public class GameLevel {
         this.height = obstacles[0].length;
         this.teamsInfo = teamsInfo;
         this.backgroundImageFilename = null;
-        this.obstacleImageFilename = null;
     }
 
-    public GameLevel(boolean[][] obstacles, List<TeamConfig> teamsInfo, String backgroundImageFilename, String obstacleImageFilename) {
+    public GameLevel(boolean[][] obstacles, List<TeamConfig> teamsInfo, String backgroundImageFilename) {
         this.obstacles = obstacles;
         this.width = obstacles.length;
         this.height = obstacles[0].length;
         this.teamsInfo = teamsInfo;
         this.backgroundImageFilename = backgroundImageFilename;
-        this.obstacleImageFilename = obstacleImageFilename;
     }
 
     public int getHeight() {
