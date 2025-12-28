@@ -77,8 +77,12 @@ final class TeamEditorController {
             MenuSwitcher.switchScene(obstacleEditorView);
         });
 
-        teamEditorView.getPlaceTeamBtn().setOnAction((e) -> {
-            teamCanvasController.addTeamRectangle();
+        teamEditorView.getPlaceBotBtn().setOnAction((e) -> {
+            teamCanvasController.addBotRectangle();
+        });
+
+        teamEditorView.getPlacePlayerBtn().setOnAction((e) -> {
+            teamCanvasController.addPlayerRectangle();
         });
     }
 

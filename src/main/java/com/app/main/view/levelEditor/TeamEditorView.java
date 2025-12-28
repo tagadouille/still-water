@@ -24,7 +24,8 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
     private HBox root;
     
-    private Button placeTeamBtn;
+    private Button placeBotBtn;
+    private Button placePlayerBtn;
     private Button goBackBtn;
 
     private TeamCanvas teamCanvas;
@@ -68,8 +69,11 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
         teamCanvas = new TeamCanvas();
 
-        placeTeamBtn = new Button("Place a team");
-        placeTeamBtn.setFont(BUTTON_FONT);
+        placeBotBtn = new Button("Place a bot");
+        placeBotBtn.setFont(BUTTON_FONT);
+
+        placePlayerBtn = new Button("Place a player");
+        placePlayerBtn.setFont(BUTTON_FONT);
 
         goBackBtn = new Button("Go Back");
         goBackBtn.setFont(BUTTON_FONT);
@@ -77,7 +81,8 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
         leftVBox.getChildren().addAll(
                 leftTitle,
                 teamCanvas,
-                placeTeamBtn,
+                placePlayerBtn,
+                placeBotBtn,
                 goBackBtn
         );
 
@@ -94,8 +99,12 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
         return goBackBtn;
     }
 
-    public Button getPlaceTeamBtn() {
-        return placeTeamBtn;
+    public Button getPlaceBotBtn() {
+        return placeBotBtn;
+    }
+
+    public Button getPlacePlayerBtn() {
+        return placePlayerBtn;
     }
 
     public EditTeamBox getEditTeamBox() {

@@ -69,6 +69,9 @@ public final class FileGenerator{
 
                 team.put("pos", pos);
 
+                // The type of the team :
+                team.put("isPlayer", config.isPlayer);
+
                 teams.add(team);
             }
             writer.writeLine("team", teams);

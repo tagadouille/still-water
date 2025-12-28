@@ -56,7 +56,9 @@ public class GameLevelLoader {
                     rawPos.get(1).get(1)
                 );
 
-                teamConfigs.add(new GameLevel.TeamConfig(color, spawnPoints));
+                Boolean isPlayer = (Boolean) tData.get("isPlayer");
+
+                teamConfigs.add(new GameLevel.TeamConfig(color, spawnPoints, isPlayer));
             }
         }
 

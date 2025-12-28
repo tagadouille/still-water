@@ -48,10 +48,12 @@ public class GameLevel {
     public static class TeamConfig {
         public final Color color;
         public final Point[] spawnArea;
+        public final boolean isPlayer;
 
-        public TeamConfig(Color color, Point[] spawnArea) {
+        public TeamConfig(Color color, Point[] spawnArea, boolean isPlayer) {
             this.color = color;
             this.spawnArea = spawnArea;
+            this.isPlayer = isPlayer;
         }
     }
 }

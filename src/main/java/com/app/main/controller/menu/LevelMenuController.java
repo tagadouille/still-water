@@ -1,7 +1,6 @@
 package com.app.main.controller.menu;
 
 import java.nio.file.Files;
-import java.nio.file.NoSuchFileException;
 import java.nio.file.Paths;
 
 import com.app.main.audio.GamePlaylist;
@@ -57,6 +56,7 @@ public class LevelMenuController {
 
             Controller[] controllers = new Controller[nbTeams];
 
+            //TODO création des controllers
             controllers[0] = MouseController.createMouseController(loadedTeams[0]);
 
             for (int i = 1; i < nbTeams; i++) {
@@ -68,7 +68,6 @@ public class LevelMenuController {
             }
 
             //Load the image :
-            System.out.println(gameLevel.backgroundImageFilename); //! <-- null
             Image levelBackground = new Image(Files.newInputStream(Paths.get("levelimages/"+ gameLevel.backgroundImageFilename)));
             
             GamePlaylist.playLevelAudio();

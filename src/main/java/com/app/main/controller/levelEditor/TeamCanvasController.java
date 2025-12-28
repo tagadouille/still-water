@@ -1,6 +1,7 @@
 package com.app.main.controller.levelEditor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.app.main.model.GameLevel.TeamConfig;
@@ -27,6 +28,12 @@ class TeamCanvasController {
     private double offsetX, offsetY;
 
     private final boolean[][] obstacles;
+
+    /**
+     * Key : a pointer to a team rectangle
+     * value : a boolean -> true : the team rectangle is a player, false : it's a bot
+     */
+    private final HashMap<TeamRectangle, Boolean> isPlayers = new HashMap<>();
 
     private TeamCanvasController(TeamCanvas canvas, boolean[][] obstacles){
 
@@ -86,9 +93,31 @@ class TeamCanvasController {
     }
 
     /**
-     * Add a team rectangle to the TeamCanvas
+     * Add a bot team spawn point
      */
-    public void addTeamRectangle(){
+    void addBotRectangle(){
+        
+        if(this.addTeamRectangle()){
+            isPlayers.put(selectedRectangle, false);
+        }
+    }
+
+    /**
+     * Add a player team spawn point
+     */
+    void addPlayerRectangle(){
+
+        if(this.addTeamRectangle()){
+            isPlayers.put(selectedRectangle, true);
+        }
+
+    }
+
+    /**
+     * Add a team rectangle to the TeamCanvas
+     * @return true if a team rectangle were really added, false otherwise
+     */
+    private boolean addTeamRectangle(){
 
         int[] size = TeamEditorController.rectanglesForSurface()[0];
 
@@ -96,9 +125,10 @@ class TeamCanvasController {
             Alert add = new Alert(AlertType.WARNING, "You can't add more teams 🤣🫵", ButtonType.CLOSE);
             add.setHeaderText("Something happends 🥀💔");
             add.showAndWait();
-            return;
+            return false;
         }
         this.selectedRectangle = teamCanvas.getRectangles().getLast();
+        return true;
     }
 
     /**
@@ -106,6 +136,7 @@ class TeamCanvasController {
      */
     public void removeTeamRectangle(){
         teamCanvas.removeTeamRectangle(this.selectedRectangle);
+        isPlayers.remove(this.selectedRectangle);
     }
 
     /**
@@ -202,7 +233,7 @@ class TeamCanvasController {
                 (int) (rectangle.getY() + rectangle.getSizeY())
             );
 
-            ret.add(new TeamConfig(Color.values()[i], spawnArea));
+            ret.add(new TeamConfig(Color.values()[i], spawnArea, isPlayers.get(rectangle)));
         }
         return ret;
     }
