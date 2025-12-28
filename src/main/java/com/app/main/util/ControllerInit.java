@@ -1,10 +1,9 @@
-package com.app.main.controller;
+package com.app.main.util;
 
 import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameLevel;
 import com.app.main.model.GameLevel.TeamConfig;
 import com.app.main.model.core.Team;
-import com.app.main.util.Controller;
 
 /**
  * The interface ControllerInit must be used to initialize controller
@@ -17,10 +16,8 @@ public interface ControllerInit {
     /**
      * Initialize the  player controllers
      * @param controllers the controllers to initialize
-     * @return the position of the array where the bot starts to appear. If there's no
-     * bot that int must be the same as controllers.length.
      */
-    public int initializePlayerControllers(Controller[] controllers, Team[] loadedTeams);
+    public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams);
 
     /**
      * Initialize the controllers for a level
@@ -48,10 +45,10 @@ public interface ControllerInit {
 
         Controller[] controllers = new Controller[nbTeams];
 
-        int botOffset = initializePlayerControllers(controllers, loadedTeams);
+        initializePlayerControllers(controllers, loadedTeams);
 
         // Loading of the bot controllers :
-        for (int i = botOffset; i < nbTeams; i++) {
+        for (int i = 0; i < nbTeams; i++) {
 
             TeamConfig teamConfig = gameLevel.getTeamsInfo().get(i);
 

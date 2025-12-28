@@ -8,7 +8,6 @@ import java.nio.file.Paths;
 
 import com.app.main.Game;
 import com.app.main.audio.GamePlaylist;
-import com.app.main.controller.ControllerInit;
 import com.app.main.controller.menu.MenuSwitcher;
 import com.app.main.controller.playercontroller.MouseController;
 import com.app.main.model.GameLevel;
@@ -16,6 +15,7 @@ import com.app.main.model.GameManager;
 import com.app.main.util.ImageUtil;
 import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.util.ControllerInit;
 import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 import com.app.main.view.levelEditor.LevelEditorView;
@@ -166,8 +166,7 @@ public final class LevelEditorController implements ControllerInit{
     }
 
     @Override
-    public int initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
+    public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
         controllers[0] = MouseController.createMouseController(loadedTeams[0]);
-        return 1;
     }
 }

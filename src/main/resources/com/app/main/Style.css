@@ -1,5 +1,8 @@
 GridPane, .bg {
-    -fx-background-color: black;
+    -fx-background-image: url("../image/logo.png");
+    -fx-background-size: cover;
+    -fx-background-position: center;
+    -fx-background-repeat: no-repeat;
 }
 
 Button {

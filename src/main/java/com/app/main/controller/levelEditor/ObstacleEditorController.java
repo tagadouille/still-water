@@ -34,7 +34,7 @@ final class ObstacleEditorController {
      * @param fileWrapper the fileWrapper that contains the obstacle map and the background of the level
      * @return a new instance of the class
      */
-    public static ObstacleEditorController buildEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
+    static ObstacleEditorController buildEditorController(ObstacleEditorView obstacleEditorView, FileWrapper fileWrapper){
 
         // Verification of the validity of the parameters
         if(obstacleEditorView == null){

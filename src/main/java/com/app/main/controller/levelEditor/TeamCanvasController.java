@@ -80,7 +80,7 @@ class TeamCanvasController {
      * @param obstacles
      * @return
      */
-    public static TeamCanvasController buildCanvasController(TeamCanvas canvas, boolean[][] obstacles){
+    static TeamCanvasController buildCanvasController(TeamCanvas canvas, boolean[][] obstacles){
 
         if(canvas == null){
             throw new IllegalArgumentException("The TeamCanvas can't be null");
@@ -135,7 +135,7 @@ class TeamCanvasController {
     /**
      * Remove a team rectangle to the TeamCanvas
      */
-    public void removeTeamRectangle(){
+    void removeTeamRectangle(){
         teamCanvas.removeTeamRectangle(this.selectedRectangle);
         isPlayers.remove(this.selectedRectangle);
     }
@@ -145,7 +145,7 @@ class TeamCanvasController {
      * They must be in the canvas, not overlapping an obstacle or another team spawn points
      * @return
      */
-    public boolean verifyOverlapping() {
+    boolean verifyOverlapping() {
 
         //If there's at least 2 spawnpoint
         if(teamCanvas.getRectangles().size() < 2){
@@ -202,7 +202,7 @@ class TeamCanvasController {
      * @param sizeX the new size on the x axis
      * @param sizeY the new size on the y axis
      */
-    public void updateRectangleSize(int sizeX, int sizeY){
+    void updateRectangleSize(int sizeX, int sizeY){
 
         if(this.selectedRectangle != null){
             selectedRectangle.setSizeX(sizeX);
@@ -217,7 +217,7 @@ class TeamCanvasController {
      * @return The list of TeamConfig
      * @see TeamConfig
      */
-    public List<TeamConfig> getTeamConfig(){
+    List<TeamConfig> getTeamConfig(){
 
         List<TeamConfig> ret = new ArrayList<>();
         
