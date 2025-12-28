@@ -2,6 +2,7 @@ package com.app.main.controller.playercontroller.botController;
 
 import java.util.Random;
 
+import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
 import com.app.main.util.BotStrategy;
 import com.app.main.util.Controller;
@@ -36,9 +37,9 @@ public final class BotController implements Controller{
      * @param mapWidth Largeur de la carte.
      * @param mapHeight Hauteur de la carte.
      */
-    public BotController(int mapWidth, int mapHeight, Team team) {
-        this.mapWidth = mapWidth;
-        this.mapHeight = mapHeight;
+    public BotController(Team team) {
+        this.mapWidth = GameManager.GRID_DIM;
+        this.mapHeight = GameManager.GRID_DIM;
 
         this.team = team;
         this.targetPos = new Point2D(mapWidth / 2, mapHeight / 2);

@@ -4,8 +4,8 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.app.main.audio.GamePlaylist;
+import com.app.main.controller.ControllerInit;
 import com.app.main.controller.playercontroller.MouseController;
-import com.app.main.controller.playercontroller.botController.BotController;
 import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
 import com.app.main.model.core.Team;
@@ -16,7 +16,7 @@ import com.app.main.view.GameScene;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 
-public class LevelMenuController {
+public class LevelMenuController implements ControllerInit{
 
     @FXML
     public void tolevel1() {
@@ -51,20 +51,15 @@ public class LevelMenuController {
 
             GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
+            Controller[] controllers = initializeControllers(gameLevel, gameManager.getTeams());
 
-            Controller[] controllers = new Controller[nbTeams];
+            for (int i = 0; i < controllers.length; i++) {
+                
+                if(controllers[i] == null){
+                    System.out.println("Il est null");
+                }
+                System.out.println(controllers + " " + i);
 
-            //TODO création des controllers
-            controllers[0] = MouseController.createMouseController(loadedTeams[0]);
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
             }
 
             //Load the image :
@@ -80,6 +75,12 @@ public class LevelMenuController {
             System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public int initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
+        controllers[0] = MouseController.createMouseController(loadedTeams[0]);
+        return 1;
     }
 
 }

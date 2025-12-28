@@ -5,14 +5,16 @@
       "pos": [
         [0, 0], 
         [80, 100]
-      ]
+      ],
+      "isPlayer": true
     },
     {
       "color": "RED",
       "pos": [
         [10, 10], 
         [50, 210]
-      ]
+      ],
+      "isPlayer": false
     }
   ],
   "background": "lvl1.png",

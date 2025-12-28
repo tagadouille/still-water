@@ -64,7 +64,7 @@ public class MultiLocalController {
 
             // --- LE RESTE (Bots) ---
             for (int i = 2; i < nbTeams; i++) {
-                controllers[i] = new BotController(GameManager.GRID_DIM, GameManager.GRID_DIM, teams[i]);
+                controllers[i] = new BotController(teams[i]);
             }
 
             GamePlaylist.playLevelAudio();
