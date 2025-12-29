@@ -4,19 +4,17 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.app.main.audio.GamePlaylist;
-import com.app.main.controller.playercontroller.MouseController;
+import com.app.main.controller.playercontroller.ControllerInit;
 import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
-import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
-import com.app.main.util.ControllerInit;
 import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 
-public class LevelMenuController implements ControllerInit{
+public class LevelMenuController {
 
     @FXML
     public void tolevel1() {
@@ -51,7 +49,7 @@ public class LevelMenuController implements ControllerInit{
 
             GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-            Controller[] controllers = initializeControllers(gameLevel, gameManager.getTeams());
+            Controller[] controllers = ControllerInit.initializeControllers(gameLevel, gameManager.getTeams());
 
             //Load the image :
             Image levelBackground = new Image(Files.newInputStream(Paths.get("levelimages/"+ gameLevel.backgroundImageFilename)));
@@ -67,10 +65,4 @@ public class LevelMenuController implements ControllerInit{
             e.printStackTrace();
         }
     }
-
-    @Override
-    public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
-        controllers[0] = MouseController.createMouseController(loadedTeams[0]);
-    }
-
 }

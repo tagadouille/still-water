@@ -227,7 +227,6 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
             teamSlider = new Slider();
             teamSlider.setShowTickMarks(true);
-            
 
             removeTeamBtn = new Button("Remove the selected team");
             removeTeamBtn.setFont(BUTTON_FONT);

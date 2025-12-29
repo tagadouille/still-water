@@ -180,6 +180,8 @@ final class GridView extends StackPane implements Observable{
      */
     private void render(GraphicsContext gc) {
 
+        gc.clearRect(0, 0, width, height);
+
         if(levelBackground != null) {
             gc.drawImage(levelBackground, 0, 0, width, height);
         }

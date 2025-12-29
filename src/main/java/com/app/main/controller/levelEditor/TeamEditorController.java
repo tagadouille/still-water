@@ -40,6 +40,8 @@ final class TeamEditorController {
 
         this.rectangleSizePossibility = rectanglesForSurface();
 
+        teamEditorView.getEditTeamBox().getTeamSlider().setMax(this.rectangleSizePossibility.length);
+
         buttonBehavior();
         editTeamBoxBehavior();
         saveBehavior();

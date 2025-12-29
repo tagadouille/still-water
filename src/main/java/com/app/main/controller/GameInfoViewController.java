@@ -18,7 +18,10 @@ public class GameInfoViewController implements Observer{
     private GameInfoViewController(GameInfoView gameinfo){
         this.gameInfoView = gameinfo;
 
-        gameinfo.getQuitButton().setOnAction((e) -> System.exit(0));
+        gameinfo.getQuitButton().setOnAction((e) -> {
+            MenuSwitcher.switchScene("Gamemode.fxml");
+            GamePlaylist.getPlaylist().playOnlyOne(0, true);
+        });
     }
 
     public static GameInfoViewController creaInfoViewController(GameInfoView gameInfoView){
