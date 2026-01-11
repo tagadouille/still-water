@@ -6,6 +6,8 @@ import javafx.scene.text.Text;
 /**
  * The WinnerController is the controller
  * for the winning page of the game
+ * 
+ * @author Dai Elias
  */
 public class WinnerController {
     @FXML

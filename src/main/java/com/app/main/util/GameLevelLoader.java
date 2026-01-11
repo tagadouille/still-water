@@ -9,8 +9,24 @@ import com.app.main.model.core.Point;
 import com.app.main.util.json.JSONFileManager;
 import com.app.main.model.GameLevel;
 
+/**
+ * Chargeur de niveaux depuis des fichiers JSON.
+ * <p>
+ * Lit la structure attendue (carte d'obstacles, équipes, image de fond)
+ * et construit un {@link GameLevel} utilisable par le jeu.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public class GameLevelLoader {
 
+    /**
+     * Charge un niveau à partir du chemin JSON fourni.
+     *
+     * @param path chemin vers le fichier JSON (ex: "levels/lvl1.json")
+     * @return instance de {@link GameLevel} construite depuis le fichier
+     * @throws IllegalArgumentException si la section "map" est absente ou invalide
+     */
     @SuppressWarnings("unchecked")
     public static GameLevel load(String path) {
         JSONFileManager json = new JSONFileManager(path);
@@ -67,6 +83,14 @@ public class GameLevelLoader {
         return new GameLevel(obstacles, teamConfigs, bgFilename);
     }
 
+    /**
+     * Convertit une chaîne en valeur {@link Color}. Accepte des abréviations
+     * basées sur la première lettre et retourne RED par défaut si la couleur
+     * est inconnue.
+     *
+     * @param s chaîne décrivant la couleur (peut être {@code null})
+     * @return valeur {@link Color}
+     */
     private static Color parseColor(String s) {
         if (s == null) return Color.RED;
         s = s.toUpperCase();

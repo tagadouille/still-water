@@ -6,6 +6,8 @@ import javafx.scene.control.ChoiceBox;
 /**
  * The SettingsController is the controller class for
  * the settings page of the game
+ * 
+ * @author Dai Elias
  */
 public class SettingsController {
     @FXML

@@ -16,6 +16,15 @@ import com.app.main.view.GameScene;
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 
+/**
+ * Contrôleur pour le menu de sélection des niveaux.
+ * <p>
+ * Fournit des méthodes FXML pour charger différents niveaux et prépare
+ * la scène de jeu en chargeant le niveau, les contrôleurs et l'image de fond.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public class LevelMenuController implements ControllerInit{
 
     @FXML
@@ -43,6 +52,12 @@ public class LevelMenuController implements ControllerInit{
         loader("lvl5");
     }
 
+    /**
+     * Charge le niveau depuis le JSON, initialise le GameManager et les
+     * contrôleurs, charge l'image de fond puis affiche la scène de jeu.
+     *
+     * @param nameoffile nom du fichier (sans extension) dans le dossier "levels"
+     */
     private void loader(String nameoffile){
         try {
 
@@ -68,6 +83,10 @@ public class LevelMenuController implements ControllerInit{
         }
     }
 
+    /**
+     * Initialise les contrôleurs pour les joueurs (implémentation par défaut
+     * : le premier joueur utilise la souris).
+     */
     @Override
     public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
         controllers[0] = MouseController.createMouseController(loadedTeams[0]);

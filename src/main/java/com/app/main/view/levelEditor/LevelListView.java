@@ -12,6 +12,14 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
+/**<p>
+ * Vue de liste des niveaux qui affiche les fichiers JSON présents dans le
+ * répertoire fourni. Les boutons sont créés dynamiquement et déclenchent
+ * un callback lorsque l'utilisateur sélectionne un niveau.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public final class LevelListView extends ScrollPane {
 
     private final VBox container = new VBox(6);
@@ -20,10 +28,20 @@ public final class LevelListView extends ScrollPane {
     private static final int VISIBLE_LEVELS = 3;
     private static final double BUTTON_HEIGHT = 48.0;
 
+    /**
+     * Vue de liste des niveaux qui affiche les fichiers JSON présents dans le
+     * répertoire fourni. Les boutons sont créés dynamiquement et déclenchent
+     * un callback lorsque l'utilisateur sélectionne un niveau.
+     */
     public LevelListView() {
         this(Paths.get(System.getProperty("user.dir")).resolve("editorlevels"));
     }
 
+    /**
+     * Crée une vue pointant sur le répertoire spécifié.
+     *
+     * @param levelsDir chemin du dossier contenant les fichiers de niveau
+     */
     public LevelListView(Path levelsDir) {
         this.levelsDir = levelsDir;
         setFitToWidth(true);
@@ -38,16 +56,31 @@ public final class LevelListView extends ScrollPane {
         refresh();
     }
 
+    /**
+     * Définit le répertoire à utiliser pour lister les niveaux et rafraîchit
+     * l'affichage.
+     *
+     * @param dir chemin du dossier de niveaux (non null)
+     */
     public void setLevelsDirectory(Path dir) {
         if (dir == null) throw new IllegalArgumentException("dir can't be null");
         this.levelsDir = dir;
         refresh();
     }
 
+    /**
+     * Définit le callback appelé lorsque l'utilisateur sélectionne un niveau.
+     *
+     * @param callback fonction recevant le Path du fichier sélectionné
+     */
     public void setOnLevelSelected(Consumer<Path> callback) {
         this.onLevelSelected = callback;
     }
 
+    /**
+     * Rafraîchit la liste des boutons en lisant le dossier des niveaux.
+     * L'opération est effectuée sur le thread JavaFX via Platform.runLater.
+     */
     public void refresh() {
         Platform.runLater(() -> {
             container.getChildren().clear();
@@ -76,6 +109,7 @@ public final class LevelListView extends ScrollPane {
         });
     }
 
+    /** Enlève l'extension d'un nom de fichier. */
     private String stripExtension(String s) {
         int i = s.lastIndexOf('.');
         return (i > 0) ? s.substring(0, i) : s;

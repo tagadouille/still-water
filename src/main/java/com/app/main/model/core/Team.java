@@ -14,6 +14,8 @@ import java.util.List;
  * <li>Une carte de gradient ({@link GradientGrid}) propre à elle, calculant les chemins vers sa cible.</li>
  * </ul>
  * </p>
+ * 
+ * @author Mohamed Ibrir
  */
 public final class Team {
 
@@ -87,6 +89,18 @@ public final class Team {
      * @return
      */
     public static Team CreateTeam(Color team, int width, int height, boolean [][] sharedObstacles){
+        if(team == null){
+            throw new IllegalArgumentException("The team color can't be null");
+        }
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The width and height must be positive");
+        }
+        if(sharedObstacles == null){
+            throw new IllegalArgumentException("The sharedObstacles array can't be null");
+        }
+        if(sharedObstacles.length != width || sharedObstacles[0].length != height){
+            throw new IllegalArgumentException("The sharedObstacles array dimensions must match the width and height");
+        }
         return new Team(team, width, height, sharedObstacles);
     }
 
@@ -98,6 +112,12 @@ public final class Team {
      * @return
      */
     public static Team CreateRedTeam(int width, int height, boolean [][] sharedObstacles){
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The width and height must be positive");
+        }
+        if(sharedObstacles == null){
+            throw new IllegalArgumentException("The sharedObstacles array can't be null");
+        }
         return new Team(Color.RED, width, height, sharedObstacles);
     }
 
@@ -109,6 +129,12 @@ public final class Team {
      * @return
      */
     public static Team CreateGreenTeam(int width, int height, boolean [][] sharedObstacles){
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The width and height must be positive");
+        }
+        if(sharedObstacles == null){
+            throw new IllegalArgumentException("The sharedObstacles array can't be null");
+        }
         return new Team(Color.GREEN, width, height, sharedObstacles);
     }
 
@@ -120,6 +146,12 @@ public final class Team {
      * @return
      */
     public static Team CreatePurpleTeam(int width, int height, boolean [][] sharedObstacles){
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The width and height must be positive");
+        }
+        if(sharedObstacles == null){
+            throw new IllegalArgumentException("The sharedObstacles array can't be null");
+        }
         return new Team(Color.PURPLE, width, height, sharedObstacles);
     }
 
@@ -132,6 +164,12 @@ public final class Team {
      * @return
      */
     public static Team CreateBlueTeam(int width, int height, boolean [][] sharedObstacles){
+        if(width <= 0 || height <= 0){
+            throw new IllegalArgumentException("The width and height must be positive");
+        }
+        if(sharedObstacles == null){
+            throw new IllegalArgumentException("The sharedObstacles array can't be null");
+        }
         return new Team(Color.BLUE, width, height, sharedObstacles);
     }
 
@@ -206,6 +244,9 @@ public final class Team {
         }
 
         public static Cell CreateCell(int x, int y, Color team){
+            if(team == null){
+                throw new IllegalArgumentException("The team color can't be null");
+            }
             return new Cell(x, y, team);
         }
 

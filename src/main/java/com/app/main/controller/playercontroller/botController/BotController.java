@@ -104,7 +104,6 @@ public final class BotController implements Controller{
     }
 
     @Override
-    //TODO ajouter des niveaux de difficultés 
     public void update() {
         if (team == null) return;
 
