@@ -11,10 +11,9 @@ import com.app.main.model.GameLevel;
 
 /**
  * Chargeur de niveaux depuis des fichiers JSON.
- * <p>
+ * 
  * Lit la structure attendue (carte d'obstacles, équipes, image de fond)
  * et construit un {@link GameLevel} utilisable par le jeu.
- * </p>
  * 
  * @author Mohamed Ibrir
  */

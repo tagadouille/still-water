@@ -3,25 +3,21 @@ package com.app.main.util;
 import java.util.List;
 
 /**
- * <h1>Observable</h1>
- * <p>
- * The <b>Observable</b> interface defines a contract for objects that can be
+ * The Observable interface defines a contract for objects that can be
  * observed
  * by other objects (observers). It provides methods to manage observers and
  * notify
  * them of changes or events.
- * </p>
+ *
  * 
- * <h2>Features:</h2>
- * <ul>
- * <li>Allows adding and removing observers.</li>
- * <li>Notifies all registered observers of changes or actions.</li>
- * <li>Prevents duplicate observers from being added.</li>
- * </ul>
+ * Features:
  * 
- * <h2>Usage Example:</h2>
+ * Allows adding and removing observers.
+ * Notifies all registered observers of changes or actions.
+ * Prevents duplicate observers from being added.
  * 
- * <pre>
+ * Example:
+ * 
  * public class MyObservableClass implements Observable {
  * 	private final List<Observer> observers = new ArrayList<>();
  * 
@@ -30,7 +26,7 @@ import java.util.List;
  * 		return observers;
  * 	}
  * }
- * </pre>
+ * 
  * 
  * @author Daie Elias
  * @author Mohamed Ibrir

@@ -7,14 +7,14 @@ import com.app.main.model.core.Color;
 
 /**
  * Représente un niveau de jeu.
- * <p>
+ * 
  * Contient la grille d'obstacles, les dimensions du niveau, la configuration
  * des équipes et le nom de fichier optionnel de l'image de fond.
- * </p>
+ * 
  * 
  * @author Mohamed Ibrir
  */
-public class GameLevel {
+public final class GameLevel {
 
     /**
      * Matrice d'obstacles. Première dimension = `width`, seconde dimension = `height`.
@@ -84,12 +84,12 @@ public class GameLevel {
 
     /**
      * Configuration d'une équipe dans le niveau.
-     * <p>
+     * 
      * Contient la couleur de l'équipe, les positions de spawn et un indicateur
      * si l'équipe est contrôlée par un joueur.
-     * </p>
+     * 
      */
-    public static class TeamConfig {
+    public final static class TeamConfig {
         /** Couleur associée à l'équipe. */
         public final Color color;
         /** Tableau de points décrivant la zone/positions de spawn de l'équipe. */

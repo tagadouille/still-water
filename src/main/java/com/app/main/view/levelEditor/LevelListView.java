@@ -12,11 +12,10 @@ import java.util.Comparator;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-/**<p>
+/*
  * Vue de liste des niveaux qui affiche les fichiers JSON présents dans le
  * répertoire fourni. Les boutons sont créés dynamiquement et déclenchent
  * un callback lorsque l'utilisateur sélectionne un niveau.
- * </p>
  * 
  * @author Mohamed Ibrir
  */
