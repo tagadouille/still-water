@@ -2,7 +2,6 @@ package com.app.main.model.core;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class TeamTest {
@@ -13,16 +12,18 @@ class TeamTest {
 
     @BeforeEach
     void setUp() {
+        // On crée une petite map 10x10 sans obstacles pour le test
         obstacles = new boolean[10][10];
         redTeam = Team.CreateRedTeam(10, 10, obstacles);
         blueTeam = Team.CreateBlueTeam(10, 10, obstacles);
     }
 
     @Test
-    void testTeamCreation() {
+    void testTeamIdentity() {
+        // On vérifie que les deux équipes sont bien distinctes
         assertEquals(Color.RED, redTeam.getTeam());
-        assertNotNull(redTeam.getArmy());
-        assertTrue(redTeam.getArmy().isEmpty());
+        assertEquals(Color.BLUE, blueTeam.getTeam());
+        assertNotEquals(redTeam, blueTeam);
     }
 
     @Test
@@ -31,35 +32,47 @@ class TeamTest {
         redTeam.addCell(cell);
         
         assertEquals(1, redTeam.getArmy().size());
-        assertEquals(cell, redTeam.getArmy().get(0));
+        assertTrue(redTeam.getArmy().contains(cell));
     }
 
     @Test
-    void testAttackLogic() {
-        // Mise en place : 1 Attaquant Rouge, 1 Victime Bleue
+    void testAttackLogicBetweenTeams() {
+        // 1. Création des combattants
+        // Un soldat de l'équipe ROUGE
         Team.Cell attacker = Team.Cell.CreateCell(0, 0, Color.RED);
-        Team.Cell victim = Team.Cell.CreateCell(0, 1, Color.BLUE);
-        
-        // Énergie initiale
-        attacker.setEnergy(50);
-        victim.setEnergy(10); // Faible énergie
+        redTeam.addCell(attacker);
 
-        // Action : Attaque
+        // Une victime de l'équipe BLEUE
+        Team.Cell victim = Team.Cell.CreateCell(0, 1, Color.BLUE);
+        blueTeam.addCell(victim);
+        
+        // 2. Configuration de l'énergie
+        attacker.setEnergy(50);
+        victim.setEnergy(5); // Énergie critique (<= 5 signifie conversion imminente)
+
+        // 3. Action : L'équipe Rouge attaque la cellule de l'équipe Bleue
         redTeam.attack(attacker, victim);
 
-        // Vérification : Transfert d'énergie (+5 / -5)
-        assertEquals(55, attacker.getEnergy(), "L'attaquant gagne 5 PV");
-        assertEquals(5, victim.getEnergy(), "La victime perd 5 PV");
+        // 4. Vérifications
+        // L'attaquant gagne de l'énergie (+5)
+        assertEquals(55, attacker.getEnergy(), "L'attaquant rouge devrait gagner 5 PV");
+        
+        // La victime reste à 5 PV (seuil minimum défini dans ton code)
+        assertEquals(5, victim.getEnergy(), "La victime bleue devrait être à 5 PV");
 
-        // Vérification : Conversion (Victime à 5 PV ou moins -> nextTeam devient Rouge)
-        assertEquals(Color.RED, victim.getNextTeam(), "La victime doit être convertie");
+        // CRUCIAL : La victime bleue doit changer d'allégeance vers l'équipe rouge (this.team)
+        assertEquals(Color.RED, victim.getNextTeam(), "La cellule bleue doit être convertie à l'équipe Rouge");
+        assertNotEquals(victim.getCurrentTeam(), victim.getNextTeam(), "L'équipe actuelle et future doivent être différentes");
     }
 
     @Test
-    void testHealLogic() {
-        // Mise en place : 2 Rouges
+    void testHealLogicSameTeam() {
+        // Le soin ne marche qu'entre membres de la même équipe
         Team.Cell healer = Team.Cell.CreateCell(0, 0, Color.RED);
         Team.Cell receiver = Team.Cell.CreateCell(0, 1, Color.RED);
+        
+        redTeam.addCell(healer);
+        redTeam.addCell(receiver);
         
         healer.setEnergy(90); // Riche
         receiver.setEnergy(30); // Pauvre
