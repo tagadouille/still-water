@@ -9,13 +9,11 @@ import java.nio.file.Paths;
 import com.app.main.Game;
 import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.menu.MenuSwitcher;
-import com.app.main.controller.playercontroller.MouseController;
+import com.app.main.controller.playercontroller.ControllerInit;
 import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
 import com.app.main.util.ImageUtil;
-import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
-import com.app.main.util.ControllerInit;
 import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 import com.app.main.view.levelEditor.LevelEditorView;
@@ -33,7 +31,7 @@ import javafx.stage.FileChooser;
  * @see LevelEditorView
  * @author Dai Elias
  */
-public final class LevelEditorController implements ControllerInit{
+public final class LevelEditorController {
     
     private LevelEditorView levelEditorView;
     private FileWrapper fileWrapper = new FileWrapper();
@@ -53,7 +51,7 @@ public final class LevelEditorController implements ControllerInit{
 
                 GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-                Controller[] controllers = initializeControllers(gameLevel, gameManager.getTeams());
+                Controller[] controllers = ControllerInit.initializeControllers(gameLevel, gameManager.getTeams());
 
                 System.out.println(gameLevel.backgroundImageFilename);
 
@@ -163,10 +161,5 @@ public final class LevelEditorController implements ControllerInit{
         });
 
         levelEditorView.getCancelBtn().setOnAction((e) -> MenuSwitcher.switchScene("MainMenu.fxml"));
-    }
-
-    @Override
-    public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
-        controllers[0] = MouseController.createMouseController(loadedTeams[0]);
     }
 }

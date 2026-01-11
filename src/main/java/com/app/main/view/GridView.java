@@ -24,7 +24,7 @@ import javafx.scene.layout.StackPane;
  * are displayed
  * @author Dai Elias
  */
-final class GridView extends StackPane implements Observable{
+public final class GridView extends StackPane implements Observable{
 
     private Canvas canvas;
     private double width;
@@ -88,15 +88,15 @@ final class GridView extends StackPane implements Observable{
         return new GridView(width, height, gameManager, controllers, levelBackground);
     }
 
-    GameManager getGameManager() {
+    public GameManager getGameManager() {
         return gameManager;
     }
 
-    int getCurrentFps() {
+    public int getCurrentFps() {
         return currentFps;
     }
 
-    TimerHandler getTimer() {
+    public TimerHandler getTimer() {
         return timer;
     }
 
@@ -179,6 +179,8 @@ final class GridView extends StackPane implements Observable{
      * @param gc the GraphicsContext of the canva
      */
     private void render(GraphicsContext gc) {
+
+        gc.clearRect(0, 0, width, height);
 
         if(levelBackground != null) {
             gc.drawImage(levelBackground, 0, 0, width, height);

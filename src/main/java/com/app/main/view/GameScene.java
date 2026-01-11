@@ -56,7 +56,7 @@ public final class GameScene extends Scene {
         GameInfoView gameInfoView = new GameInfoView(rightPaneWidth);
         GameInfoViewController gameInfoViewController = GameInfoViewController.creaInfoViewController(gameInfoView);
 
-        gridview.addObserver(gameInfoView);
+        //!gridview.addObserver(gameInfoView);
         gridview.addObserver(gameInfoViewController);
 
         ((HBox) this.getRoot()).setSpacing(0);
