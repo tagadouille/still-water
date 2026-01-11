@@ -23,7 +23,7 @@ import javafx.scene.image.Image;
  * 
  * @author Mohamed Ibrir
  */
-public class LevelMenuController implements ControllerInit{
+public class LevelMenuController {
 
     @FXML
     public void tolevel1() {
@@ -80,14 +80,4 @@ public class LevelMenuController implements ControllerInit{
             e.printStackTrace();
         }
     }
-
-    /**
-     * Initialise les contrôleurs pour les joueurs (implémentation par défaut
-     * : le premier joueur utilise la souris).
-     */
-    @Override
-    public void initializePlayerControllers(Controller[] controllers, Team[] loadedTeams) {
-        controllers[0] = MouseController.createMouseController(loadedTeams[0]);
-    }
-
 }
