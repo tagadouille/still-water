@@ -17,7 +17,8 @@ Button:hover {
 .levelEdit {
     -fx-background-image: url("../image/leveledit.jpg");
     -fx-background-position: center;
-    -fx-background-repeat: repeat;
+    -fx-background-size: cover;
+    -fx-background-repeat: no-repeat;
 }
 
 Slider .track {
