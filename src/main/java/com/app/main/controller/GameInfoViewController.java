@@ -34,8 +34,7 @@ public class GameInfoViewController implements Observer{
 
         // Quit button behavior :
         gameinfo.getQuitButton().setOnAction((e) -> {
-            MenuSwitcher.switchScene("Gamemode.fxml");
-            GamePlaylist.getPlaylist().playOnlyOne(0, true);
+            System.exit(0);
         });
     }
 
