@@ -96,7 +96,6 @@ public final class GameManager {
         return gm;
     }
 
-    // TODO créer ses propres exeptions ???
     /**
      * For do the verification of the validity of the arguments
      * @param teams the teams of the game
