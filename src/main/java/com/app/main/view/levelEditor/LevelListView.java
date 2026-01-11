@@ -22,6 +22,8 @@ import java.util.stream.Stream;
  */
 public final class LevelListView extends ScrollPane {
 
+    public static final LevelListView INSTANCE = new LevelListView();
+
     private final VBox container = new VBox(6);
     private Path levelsDir;
     private Consumer<Path> onLevelSelected;
@@ -33,7 +35,7 @@ public final class LevelListView extends ScrollPane {
      * répertoire fourni. Les boutons sont créés dynamiquement et déclenchent
      * un callback lorsque l'utilisateur sélectionne un niveau.
      */
-    public LevelListView() {
+    private LevelListView() {
         this(Paths.get(System.getProperty("user.dir")).resolve("editorlevels"));
     }
 
