@@ -14,11 +14,10 @@ import javafx.scene.image.Image;
 
 /**
  * Classe utilitaire pour le chargement des niveaux de jeu.
- * <p>
+ * 
  * Fournit une méthode statique pour charger un niveau depuis un
  * fichier JSON, initialiser le GameManager et les contrôleurs,
  * charger l'image de fond, puis afficher la scène de jeu.
- * </p>
  * 
  * @author Mohamed Ibrir
  */

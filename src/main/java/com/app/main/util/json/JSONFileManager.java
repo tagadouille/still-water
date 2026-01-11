@@ -15,28 +15,27 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 /**
  * Utility class for managing JSON files using Jackson.
- * <p>
- * The <b>JSONFileManager</b> provides methods to read, write, and create JSON
+ * 
+ * The JSONFileManager provides methods to read, write, and create JSON
  * files,
  * as well as to manipulate nested keys using dot notation. It supports
  * automatic creation
  * of intermediate keys and handles both maps and lists in the JSON structure.
- * </p>
- * <ul>
- * <li>Read and write values using dot notation keys (e.g., "tile1.i").</li>
- * <li>Automatically creates intermediate objects when writing.</li>
- * <li>Handles both maps and lists in the JSON structure.</li>
- * <li>Pretty-prints JSON when saving to file.</li>
- * </ul>
- *
- * <h3>Usage Example:</h3>
  * 
- * <pre>
+ * 
+ * Read and write values using dot notation keys (e.g., "tile1.i").
+ * Automatically creates intermediate objects when writing.
+ * Handles both maps and lists in the JSON structure.
+ * Pretty-prints JSON when saving to file.
+ * 
+ *
+ * Example :
+ * 
+ * 
  * JSONFileManager manager = new JSONFileManager("level.json");
  * manager.create();
  * manager.writeLine("tile1.i", 2);
  * Object value = manager.read("tile1.i");
- * </pre>
  *
  * @author Mohamed IBRIR
  * @since 2025-03-22

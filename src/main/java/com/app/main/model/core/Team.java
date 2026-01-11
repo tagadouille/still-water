@@ -6,14 +6,14 @@ import java.util.List;
 
 /**
  * Représente une équipe (un joueur) dans le jeu Liquid War.
- * <p>
+ * 
  * Chaque équipe possède :
- * <ul>
- * <li>Une couleur unique ({@link Color}).</li>
- * <li>Une liste de particules ({@link Cell}) constituant son armée.</li>
- * <li>Une carte de gradient ({@link GradientGrid}) propre à elle, calculant les chemins vers sa cible.</li>
- * </ul>
- * </p>
+ * 
+ * Une couleur unique ({@link Color}).
+ * Une liste de particules ({@link Cell}) constituant son armée.
+ * Une carte de gradient ({@link GradientGrid}) propre à elle, calculant les chemins vers sa cible.
+ * 
+ * 
  * 
  * @author Mohamed Ibrir
  */
@@ -279,10 +279,10 @@ public final class Team {
 
     /**
      * Met à jour l'état de toute l'armée pour une frame de jeu.
-     * <ol>
-     * <li>Recalcule le gradient (carte des distances) vers la cible actuelle.</li>
-     * <li>Déplace chaque cellule valide vers son meilleur voisin.</li>
-     * </ol>
+     * 
+     * Recalcule le gradient (carte des distances) vers la cible actuelle.
+     * Déplace chaque cellule valide vers son meilleur voisin.
+     * 
      *
      * @param globalGrid La grille globale du jeu contenant toutes les particules (pour gérer les collisions).
      */
@@ -386,7 +386,7 @@ public final class Team {
     /**
      * Logique d'attaque (Combat).
      * Transfère de l'énergie de la victime vers l'attaquant.
-     * Si la victime tombe à 0 énergie, elle est marquée pour conversion ({@code nextteam}).
+     * Si la victime tombe à 5 énergie, elle est marquée pour conversion ({@code nextteam}).
      *
      * @param attacker La cellule qui attaque.
      * @param target La cellule ennemie ciblée.

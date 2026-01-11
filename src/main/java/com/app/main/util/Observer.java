@@ -1,25 +1,23 @@
 package com.app.main.util;
 
 /**
- * <h1>Observer</h1>
- * <p>
- * The <b>Observer</b> interface defines a contract for objects that wish to be
+ *
+ * The Observer interface defines a contract for objects that wish to be
  * notified
- * of changes or events occurring in an <b>Observable</b> object. It follows the
+ * of changes or events occurring in an Observable object. It follows the
  * Observer design pattern, where observers are updated whenever the observable
  * object triggers a notification.
- * </p>
  * 
- * <h2>Features:</h2>
- * <ul>
- * <li>Allows objects to react to changes in observable objects.</li>
- * <li>Supports passing additional context and action details during
- * updates.</li>
- * </ul>
  * 
- * <h2>Usage Example:</h2>
+ * Features:
  * 
- * <pre>
+ * Allows objects to react to changes in observable objects.
+ * Supports passing additional context and action details during
+ * updates.
+ * 
+ * 
+ * Usage Example:
+ *
  * public class MyObserver implements Observer {
  *     @Override
  *     public void update(Observable o, Object arg, String action) {
@@ -30,7 +28,6 @@ package com.app.main.util;
  *         }
  *     }
  * }
- * </pre>
  * 
  * @see Observable
  * @author Dai Elias

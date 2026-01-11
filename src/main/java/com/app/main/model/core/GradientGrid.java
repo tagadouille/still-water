@@ -2,13 +2,8 @@ package com.app.main.model.core;
 
 /**
  * Gère la carte des distances (Heatmap / Flow Field) pour une équipe donnée.
- * <p>
  * Cette classe implémente l'algorithme de pathfinding décrit dans le sujet Liquid War :
  * un calcul de plus court chemin par gradient (BFS) depuis une cible unique vers toute la carte.
- * </p>
- * <p>
- * [cite_start]Voir sujet : [cite: 22, 23, 28, 29]
- * </p>
  * 
  * @author Mohamed Ibrir
  */
@@ -117,15 +112,12 @@ public final class GradientGrid {
 
     /**
      * Algorithme principal : Parcours en Largeur (BFS).
-     * <p>
+     * 
      * Calcule le plus court chemin depuis la cible (targetX, targetY) vers TOUTES
      * les autres cases accessibles de la carte.
-     * </p>
-     * <ol>
-     * <li>Initialise la cible à 0.</li>
-     * <li>Propage la valeur i+1 aux voisins des cases de valeur i.</li>
-     * <LI>Version Améliorée : Gère les murs ET utilise des tableaux primitifs pour la performance.</li>
-     * </ol>
+     * Initialise la cible à 0.
+     * Propage la valeur i+1 aux voisins des cases de valeur i.
+     * Version Améliorée : Gère les murs ET utilise des tableaux primitifs pour la performance.
      *
      * @param targetX Coordonnée X de la cible (objectif).
      * @param targetY Coordonnée Y de la cible (objectif).

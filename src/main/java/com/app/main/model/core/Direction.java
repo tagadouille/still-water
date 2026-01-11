@@ -4,10 +4,9 @@ import java.util.List;
 
 /**
  * Directions possibles de déplacement sur la grille.
- * <p>
+ * 
  * Chaque valeur énumérée fournit un décalage en X et Y permettant de calculer
  * une nouvelle position à partir d'un {@link Point} existant.
- * </p>
  * 
  * @author Mohamed Ibrir
  */
