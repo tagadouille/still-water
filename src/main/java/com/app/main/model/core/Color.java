@@ -2,6 +2,8 @@ package com.app.main.model.core;
 
 /**
  * Couleurs utilisables pour identifier une équipe ou un élément du jeu.
+ * 
+ * @author Mohamed Ibrir
  */
 public enum Color {
     /** Rouge. */
