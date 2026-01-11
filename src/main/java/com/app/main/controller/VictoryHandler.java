@@ -61,5 +61,4 @@ public final class VictoryHandler {
         }
         return Color.NO_COLOR;
     }
-    
 }

@@ -11,21 +11,33 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+/**
+ * Contrôleur basé sur le clavier pour déplacer une cible de {@link Team}.
+ * <p>
+ * Maintient un ensemble de touches actuellement pressées et met à jour une
+ * position interne qui est ensuite transmise à la {@code Team} via
+ * {@code team.setTarget(x,y)}.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public final class KeyboardController implements Controller{
 
+    /** Équipe contrôlée. */
     public Team team;
 
-    //Position du controller;
+    /** Position courante du contrôleur (coordonnées flottantes). */
     public double Posx, Posy;
 
-    //Limite de la map
+    /** Limites de la carte (largeur/hauteur en unités de grille). */
     public final int mapwidth, mapheight;
     
-    //Touche sur le clavier
+    /** Touches de direction configurées. */
     public final KeyCode UP, DOWN, RIGHT, LEFT;
+    /** Ensemble des touches actuellement pressées. */
     public final Set<KeyCode> keylist = new HashSet<>();
 
-    //vitesse de mouvement
+    /** Vitesse de déplacement appliquée à la position (unités par update). */
     public final double speed = 5;
 
     private KeyboardController(Team team, int Mapwidth, int Mapheight, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
@@ -43,10 +55,18 @@ public final class KeyboardController implements Controller{
         this.LEFT = left;
     }
 
+    /**
+     * Crée une instance de {@code KeyboardController} avec les touches et
+     * dimensions fournies.
+     */
     public static KeyboardController createKeyboardController(Team team, int Mapwidth, int Mapheight, KeyCode up, KeyCode down, KeyCode right, KeyCode left){
         return new KeyboardController(team, Mapwidth, Mapheight, up, down, right, left);
     }
 
+    /**
+     * Attache des handlers clavier à la scène pour maintenir la liste
+     * {@link #keylist} des touches pressées.
+     */
     @Override
     public void setupInput(Scene scene, Canvas canvas) {
         scene.addEventHandler(KeyEvent.KEY_PRESSED, e -> {
@@ -58,11 +78,16 @@ public final class KeyboardController implements Controller{
         });
     }
 
+    /** Remplace l'équipe associée à ce contrôleur. */
     @Override
     public void setTeam(Team team) {
         this.team = team;
     }
 
+    /**
+     * Met à jour la position interne en fonction des touches pressées,
+     * contraint la position aux limites puis notifie la {@code Team}.
+     */
     @Override
     public void update() {
         if(team == null) return;

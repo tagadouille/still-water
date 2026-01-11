@@ -1,6 +1,7 @@
 package com.app.main.controller.levelEditor;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import com.app.main.model.GameLevel.TeamConfig;
@@ -9,13 +10,17 @@ import com.app.main.model.core.Point;
 import com.app.main.view.levelEditor.TeamCanvas;
 import com.app.main.view.levelEditor.TeamCanvas.TeamRectangle;
 
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 
-public class TeamCanvasController {
+/**
+ * The TeamCanvasController is the controller of TeamCanvas.
+ * 
+ * @see TeamCanvas
+ */
+class TeamCanvasController {
 
     private final TeamCanvas teamCanvas;
 
@@ -24,14 +29,18 @@ public class TeamCanvasController {
 
     private final boolean[][] obstacles;
 
+    /**
+     * Key : a pointer to a team rectangle
+     * value : a boolean -> true : the team rectangle is a player, false : it's a bot
+     */
+    private final HashMap<TeamRectangle, Boolean> isPlayers = new HashMap<>();
+
     private TeamCanvasController(TeamCanvas canvas, boolean[][] obstacles){
 
         this.teamCanvas = canvas;
         this.obstacles = obstacles;
 
         teamCanvas.setBackground(obstacles);
-
-        GraphicsContext gc = canvas.getGraphicsContext2D();
 
         // Dectection of the click on a team rectangle :
         canvas.addEventHandler(MouseEvent.MOUSE_PRESSED, e -> {
@@ -61,37 +70,87 @@ public class TeamCanvasController {
 
             selectedRectangle.setX(newX);
             selectedRectangle.setY(newY);
-            canvas.draw(gc);
+            canvas.draw();
         });
     }
 
-    public static TeamCanvasController buildCanvasController(TeamCanvas canvas, boolean[][] obstacles){
+    /**
+     * The static fabric to create a new TeamCanvasController instance
+     * @param canvas the team canvas
+     * @param obstacles
+     * @return
+     */
+    static TeamCanvasController buildCanvasController(TeamCanvas canvas, boolean[][] obstacles){
 
         if(canvas == null){
             throw new IllegalArgumentException("The TeamCanvas can't be null");
+        }
+        if(obstacles == null){
+            throw new IllegalArgumentException("The obstacles can't be null");
         }
 
         return new TeamCanvasController(canvas, obstacles);
     }
 
-    public void addTeamRectangle(){
+    /**
+     * Add a bot team spawn point
+     */
+    void addBotRectangle(){
+        
+        if(this.addTeamRectangle()){
+            isPlayers.put(selectedRectangle, false);
+        }
+    }
 
-        int[] size = TeamEditorController.rectanglesForSurface()[0];
+    /**
+     * Add a player team spawn point
+     */
+    void addPlayerRectangle(){
+
+        if(this.addTeamRectangle()){
+            isPlayers.put(selectedRectangle, true);
+        }
+
+    }
+
+    /**
+     * Add a team rectangle to the TeamCanvas
+     * @return true if a team rectangle were really added, false otherwise
+     */
+    private boolean addTeamRectangle(){
+
+        int[][] poss = TeamEditorController.rectanglesForSurface();
+        int[] size = poss[poss.length/2 - 1];
 
         if(!teamCanvas.addTeamRectangle(size[0], size[1])){
             Alert add = new Alert(AlertType.WARNING, "You can't add more teams 🤣🫵", ButtonType.CLOSE);
-            add.setHeaderText("Something append 🥀💔");
+            add.setHeaderText("Something happends 🥀💔");
             add.showAndWait();
-            return;
+            return false;
         }
         this.selectedRectangle = teamCanvas.getRectangles().getLast();
+        return true;
     }
 
-    public void removeTeamRectangle(){
-        teamCanvas.removeTeamRectangle();
+    /**
+     * Remove a team rectangle to the TeamCanvas
+     */
+    void removeTeamRectangle(){
+        teamCanvas.removeTeamRectangle(this.selectedRectangle);
+        isPlayers.remove(this.selectedRectangle);
     }
 
-    public boolean verifyOverlapping() {
+    /**
+     * Verify if each team spawnpoints are valid. 
+     * They must be in the canvas, not overlapping an obstacle or another team spawn points
+     * @return
+     */
+    boolean verifyOverlapping() {
+
+        //If there's at least 2 spawnpoint
+        if(teamCanvas.getRectangles().size() < 2){
+            return false;
+        }
 
         // Team overlapping with obstacles
         for (TeamRectangle r : teamCanvas.getRectangles()) {
@@ -138,16 +197,27 @@ public class TeamCanvasController {
         return true;
     }
 
-    public void updateRectangleSize(int sizeX, int sizeY){
+    /**
+     * Update the selected rectangle size
+     * @param sizeX the new size on the x axis
+     * @param sizeY the new size on the y axis
+     */
+    void updateRectangleSize(int sizeX, int sizeY){
 
         if(this.selectedRectangle != null){
             selectedRectangle.setSizeX(sizeX);
             selectedRectangle.setSizeY(sizeY);
-            teamCanvas.draw(teamCanvas.getGraphicsContext2D());
+            teamCanvas.draw();
         }
     }
 
-    public List<TeamConfig> getTeamConfig(){
+    /**
+     * Transform each TeamRectangle into a TeamConfig and add it
+     * in a list
+     * @return The list of TeamConfig
+     * @see TeamConfig
+     */
+    List<TeamConfig> getTeamConfig(){
 
         List<TeamConfig> ret = new ArrayList<>();
         
@@ -164,9 +234,8 @@ public class TeamCanvasController {
                 (int) (rectangle.getY() + rectangle.getSizeY())
             );
 
-            ret.add(new TeamConfig(Color.values()[i], spawnArea));
+            ret.add(new TeamConfig(Color.values()[i], spawnArea, isPlayers.get(rectangle)));
         }
-
         return ret;
     }
 }

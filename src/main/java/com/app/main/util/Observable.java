@@ -33,6 +33,7 @@ import java.util.List;
  * </pre>
  * 
  * @author Daie Elias
+ * @author Mohamed Ibrir
  * @version 1.0
  */
 public interface Observable {

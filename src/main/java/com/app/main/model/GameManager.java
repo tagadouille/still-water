@@ -10,7 +10,6 @@ import com.app.main.model.core.Color;
 import com.app.main.model.core.Point;
 import com.app.main.model.core.Team;
 import com.app.main.model.core.Team.Cell;
-import com.app.main.util.GameLevelLoader;
 
 /**
  * Class for managing the models and makes update
@@ -19,6 +18,7 @@ import com.app.main.util.GameLevelLoader;
  * @author Dai Elias
  */
 public final class GameManager {
+    
     public static final int GRID_DIM = 480;
     public static final int NB_CELL = 8000;
 
@@ -264,9 +264,16 @@ public final class GameManager {
         }
     }
 
-    public static GameManager createFromJSON(String jsonPath) {
+    /**
+     * Create an instance of GameManager from a GameLevel instance
+     * @param level the GameLevel instance
+     * @return an instance of GameManager
+     */
+    public static GameManager createFromJSON(GameLevel level) {
 
-        GameLevel level = GameLevelLoader.load(jsonPath);
+        if(level == null){
+            throw new IllegalArgumentException("The gamelevel can't be null");
+        }
 
         int nbTeams = level.teamsInfo.size();
         Team[] teams = new Team[nbTeams];
@@ -282,8 +289,8 @@ public final class GameManager {
                 level.width, 
                 level.height, 
                 level.obstacles
-                );
-            }
-            return GameManager.gameManagerFactory(level.obstacles, teams, spawns);
+            );
         }
+        return GameManager.gameManagerFactory(level.obstacles, teams, spawns);
+    }
 }

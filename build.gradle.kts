@@ -57,6 +57,7 @@ dependencies {
     // Tests JUnit 5
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitVersion")
+    testImplementation("org.mockito:mockito-core:5.7.0")
 }
 
 // Configuration tests

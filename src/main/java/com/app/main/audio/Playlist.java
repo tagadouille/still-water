@@ -11,13 +11,18 @@ import java.util.Random;
 public final class Playlist {
 
     private final Audio[] playlist;
+
     private float volume;
     private boolean shuffle;
     private boolean loop;
+
     private int currentIndex = 0;
+    
     private Audio currentAudio;
-    private Thread playbackThread;
+    
     private final Random random = new Random();
+
+    private Thread playbackThread;
 
     /**
      * The constructor of the class for initialize the main fields

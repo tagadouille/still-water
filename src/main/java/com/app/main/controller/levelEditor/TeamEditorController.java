@@ -1,26 +1,27 @@
 package com.app.main.controller.levelEditor;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.app.main.controller.menu.MenuSwitcher;
 import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
+import com.app.main.util.ImageUtil;
 import com.app.main.util.mapGenerator.FileGenerator;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 import com.app.main.view.levelEditor.TeamEditorView;
 import com.app.main.view.levelEditor.TeamEditorView.EditTeamBox;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
-
-public class TeamEditorController {
+/**
+ * The TeamEditorController is the controller of the TeamEditorView.
+ * It initialize the behavior of each interactable component of the TeamEditorView
+ * 
+ * @see TeamEditorView
+ * @author Dai Elias
+ */
+final class TeamEditorController {
     
     private final TeamEditorView teamEditorView;
     private final TeamCanvasController teamCanvasController;
@@ -39,17 +40,26 @@ public class TeamEditorController {
 
         this.rectangleSizePossibility = rectanglesForSurface();
 
+        teamEditorView.getEditTeamBox().getTeamSlider().setMax(this.rectangleSizePossibility.length);
+
         buttonBehavior();
         editTeamBoxBehavior();
         saveBehavior();
     }
 
+    /**
+     * The static factory of the TeamEditorController for creating a new instance of TeamEditorController
+     * @param teamEditorView the TeamEditorView
+     * @param fileWrapper the fileWrapper
+     * @param obstacles the obstacles map
+     * @return a new instance of TeamEditorController
+     */
     public static TeamEditorController buildEditorController(TeamEditorView teamEditorView, FileWrapper fileWrapper, boolean[][] obstacles){
 
         if(teamEditorView == null){
             throw new IllegalArgumentException("TeamEditorView can't be null");
         }
-        ObstacleEditorController.verifyFileWrapper(fileWrapper);
+        FileWrapper.verifyFileWrapper(fileWrapper);
 
         if(obstacles == null){
             throw new IllegalArgumentException("The obstacles double array can't be null");
@@ -57,6 +67,8 @@ public class TeamEditorController {
 
         return new TeamEditorController(teamEditorView, fileWrapper, obstacles);
     }
+
+    /** Setting the behavior of each interactable components : */
 
     private void buttonBehavior(){
 
@@ -67,8 +79,12 @@ public class TeamEditorController {
             MenuSwitcher.switchScene(obstacleEditorView);
         });
 
-        teamEditorView.getPlaceTeamBtn().setOnAction((e) -> {
-            teamCanvasController.addTeamRectangle();
+        teamEditorView.getPlaceBotBtn().setOnAction((e) -> {
+            teamCanvasController.addBotRectangle();
+        });
+
+        teamEditorView.getPlacePlayerBtn().setOnAction((e) -> {
+            teamCanvasController.addPlayerRectangle();
         });
     }
 
@@ -98,20 +114,13 @@ public class TeamEditorController {
             // Verify the validity of filename :
             if(filename == null || filename.isBlank() || filename.matches(".*[\\\\/:*?\"<>|].*")){
 
-                Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
-
-                warning.showAndWait();
+                TeamEditorView.showFileNameIncorrect();
                 return;
             }
 
             // Verification of the validity of the spawn point of each team : 
             if(!teamCanvasController.verifyOverlapping()){
-                Alert warning = new Alert(
-                    AlertType.WARNING,
-                    "A team spawn point can't overlapp to another. And can't overlapp an obstacle",
-                    ButtonType.CLOSE);
-                warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
-                warning.showAndWait();
+                TeamEditorView.showTeamInvalid();
                 return;
             }
             
@@ -119,49 +128,24 @@ public class TeamEditorController {
             GameLevel gameLevel = new GameLevel(obstacles, teamCanvasController.getTeamConfig());
 
             try{
-                FileGenerator.createFileGenerator(gameLevel).createfile(filename, fileWrapper.backgroundImage.getName(), fileWrapper.obstacleImageFile.getName());
+                FileGenerator.createFileGenerator(gameLevel).createfile(filename, fileWrapper.getBackgroundImage().getName());
 
                 // Copy of the background level image at the path where the level were saved :
-                copyFile(fileWrapper.backgroundImage, Path.of("editorimages"));
+                ImageUtil.copyFile(fileWrapper.getBackgroundImage(), Path.of("editorimages"));
             }
             catch(IOException ex){
-                Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
-                error.setHeaderText("An error occured 😱😨😭🙏");
-                error.showAndWait();
 
+                TeamEditorView.showCannotSave();
                 return;
             }
 
-            Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
-            finish.setHeaderText("The save is succesful ! 😎✌️");
-            finish.showAndWait();
+            TeamEditorView.showSaveSuccess();
             MenuSwitcher.switchScene("MainMenu.fxml");
         });
     }
 
-    //TODO Déplacer quelque part
-
-    public static void copyFile(File file, Path dstFolder) throws IOException {
-
-        if (file == null || !file.exists()) {
-            throw new IllegalArgumentException("The source file doesn't exit");
-        }
-
-        // Creation if the folder if it doesn't exist
-        Files.createDirectories(dstFolder);
-
-        Path destination = dstFolder.resolve(file.getName());
-
-        // Copy of the file
-        Files.copy(
-            file.toPath(),
-            destination,
-            StandardCopyOption.REPLACE_EXISTING
-        );
-    }
-
     /**
-     * Calculate all the possibilities of sizes for a
+     * an helper that calculate all the possibilities of sizes for a
      * rectangle of a given surface
      * @param surface the surface of the rectangle
      * @return all the possibilities of sizes where each case is one possibilty

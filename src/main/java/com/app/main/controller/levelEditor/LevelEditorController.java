@@ -2,30 +2,36 @@ package com.app.main.controller.levelEditor;
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import com.app.main.Game;
 import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.menu.MenuSwitcher;
-import com.app.main.controller.playercontroller.MouseController;
-import com.app.main.controller.playercontroller.botController.BotController;
+import com.app.main.controller.playercontroller.ControllerInit;
+import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
-import com.app.main.model.core.Team;
+import com.app.main.util.ImageUtil;
 import com.app.main.util.Controller;
+import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.LevelListView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
 
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 
-public class LevelEditorController {
+/**
+ * The LevelEditorController is basically the controller of
+ * the LevelEditorView. It define the behavior of the buttons
+ * of the UI
+ * 
+ * @see LevelEditorView
+ * @author Dai Elias
+ */
+public final class LevelEditorController {
     
     private LevelEditorView levelEditorView;
     private FileWrapper fileWrapper = new FileWrapper();
@@ -41,27 +47,20 @@ public class LevelEditorController {
         list.setPrefWidth(220);
         list.setOnLevelSelected(path -> {
             try {
-                GameManager gameManager = GameManager.createFromJSON(path.toString());
+                GameLevel gameLevel = GameLevelLoader.load(path.toString());
 
-                Team[] loadedTeams = gameManager.getTeams();
-                int nbTeams = loadedTeams.length;
+                GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-                Controller[] controllers = new Controller[nbTeams];
+                Controller[] controllers = ControllerInit.initializeControllers(gameLevel, gameManager.getTeams());
 
-                controllers[0] = MouseController.createMouseController(loadedTeams[0]);
+                System.out.println(gameLevel.backgroundImageFilename);
 
-                for (int i = 1; i < nbTeams; i++) {
-                    controllers[i] = new BotController(
-                        gameManager.getWidth(),
-                        gameManager.getHeight(),
-                        loadedTeams[i]
-                    );
-                }
+                Image background = new Image(Files.newInputStream(Paths.get("editorimages/"+ gameLevel.backgroundImageFilename)));
 
                 GamePlaylist.playLevelAudio();
 
                 MenuSwitcher.switchScene(
-                    GameScene.buildGameScene(gameManager, controllers)
+                    GameScene.buildGameScene(gameManager, controllers, background)
                 );
 
             } catch (Exception e) {
@@ -72,6 +71,12 @@ public class LevelEditorController {
         levelEditorView.getRootContainer().getChildren().add(0, list);
     }
 
+    /**
+     * The static fabric of the class that initialize it components and set the behavior
+     * of the button of the LevelEditorView
+     * @param levelEditorView the view of the first page of the level editor
+     * @return an instance of LevelEditorController
+     */
     public static LevelEditorController buildLevelEditorController(LevelEditorView levelEditorView){
 
         if(levelEditorView == null){
@@ -80,28 +85,27 @@ public class LevelEditorController {
         return new LevelEditorController(levelEditorView);
     }
 
+    /* Setting the behavior of each button : */
+
     private void imageSelectBehavior(){
 
         FileChooser imageChooser = new FileChooser();
         
         levelEditorView.getChooseBackgroundBtn().setOnAction((e) -> 
         {
-            File bg = fileWrapper.backgroundImage;
-
-            bg = imageChooser.showOpenDialog(Game.getPrimaryStage());
+            File bg = imageChooser.showOpenDialog(Game.getPrimaryStage());
 
             // Test the validity
-            if(!isValidImage(bg)){
+            if(!ImageUtil.isValidImage(bg)){
                 if(bg != null){
-                    showInvalidImage();
+                    LevelEditorView.showInvalidImage();
                 }
-                fileWrapper.decrementNbDef();
             }
             else{
                 try{
                     levelEditorView.getBackgroundPreview().setImage(new Image(new FileInputStream(bg)));
-                    fileWrapper.incrementNbDef();
-                    fileWrapper.backgroundImage = bg;
+
+                    fileWrapper.setBackgroundImage(bg);
                 }
                 catch(IOException exp){
 
@@ -115,52 +119,21 @@ public class LevelEditorController {
             File obs = imageChooser.showOpenDialog(Game.getPrimaryStage());
 
             // Test the validity
-            if(!isValidImage(obs)){
+            if(!ImageUtil.isValidImage(obs)){
                 if(obs != null){
-                    showInvalidImage();
+                    LevelEditorView.showInvalidImage();
                 }
-                fileWrapper.decrementNbDef();
             }
             else{
                 try{
                     levelEditorView.getObstaclePreview().setImage(new Image(new FileInputStream(obs)));
-                    fileWrapper.incrementNbDef();
-                    fileWrapper.obstacleImage = new Image(new FileInputStream(obs));
-                    fileWrapper.obstacleImageFile = obs;
+                    fileWrapper.setObstacleImage(new Image(new FileInputStream(obs)));
                 }
                 catch(IOException exp){
 
                 }
             }
         });
-    }
-
-    /**
-     * Inform if the file is a valid javafx Image
-     * @param file the file to test
-     * @return true if it's the case, false if not
-     */
-    public static boolean isValidImage(File file) {
-        if (file == null || !file.exists() || !file.isFile()) {
-            return false;
-        }
-
-        try (FileInputStream fis = new FileInputStream(file)) {
-            Image image = new Image(fis);
-
-            return !image.isError() && image.getWidth() > 0 && image.getHeight() > 0;
-
-        } catch (IOException e) {
-            return false;
-        }
-    }
-
-    private void showInvalidImage(){
-
-        Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect 💀🙏✌️🎋💔", ButtonType.OK);
-        wrongImage.setHeaderText("☣️☣️☣️Something wents wrong..☣️☣️☣️");
-        wrongImage.showAndWait();
-        
     }
 
     private void buttonBehavior(){
@@ -171,7 +144,7 @@ public class LevelEditorController {
 
                 //Modify the background image and rediTODO Modifier le fichier image pour le truncate
                 try{
-                    fileWrapper.obstacleImage = resizeImage(fileWrapper.obstacleImage, GameManager.GRID_DIM, GameManager.GRID_DIM);
+                    fileWrapper.setObstacleImage(ImageUtil.resizeImage(fileWrapper.getObstacleImage(), GameManager.GRID_DIM, GameManager.GRID_DIM));
                 }
                 catch(IOException exp){
                     return;
@@ -183,30 +156,10 @@ public class LevelEditorController {
                 MenuSwitcher.switchScene(obstacleEditorView);
             }
             else{
-                showMustChoose();
+                LevelEditorView.showMustChoose();
             }
         });
 
         levelEditorView.getCancelBtn().setOnAction((e) -> MenuSwitcher.switchScene("MainMenu.fxml"));
-    }
-
-    //TODO mettre ça autre part
-    public static Image resizeImage(Image image, double width, double height) throws FileNotFoundException {
-
-        ImageView imageView = new ImageView(image);
-        imageView.setFitWidth(width);
-        imageView.setFitHeight(height);
-        imageView.setPreserveRatio(false);
-        imageView.setSmooth(true);
-
-        return imageView.snapshot(null, null);
-    }
-
-
-    private void showMustChoose(){
-
-        Alert mustChoose = new Alert(AlertType.WARNING, "You must choose the two image before going to the next step 🗿👍", ButtonType.OK);
-        mustChoose.setHeaderText("Something appends ;)");
-        mustChoose.showAndWait();
     }
 }

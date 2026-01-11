@@ -34,6 +34,7 @@ package com.app.main.util;
  * 
  * @see Observable
  * @author Dai Elias
+ * @author Mohamed Ibrir
  * @version 1.0
  */
 public interface Observer {

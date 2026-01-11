@@ -1,20 +1,28 @@
 package com.app.main.controller.menu;
 
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
 import com.app.main.audio.GamePlaylist;
-import com.app.main.controller.playercontroller.MouseController;
-import com.app.main.controller.playercontroller.botController.BotController;
+import com.app.main.controller.playercontroller.ControllerInit;
+import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
-import com.app.main.model.core.Team;
 import com.app.main.util.Controller;
+import com.app.main.util.GameLevelLoader;
 import com.app.main.view.GameScene;
 
 import javafx.fxml.FXML;
 import javafx.scene.image.Image;
 
+/**
+ * Contrôleur pour le menu de sélection des niveaux.
+ * <p>
+ * Fournit des méthodes FXML pour charger différents niveaux et prépare
+ * la scène de jeu en chargeant le niveau, les contrôleurs et l'image de fond.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public class LevelMenuController {
 
     @FXML
@@ -42,29 +50,24 @@ public class LevelMenuController {
         loader("lvl5");
     }
 
+    /**
+     * Charge le niveau depuis le JSON, initialise le GameManager et les
+     * contrôleurs, charge l'image de fond puis affiche la scène de jeu.
+     *
+     * @param nameoffile nom du fichier (sans extension) dans le dossier "levels"
+     */
     private void loader(String nameoffile){
         try {
 
             // Load the level : 
-            GameManager gameManager = GameManager.createFromJSON("levels/" + nameoffile + ".json");
+            GameLevel gameLevel = GameLevelLoader.load("levels/" + nameoffile + ".json");
 
-            Team[] loadedTeams = gameManager.getTeams();
-            int nbTeams = loadedTeams.length;
+            GameManager gameManager = GameManager.createFromJSON(gameLevel);
 
-            Controller[] controllers = new Controller[nbTeams];
-
-            controllers[0] = MouseController.createMouseController(loadedTeams[0]);
-
-            for (int i = 1; i < nbTeams; i++) {
-                controllers[i] = new BotController(
-                    gameManager.getWidth(), 
-                    gameManager.getHeight(), 
-                    loadedTeams[i]
-                );
-            }
+            Controller[] controllers = ControllerInit.initializeControllers(gameLevel, gameManager.getTeams());
 
             //Load the image :
-            Image levelBackground = levelImageLoader(nameoffile);
+            Image levelBackground = new Image(Files.newInputStream(Paths.get("levelimages/"+ gameLevel.backgroundImageFilename)));
             
             GamePlaylist.playLevelAudio();
 
@@ -72,34 +75,9 @@ public class LevelMenuController {
                 GameScene.buildGameScene(gameManager, controllers, levelBackground)
             );
 
-        } catch (Exception e) {
+        } catch (Exception e ) {
             System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
             e.printStackTrace();
         }
     }
-
-    private Image levelImageLoader(String nameoffile) {
-        
-        String[] imageType = {"png", "jpg", "jpeg", "gif", "bmp"};
-
-        String imgPath = nameoffile;
-
-        for (int i = 0; i < imageType.length; i++) {
-            
-            String tmp = "levelimages/" + imgPath + "." + imageType[i];
-
-            if(new File(tmp).exists()){
-                imgPath = tmp;
-                break;
-            }
-        }
-
-        try {
-            Image ret = new Image(Files.newInputStream(Paths.get(imgPath)));
-            return ret;
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
 }

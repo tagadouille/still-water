@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class TimerHandlerMutableClockTest {
+public class TimerHandlerTest {
 
     /**
      * For simulating the clock
@@ -24,10 +24,6 @@ public class TimerHandlerMutableClockTest {
 
         public void addSeconds(long seconds) {
             now = now.plusSeconds(seconds);
-        }
-
-        public void addMillis(long millis) {
-            now = now.plusMillis(millis);
         }
 
         @Override

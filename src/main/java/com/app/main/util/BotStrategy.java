@@ -5,6 +5,8 @@ import com.app.main.controller.playercontroller.botController.BotController;
 /**
  * This interface is for define strategies for the bot
  * of the game
+ * 
+ * @author Dai Elias
  */
 public interface BotStrategy {
     

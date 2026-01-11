@@ -13,6 +13,15 @@ import com.app.main.view.GameScene;
 import javafx.fxml.FXML;
 import javafx.scene.input.KeyCode;
 
+/**
+ * Contrôleur pour la création de parties locales (duo, trio, squad).
+ * <p>
+ * Prépare les équipes, les contrôleurs (joueurs et bots), puis lance
+ * la scène de jeu correspondante.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public class MultiLocalController {
 
     @FXML
@@ -30,6 +39,12 @@ public class MultiLocalController {
         launchCustomGame(4);
     }
 
+    /**
+     * Initialise et lance une partie locale personnalisée avec le nombre
+     * d'équipes spécifié.
+     *
+     * @param nbTeams nombre d'équipes à créer
+     */
     private void launchCustomGame(int nbTeams) {
         try {
             
@@ -64,7 +79,7 @@ public class MultiLocalController {
 
             // --- LE RESTE (Bots) ---
             for (int i = 2; i < nbTeams; i++) {
-                controllers[i] = new BotController(GameManager.GRID_DIM, GameManager.GRID_DIM, teams[i]);
+                controllers[i] = new BotController(teams[i]);
             }
 
             GamePlaylist.playLevelAudio();
@@ -77,6 +92,14 @@ public class MultiLocalController {
         }
     }
 
+    /**
+     * Retourne une paire de points de spawn pour l'équipe d'index donné.
+     * Les positions sont choisies par défaut en fonction de l'index (coins et centres).
+     *
+     * @param index indice de l'équipe
+     * @param dim dimension de la grille
+     * @return tableau de deux {@link Point} représentant la zone de spawn
+     */
     private Point[] getSpawnForTeam(int index, int dim) {
         int w = 100;
         int h = 80;

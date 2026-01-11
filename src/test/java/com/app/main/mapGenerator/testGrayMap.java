@@ -8,10 +8,10 @@ import org.junit.jupiter.api.Test;
 import com.app.main.util.mapGenerator.MapGenerator;
 
 public class testGrayMap {
-    private static final String IMAGE_PATH = "src/test/java/com/app/test-resources/";
+    private static final String IMAGE_PATH = "src/test/resources/image";
 
     @Test
-    public void grayMap(){
+    void grayMap(){
         try{
             int[][] grayMap1 = MapGenerator.getGrayMap(IMAGE_PATH + "test-map1.png");
             int[][] grayMap2 = MapGenerator.getGrayMap(IMAGE_PATH + "test-map2.png");

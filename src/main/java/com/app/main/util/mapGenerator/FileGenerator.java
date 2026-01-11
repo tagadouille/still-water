@@ -13,6 +13,16 @@ import com.app.main.model.GameLevel.TeamConfig;
 import com.app.main.util.json.JSONFileManager;
 import com.app.main.model.core.Point;
 
+/**
+ * Utilitaire de création de fichier JSON représentant un niveau édité.
+ * <p>
+ * Transforme un {@link GameLevel} en structure sérialisable et écrit le
+ * résultat dans le dossier <code>editorlevels</code> via
+ * {@link com.app.main.util.json.JSONFileManager}.
+ * </p>
+ * 
+ * @author Mohamed Ibrir
+ */
 public final class FileGenerator{
 
     private final GameLevel gamelevel;
@@ -21,6 +31,13 @@ public final class FileGenerator{
         this.gamelevel = gameLevel;
     }
 
+    /**
+     * Fabrique un FileGenerator pour un {@link GameLevel} donné.
+     *
+     * @param gameLevel le niveau source (non null)
+     * @return instance de FileGenerator
+     * @throws IllegalArgumentException si {@code gameLevel} est {@code null}
+     */
     public static FileGenerator createFileGenerator(GameLevel gameLevel){
 
         if(gameLevel == null){
@@ -30,7 +47,18 @@ public final class FileGenerator{
         return new FileGenerator(gameLevel);
     }
 
-    public void createfile(String nameoffile, String backgroundFilename, String obstacleFilename) throws IOException{
+    /**
+     * Écrit le niveau dans un fichier JSON nommé <code>editorlevels/{nameoffile}.json</code>.
+     * <p>
+     * Le fichier contient la carte d'obstacles, la liste des équipes (couleur,
+     * positions de spawn, type) et le nom du fond.
+     * </p>
+     *
+     * @param nameoffile nom du fichier (sans extension)
+     * @param backgroundFilename nom du fichier d'image de fond
+     * @throws IOException si l'écriture échoue
+     */
+    public void createfile(String nameoffile, String backgroundFilename) throws IOException{
         try{
             JSONFileManager writer = new JSONFileManager("editorlevels/" + nameoffile + ".json");
             writer.create();
@@ -69,12 +97,14 @@ public final class FileGenerator{
 
                 team.put("pos", pos);
 
+                // The type of the team :
+                team.put("isPlayer", config.isPlayer);
+
                 teams.add(team);
             }
             writer.writeLine("team", teams);
 
-            writer.writeLine("backgroundImage", backgroundFilename);
-            writer.writeLine("obstacleImage", obstacleFilename);
+            writer.writeLine("background", backgroundFilename);
 
         }catch(Exception e){
             e.printStackTrace();

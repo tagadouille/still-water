@@ -5,7 +5,6 @@ import java.io.IOException;
 import com.app.main.Game;
 
 import javafx.application.Platform;
-import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -13,6 +12,11 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 
+/**
+ * MenuSwitcher is a class for switching to other scene in the game
+ * 
+ * @author Dai Elias
+ */
 public class MenuSwitcher {
 
     /**
@@ -22,28 +26,31 @@ public class MenuSwitcher {
      * @return the parent of the scene
      */
     public static FXMLLoader switchScene(String fxmlFile) {
-    try {
-        FXMLLoader loader = new FXMLLoader(Game.class.getResource(fxmlFile));
-        Parent root = loader.load();
+        try {
+            FXMLLoader loader = new FXMLLoader(Game.class.getResource(fxmlFile));
+            Parent root = loader.load();
 
-        Platform.runLater(() -> {
-            Game.setScene(new Scene(root));
-            Game.getPrimaryStage().setScene(Game.getScene());
-        });
+            Platform.runLater(() -> {
+                Game.setScene(new Scene(root));
+                Game.getPrimaryStage().setScene(Game.getScene());
+            });
 
-        return loader;
+            return loader;
+        }
+        catch (IOException e) {
+            Alert alert = new Alert(AlertType.ERROR, "The file " + fxmlFile + " doesn't exist 💀🙏.", ButtonType.CLOSE);
+            alert.setHeaderText("Something went wrong..");
+            alert.showAndWait();
+            System.exit(0);
+        }
+
+        return null;
     }
-    catch (IOException e) {
-        Alert alert = new Alert(AlertType.ERROR, "The file " + fxmlFile + " doesn't exist 💀🙏.", ButtonType.CLOSE);
-        alert.setHeaderText("Something went wrong..");
-        alert.showAndWait();
-        System.exit(0);
-    }
 
-    return null;
-}
-
-
+    /**
+     * For switching to a new scene.
+     * @param scene the scene to switch
+     */
     public static void switchScene(Scene scene){
         if(scene != null){
             Platform.runLater(() -> {

@@ -10,7 +10,7 @@ import com.app.main.util.mapGenerator.MapGenerator;
 public class TestLevelMap {
 
     @Test
-    public void testThresholdZero() {
+    void testThresholdZero() {
         int[][] grayMap = {
                 {255, 0},
                 {25, 50}
@@ -26,7 +26,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testThreshold50() {
+    void testThreshold50() {
         int[][] grayMap = {
                 {255, 0},
                 {25, 50}
@@ -42,7 +42,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testThreshold100() {
+    void testThreshold100() {
         int[][] grayMap = {
                 {255, 0},
                 {25, 50}
@@ -57,7 +57,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testSquareMap() {
+    void testSquareMap() {
         int[][] grayMap = {
                 {255, 255, 255},
                 {0, 25, 50},
@@ -75,7 +75,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testIllegalThresholdLow() {
+    void testIllegalThresholdLow() {
         int[][] grayMap = {
                 {10, 20},
                 {30, 40}
@@ -87,7 +87,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testIllegalThresholdHigh() {
+    void testIllegalThresholdHigh() {
         int[][] grayMap = {
                 {10, 20},
                 {30, 40}
@@ -99,7 +99,7 @@ public class TestLevelMap {
     }
 
     @Test
-    public void testIllegalGrayValue() {
+    void testIllegalGrayValue() {
         int[][] grayMap = {
                 {0, 256},   // <-- valeur illégale
                 {50, 100}

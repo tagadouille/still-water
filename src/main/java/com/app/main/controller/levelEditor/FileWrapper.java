@@ -2,6 +2,8 @@ package com.app.main.controller.levelEditor;
 
 import java.io.File;
 
+import com.app.main.util.ImageUtil;
+
 import javafx.scene.image.Image;
 
 /**
@@ -11,35 +13,61 @@ import javafx.scene.image.Image;
  * @author Dai Elias
  */
 class FileWrapper{
-    public File backgroundImage;
-    public File obstacleImageFile;
-    public Image obstacleImage;
-    private int nbDef = 0;
 
-    public int getNbDef() {
-        return nbDef;
+    private File backgroundImage;
+    private Image obstacleImage;
+
+    /* Getters and setters */
+    File getBackgroundImage() {
+        return backgroundImage;
+    }
+
+    Image getObstacleImage() {
+        return obstacleImage;
+    }
+
+    void setBackgroundImage(File backgroundImage) {
+
+        if(!ImageUtil.isValidImage(backgroundImage)){
+            throw new IllegalArgumentException("The background image is not a valid file");
+        }
+        this.backgroundImage = backgroundImage;
+    }
+
+    void setObstacleImage(Image obstacleImage) {
+
+        if(obstacleImage == null){
+            throw new IllegalArgumentException("The obstacle image of the file wrapper is null");
+        }
+        this.obstacleImage = obstacleImage;
     }
 
     /**
-     * Increment nbDef by 1
-     */
-    public void incrementNbDef() {
-        this.nbDef++;
-    }
-
-    /**
-     * Decrement nbDef by 1. The minumum is 0
-     */
-    public void decrementNbDef() {
-        this.nbDef = Math.max(0, nbDef - 1);
-    }
-
-    /**
-     * Inform if nbDef = 2. This mean that backgroundImage an obstacleImage are
-     * correctly initialise
+     * Inform if backgroundImage and obstacleImage are
+     * correctly initialize
      * @return
      */
-    public boolean allGood(){
-        return nbDef == 2;
+    boolean allGood(){ 
+        return ImageUtil.isValidImage(backgroundImage) && obstacleImage != null;
+    }
+
+    /**
+     * Verify is the filewrapper is correct. So if the images are really
+     * a correct image
+     * @param fileWrapper the filewrapper
+     */
+    static void verifyFileWrapper(FileWrapper fileWrapper){
+
+        if(fileWrapper == null){
+            throw new IllegalArgumentException("The FileWrapper parameter can't be null");
+        }
+
+        if(!ImageUtil.isValidImage(fileWrapper.backgroundImage)){
+            throw new IllegalArgumentException("The background image of the file wrapper is not a valid file");
+        }
+
+        if(fileWrapper.obstacleImage == null){
+            throw new IllegalArgumentException("The obstacle image of the file wrapper is null");
+        }
     }
 }

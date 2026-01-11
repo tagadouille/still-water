@@ -9,6 +9,8 @@ package com.app.main.model.core;
  * <p>
  * [cite_start]Voir sujet : [cite: 22, 23, 28, 29]
  * </p>
+ * 
+ * @author Mohamed Ibrir
  */
 public final class GradientGrid {
 

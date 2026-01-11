@@ -9,10 +9,22 @@ import javafx.scene.paint.Color;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.app.main.model.GameManager;
 import com.app.main.view.ParticleView;
 
+/**
+ * The TeamCanvas represents the Canvas where the team spawn point will
+ * be displayed.
+ * 
+ * @see TeamEditorView
+ * @author Dai Elias
+ */
 public final class TeamCanvas extends Canvas {
 
+    /**
+     * The TeamRectangle class represents graphicallly the
+     * spawn point of the team. The area of spawn.
+     */
     public final static class TeamRectangle {
 
         private double x, y;
@@ -29,6 +41,8 @@ public final class TeamCanvas extends Canvas {
             this.sizeY = sizeY;
             this.color = color;
         }
+
+        /* Getters an setters */
 
         public double getSizeX() {
             return sizeX;
@@ -47,38 +61,49 @@ public final class TeamCanvas extends Canvas {
         }
 
         public void setX(double x) {
-            this.x = Math.min(TeamCanvas.WIDTH, Math.max(0, x));
+            this.x = Math.min(GameManager.GRID_DIM, Math.max(0, x));
         }
 
         public void setY(double y){
-            this.y = Math.min(TeamCanvas.HEIGHT, Math.max(0, y));
+            this.y = Math.min(GameManager.GRID_DIM, Math.max(0, y));
         }
 
         public void setSizeX(double sizeX){
-            this.sizeX = Math.min(TeamCanvas.WIDTH, Math.max(0, sizeX));
+            this.sizeX = Math.min(GameManager.GRID_DIM, Math.max(0, sizeX));
         }
 
         public void setSizeY(double sizeY){
-            this.sizeY = Math.min(TeamCanvas.HEIGHT, Math.max(0, sizeY));
+            this.sizeY = Math.min(GameManager.GRID_DIM, Math.max(0, sizeY));
         }
 
     }
-
-    public static final double WIDTH = 480;
-    public static final double HEIGHT = 480;
 
     private final List<TeamRectangle> rectangles = new ArrayList<>();
 
     private Image background;
 
+    private final boolean[] isColorTaken = new boolean[com.app.main.model.core.Color.values().length - 1];
+
+    /**
+     * The constructor of the class that initialize the Canvas
+     */
     public TeamCanvas(){
-        super(WIDTH, HEIGHT);
+        super(GameManager.GRID_DIM, GameManager.GRID_DIM);
     }
 
+    /**
+     * @return a list of all the TeamRectangle that are displayed
+     * on the Canvas
+     */
     public List<TeamRectangle> getRectangles() {
         return rectangles;
     }
 
+    /**
+     * For initialize the background of the canvas which is the obstacle map
+     * @param obstacles the obstacle map where true mean that there's an obstacle and false
+     * that thre's not;
+     */
     public void setBackground(boolean[][] obstacles){
 
         if (obstacles == null || obstacles.length == 0 || obstacles[0].length == 0) {
@@ -111,35 +136,67 @@ public final class TeamCanvas extends Canvas {
         }
 
         this.background = image;
-        draw(getGraphicsContext2D());
+        draw();
     }
 
+    /**
+     * This method if for adding a TeamRectangle to the canvas
+     * @param sizeX the size of the rectangle on the x axis
+     * @param sizeY the size of the rectangle on the y axis
+     * @return true if the rectangle is add, false if not.
+     * @see TeamRectangle
+     */
     public boolean addTeamRectangle(int sizeX, int sizeY){
 
-        if(com.app.main.model.core.Color.values().length <= rectangles.size() + 1){
+        if(sizeX * sizeY != GameManager.NB_CELL){
+            throw new IllegalArgumentException("The surface of the rectangle must be equal to GameManager.NB_CELL");
+        }
+
+        if(com.app.main.model.core.Color.values().length - 1 < rectangles.size() + 1){
             return false;
         }
 
-        Color tmp = ParticleView.getTeamColor(com.app.main.model.core.Color.values()[rectangles.size()]);
+        Color tmp = Color.WHITE;
+
+        // Determine the non taken color :
+        for (int i = 0; i < isColorTaken.length; i++) {
+            
+            if(!isColorTaken[i]){
+                isColorTaken[i] = true;
+                tmp = ParticleView.getTeamColor(com.app.main.model.core.Color.values()[i]);
+                break;
+            }
+        }
         
         Color color = new Color(tmp.getRed(), tmp.getGreen(), tmp.getBlue(), tmp.getOpacity() * 0.75);
 
-        TeamRectangle rectangle = new TeamRectangle(0, 0, sizeX, sizeY, color);
+        TeamRectangle rectangle = new TeamRectangle(GameManager.GRID_DIM/2, GameManager.GRID_DIM/2, sizeX, sizeY, color);
         rectangles.add(rectangle);
-        draw(getGraphicsContext2D());
+        draw();
 
         return true;
     }
 
-    public void removeTeamRectangle(){
+    /**
+     * Remove a TeamRectangle of the canvas.
+     * @param teamRectangle the team rectangle to remove
+     */
+    public void removeTeamRectangle(TeamRectangle teamRectangle){
 
-        if(rectangles.size() != 0){
-            rectangles.remove(rectangles.size() - 1);
-            draw(getGraphicsContext2D());
+        if(rectangles.size() != 0 && teamRectangle != null){
+            isColorTaken[rectangles.indexOf(teamRectangle)] = false;
+            rectangles.remove(teamRectangle);
+            draw();
         }
     }
 
-    public void draw(GraphicsContext gc) {
+    /**
+     * For updating the canvas
+     */
+    public void draw() {
+
+        GraphicsContext gc = this.getGraphicsContext2D();
+
         gc.clearRect(0, 0, this.getWidth(), this.getHeight());
 
         if(background != null){

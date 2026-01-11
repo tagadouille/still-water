@@ -4,11 +4,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import com.app.main.util.Observable;
-import com.app.main.util.Observer;
-
 import javafx.scene.control.Button;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Background;
@@ -22,13 +18,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
 /**
- * Classe étendant VBox permettant de représenter
- * la partie de la vue du jeu où sont affichés les
- * éléments relatif au déroulement de la partie 
- * (nombre de FPS, répartition des équipes, points gagnés, etc..)
+ * GameInfoView is a class that extends VBox for representing
+ * the part of the game view where the elements for the game sequence
+ * (number of FPS, team repartition, etc..) are displayed
+ * 
  * @author Dai Elias
  */
-public final class GameInfoView extends VBox implements Observer{
+public final class GameInfoView extends VBox{
 
     /**
      * Pane that display the repartition of the teams forces
@@ -47,8 +43,8 @@ public final class GameInfoView extends VBox implements Observer{
     private Button quitButton = new Button("Quit");
 
     /**
-     * Constructeur de la classe permettant d'initialiser ses
-     * principaux composants
+     * Constructor of the class for initialize the main components of the class
+     * @param width the width of the GameInfoView
      */
     public GameInfoView(int width){
         super();
@@ -83,10 +79,6 @@ public final class GameInfoView extends VBox implements Observer{
         this.getChildren().addAll(infoBox, forcesRepartiton, spacer, img);
     }
 
-    public Button getQuitButton() {
-        return quitButton;
-    }
-
     private void initialiseInfoBox(){
 
         VBox textBox = new VBox(10);
@@ -108,52 +100,21 @@ public final class GameInfoView extends VBox implements Observer{
         infoBox.getChildren().addAll(textBox, spacer, quitButton);
     }
 
-    private void updateForcesRepartition(double[] forces, Color[] teamColor){
+    /* Getters : */
 
-        // If no repartition are displayed, create them
-        if(forcesRepartiton.getChildren().size() == 0){
-
-            for (int i = 0; i < forces.length; i++) {
-                ProgressBar progressBar = new ProgressBar(forces[i]);
-                progressBar.setMaxWidth(Double.MAX_VALUE);
-                progressBar.setStyle("-fx-accent: " + teamColor[i].toString().replace("0x", "#") + ";");
-
-                forcesRepartiton.getChildren().add(progressBar);
-                VBox.setVgrow(progressBar, Priority.ALWAYS);
-            }
-        }
-        //Update them
-        for (int i = 0; i < forces.length; i++) {
-            ProgressBar progressBar = (ProgressBar) forcesRepartiton.getChildren().get(i);
-            progressBar.setProgress(forces[i]);
-        }
+    public Button getQuitButton() {
+        return quitButton;
     }
 
-    private void updateFps(int fps){
-        this.fps.setText("FPS : " + fps);
+    public Text getFps() {
+        return fps;
     }
 
-    private void updateTimer(String time){
-        this.timer.setText(time);
+    public Text getTimer() {
+        return timer;
     }
 
-    @Override
-    public void update(Observable o, Object arg, String action) {
-
-        if(o instanceof GridView){
-            GridView gridView = (GridView) o;
-
-            if(action.equals("info")){
-                double[] forces = gridView.getGameManager().getForces();
-                Color[] teamColors = new Color[forces.length];
-
-                for (int i = 0; i < teamColors.length; i++) {
-                    teamColors[i] = ParticleView.getTeamColor(gridView.getGameManager().getTeams()[i]);
-                }
-                updateForcesRepartition(forces, teamColors);
-                updateFps(gridView.getCurrentFps());
-                updateTimer(gridView.getTimer().getTimeRemaining());
-            }
-        }
+    public VBox getForcesRepartiton() {
+        return forcesRepartiton;
     }
 }

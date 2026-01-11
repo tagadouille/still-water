@@ -2,25 +2,40 @@ package com.app.main.view.levelEditor;
 
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 
-public final class TeamEditorView extends Scene {
+/**
+ * The TeamEditorView is the last page of the level editor that allows the user
+ * to place the spawn point of each team and dimension it and save the level.
+ * 
+ * @author Dai Elias
+ */
+public final class TeamEditorView extends Scene implements LevelEditorConstant{
 
     private HBox root;
     
-    private Button placeTeamBtn;
+    private Button placeBotBtn;
+    private Button placePlayerBtn;
     private Button goBackBtn;
 
     private TeamCanvas teamCanvas;
 
     private EditTeamBox editTeamBox;
 
+    /**
+    * The construtor of the class that initialize
+    * the components and do the layout of the UI
+    */
     public TeamEditorView(){
         
         super(new HBox());
@@ -30,6 +45,7 @@ public final class TeamEditorView extends Scene {
             root.setAlignment(Pos.CENTER);
             root.setPrefHeight(720);
             root.setPrefWidth(1280);
+            root.getStyleClass().add("levelEdit");
         }
 
         // Initialization of the differents panels :
@@ -39,6 +55,8 @@ public final class TeamEditorView extends Scene {
         root.getChildren().addAll(leftVBox, editTeamBox);
     }
 
+    /* Helper for initialize the components */
+
     private VBox initializeLeftVBox(){
 
         VBox leftVBox = new VBox(5);
@@ -47,24 +65,31 @@ public final class TeamEditorView extends Scene {
 
         Text leftTitle = new Text("Place each team spawn points");
         leftTitle.setFont(Font.font("System Bold", 28));
+        leftTitle.setFill(Color.WHITE);
 
         teamCanvas = new TeamCanvas();
 
-        placeTeamBtn = new Button("Place a team");
-        placeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+        placeBotBtn = new Button("Place a bot");
+        placeBotBtn.setFont(BUTTON_FONT);
+
+        placePlayerBtn = new Button("Place a player");
+        placePlayerBtn.setFont(BUTTON_FONT);
 
         goBackBtn = new Button("Go Back");
-        goBackBtn.setFont(Font.font("Rubik Bold Italic", 25));
+        goBackBtn.setFont(BUTTON_FONT);
 
         leftVBox.getChildren().addAll(
                 leftTitle,
                 teamCanvas,
-                placeTeamBtn,
+                placePlayerBtn,
+                placeBotBtn,
                 goBackBtn
         );
 
         return leftVBox;
     }
+
+    /* Getters */
 
     public TeamCanvas getTeamCanvas() {
         return teamCanvas;
@@ -74,14 +99,68 @@ public final class TeamEditorView extends Scene {
         return goBackBtn;
     }
 
-    public Button getPlaceTeamBtn() {
-        return placeTeamBtn;
+    public Button getPlaceBotBtn() {
+        return placeBotBtn;
+    }
+
+    public Button getPlacePlayerBtn() {
+        return placePlayerBtn;
     }
 
     public EditTeamBox getEditTeamBox() {
         return editTeamBox;
     }
 
+    /**
+     * Display an error Alert that informs the user
+     * that the save of the level file is a failure
+     */
+    public static void showCannotSave(){
+        Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
+        error.setHeaderText("An error occured 😱😨😭🙏");
+        error.showAndWait();
+    }
+
+    /**
+     * Display a warning Alert that inform the user that
+     * the spawns points of the teams are invalid
+     */
+    public static void showTeamInvalid(){
+        Alert warning = new Alert(
+            AlertType.WARNING,
+            "There must be at least 2 team spoint point. 🤓☝️ A team spawn point can't overlapp to another. And can't overlapp an obstacle",
+            ButtonType.CLOSE);
+        warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
+        warning.showAndWait();
+    }
+
+    /**
+     * Display a warning Alert that inform the user that
+     * the filename that he entered is not correct
+     */
+    public static void showFileNameIncorrect(){
+        Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
+
+        warning.showAndWait();
+    }
+
+    /**
+     * Display a information Alert that inform the user
+     * that the save is successful
+     */
+    public static void showSaveSuccess(){
+        Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
+        finish.setHeaderText("The save is succesful ! 😎✌️");
+        finish.showAndWait();
+    }
+
+    /**
+     * The EditTeamBox represents the right panel of the TeamEditorView.
+     * In this panel there are the components for edit a team spawn point and save the level.
+     * 
+     * @see TeamEditorView
+     * @author Dai Elias
+     */
     public class EditTeamBox extends VBox{
 
         private Slider teamSlider;
@@ -90,6 +169,10 @@ public final class TeamEditorView extends Scene {
         private TextField fileNameField;
         private Button saveBtn;
 
+        /**
+        * The construtor of the class that initialize
+        * the components and do the layout of the UI
+        */
         public EditTeamBox(){
             
             super(15);
@@ -98,6 +181,7 @@ public final class TeamEditorView extends Scene {
 
             Text rightTitle = new Text("Edit the selected spawn point :");
             rightTitle.setFont(Font.font("System Bold", 28));
+            rightTitle.setFill(Color.WHITE);
 
             editPartInit();
 
@@ -108,6 +192,7 @@ public final class TeamEditorView extends Scene {
                     "Save only if you click on \"verify\" and if you are sure of what you did"
             );
             warningText.setFont(Font.font("System Italic", 16));
+            warningText.setFill(Color.WHITE);
 
             this.getChildren().addAll(
                     rightTitle,
@@ -117,6 +202,8 @@ public final class TeamEditorView extends Scene {
                     warningText
             );
         }
+
+        /* Getters */
 
         public Slider getTeamSlider() {
             return teamSlider;
@@ -134,13 +221,15 @@ public final class TeamEditorView extends Scene {
             return removeTeamBtn;
         }
 
+        /* Helpers for initialize the components of the UI */
+
         private void editPartInit(){
 
             teamSlider = new Slider();
             teamSlider.setShowTickMarks(true);
 
             removeTeamBtn = new Button("Remove the selected team");
-            removeTeamBtn.setFont(Font.font("Rubik Bold Italic", 25));
+            removeTeamBtn.setFont(BUTTON_FONT);
         }
 
         private HBox saveAreaInit(){
@@ -153,7 +242,7 @@ public final class TeamEditorView extends Scene {
             fileNameField.setFont(Font.font(21));
 
             saveBtn = new Button("Save");
-            saveBtn.setFont(Font.font("Rubik Bold Italic", 25));
+            saveBtn.setFont(BUTTON_FONT);
 
             saveBox.getChildren().addAll(fileNameField, saveBtn);
 

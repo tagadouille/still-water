@@ -56,7 +56,7 @@ public final class GameScene extends Scene {
         GameInfoView gameInfoView = new GameInfoView(rightPaneWidth);
         GameInfoViewController gameInfoViewController = GameInfoViewController.creaInfoViewController(gameInfoView);
 
-        gridview.addObserver(gameInfoView);
+        //!gridview.addObserver(gameInfoView);
         gridview.addObserver(gameInfoViewController);
 
         ((HBox) this.getRoot()).setSpacing(0);
@@ -117,7 +117,7 @@ public final class GameScene extends Scene {
 
         for (int i = 0; i < controllers.length; i++) {
 
-            if(i != 0 && controllers[i] == null){
+            if(controllers[i] == null){
                 throw new IllegalArgumentException("A controller can't be null in the array of controller");
             }
         }
