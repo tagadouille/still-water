@@ -3,19 +3,12 @@ package com.app.main.controller.levelEditor;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 
 import com.app.main.Game;
-import com.app.main.audio.GamePlaylist;
 import com.app.main.controller.menu.MenuSwitcher;
-import com.app.main.controller.playercontroller.ControllerInit;
-import com.app.main.model.GameLevel;
 import com.app.main.model.GameManager;
 import com.app.main.util.ImageUtil;
-import com.app.main.util.Controller;
-import com.app.main.util.GameLevelLoader;
-import com.app.main.view.GameScene;
+import com.app.main.util.LevelLoader;
 import com.app.main.view.levelEditor.LevelEditorView;
 import com.app.main.view.levelEditor.LevelListView;
 import com.app.main.view.levelEditor.ObstacleEditorView;
@@ -43,30 +36,14 @@ public final class LevelEditorController {
         imageSelectBehavior();
         buttonBehavior();
 
-        LevelListView list = new LevelListView();
+        LevelListView list = LevelListView.INSTANCE;
+        
         list.setPrefWidth(220);
         list.setOnLevelSelected(path -> {
-            try {
-                GameLevel gameLevel = GameLevelLoader.load(path.toString());
-
-                GameManager gameManager = GameManager.createFromJSON(gameLevel);
-
-                Controller[] controllers = ControllerInit.initializeControllers(gameLevel, gameManager.getTeams());
-
-                System.out.println(gameLevel.backgroundImageFilename);
-
-                Image background = new Image(Files.newInputStream(Paths.get("editorimages/"+ gameLevel.backgroundImageFilename)));
-
-                GamePlaylist.playLevelAudio();
-
-                MenuSwitcher.switchScene(
-                    GameScene.buildGameScene(gameManager, controllers, background)
-                );
-
-            } catch (Exception e) {
-                System.err.println("Erreur lors du chargement du niveau : " + e.getMessage());
-                e.printStackTrace();
-            }
+            LevelLoader.loadLevel(
+                path.toString(),
+                "editorimages/"
+            );
         });
         levelEditorView.getRootContainer().getChildren().add(0, list);
     }
