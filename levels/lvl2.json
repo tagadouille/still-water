@@ -1,5 +1,5 @@
 {
-	"background": "maze.jpg",
+	"background": "lvl2.png",
 	"team": [
 		{
 			"isPlayer": true,
@@ -16,7 +16,7 @@
 			]
 		},
 		{
-			"isPlayer": true,
+			"isPlayer": false,
 			"color": "BLUE",
 			"pos": [
 				[
