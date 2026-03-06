@@ -123,8 +123,8 @@ class TeamCanvasController {
         int[] size = poss[poss.length/2 - 1];
 
         if(!teamCanvas.addTeamRectangle(size[0], size[1])){
-            Alert add = new Alert(AlertType.WARNING, "You can't add more teams 🤣🫵", ButtonType.CLOSE);
-            add.setHeaderText("Something happends 🥀💔");
+            Alert add = new Alert(AlertType.WARNING, "You can't add more teams", ButtonType.CLOSE);
+            add.setHeaderText("Something happends..");
             add.showAndWait();
             return false;
         }

@@ -116,8 +116,8 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
      * that the save of the level file is a failure
      */
     public static void showCannotSave(){
-        Alert error = new Alert(AlertType.ERROR, "Can't save the file 🏗️💔", ButtonType.CLOSE);
-        error.setHeaderText("An error occured 😱😨😭🙏");
+        Alert error = new Alert(AlertType.ERROR, "Can't save the file :/", ButtonType.CLOSE);
+        error.setHeaderText("An error occured during the save..");
         error.showAndWait();
     }
 
@@ -128,9 +128,9 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
     public static void showTeamInvalid(){
         Alert warning = new Alert(
             AlertType.WARNING,
-            "There must be at least 2 team spoint point. 🤓☝️ A team spawn point can't overlapp to another. And can't overlapp an obstacle",
+            "There must be at least 2 team spoint point. A team spawn point can't overlapp to another. And can't overlapp an obstacle",
             ButtonType.CLOSE);
-        warning.setHeaderText("The spawn points of the team are incorrect 💀✌️");
+        warning.setHeaderText("The spawn points of the team are incorrect..");
         warning.showAndWait();
     }
 
@@ -139,7 +139,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
      * the filename that he entered is not correct
      */
     public static void showFileNameIncorrect(){
-        Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct 💀👍💔", ButtonType.CLOSE);
+        Alert warning = new Alert(AlertType.WARNING, "The filename that you entered is not correct", ButtonType.CLOSE);
 
         warning.showAndWait();
     }
@@ -149,7 +149,7 @@ public final class TeamEditorView extends Scene implements LevelEditorConstant{
      * that the save is successful
      */
     public static void showSaveSuccess(){
-        Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥🔥🔥 Be proud 🗿✌️", ButtonType.YES);
+        Alert finish = new Alert(AlertType.INFORMATION, "You're level has been save !🔥", ButtonType.YES);
         finish.setHeaderText("The save is succesful ! 😎✌️");
         finish.showAndWait();
     }

@@ -38,7 +38,7 @@ public class MenuSwitcher {
             return loader;
         }
         catch (IOException e) {
-            Alert alert = new Alert(AlertType.ERROR, "The file " + fxmlFile + " doesn't exist 💀🙏.", ButtonType.CLOSE);
+            Alert alert = new Alert(AlertType.ERROR, "The file " + fxmlFile + " doesn't exist.", ButtonType.CLOSE);
             alert.setHeaderText("Something went wrong..");
             alert.showAndWait();
             System.exit(0);

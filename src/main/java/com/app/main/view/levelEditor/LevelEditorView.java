@@ -174,8 +174,7 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
      */
     public static void showMustChoose(){
 
-        Alert mustChoose = new Alert(AlertType.WARNING, "You must choose the two image before going to the next step 🗿👍", ButtonType.OK);
-        mustChoose.setHeaderText("Something happends ;)");
+        Alert mustChoose = new Alert(AlertType.WARNING, "You must choose the two image before going to the next step👍", ButtonType.OK);
         mustChoose.showAndWait();
     }
 
@@ -185,8 +184,8 @@ public final class LevelEditorView extends Scene implements LevelEditorConstant{
      */
     public static void showInvalidImage(){
 
-        Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect 💀🙏✌️🎋💔", ButtonType.OK);
-        wrongImage.setHeaderText("☣️☣️☣️Something wents wrong..☣️☣️☣️");
+        Alert wrongImage = new Alert(Alert.AlertType.ERROR, "The image that has been choose is incorrect", ButtonType.OK);
+        wrongImage.setHeaderText("Something wents wrong..");
         wrongImage.showAndWait();
     }
         
