@@ -1,7 +1,7 @@
 package com.app.main.view;
 
 import com.app.main.model.core.Team;
-import com.app.main.model.core.Team.Cell;
+import com.app.main.model.core.Cell;
 
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;

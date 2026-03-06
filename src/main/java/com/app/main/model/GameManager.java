@@ -9,7 +9,7 @@ import java.util.concurrent.TimeUnit;
 import com.app.main.model.core.Color;
 import com.app.main.model.core.Point;
 import com.app.main.model.core.Team;
-import com.app.main.model.core.Team.Cell;
+import com.app.main.model.core.Cell;
 
 /**
  * Class for managing the models and makes update

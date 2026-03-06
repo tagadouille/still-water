@@ -175,8 +175,8 @@ public final class Team {
 
     public void setCellPosition(Cell cell, int newX, int newY) {
         if(this.gradient.isValid(newX, newY)){
-            cell.x = newX;
-            cell.y = newY;
+            cell.setX(newX);
+            cell.setY(newY);
         }else{
             throw new IllegalArgumentException("The new position is invalid");
         }
@@ -203,7 +203,7 @@ public final class Team {
         gradient.calculgradient(targetX, targetY);
 
         for (Cell myCell : army) {
-            if (myCell.energy > 0 && myCell.isAlive()) {
+            if (myCell.getEnergy() > 0 && myCell.isAlive()) {
                 moveOneCell(myCell, globalGrid);
             }
         }
@@ -216,8 +216,8 @@ public final class Team {
      * @param globalGrid La grille de référence pour vérifier l'occupation des cases.
      */
     private synchronized void moveOneCell(Cell myCell, Cell[][] globalGrid){
-        int x = myCell.x;
-        int y = myCell.y;
+        int x = myCell.getX();
+        int y = myCell.getY();
         int myDist = gradient.getDistance(x, y);
         
         List<Point> mainDirsFree = new ArrayList<>();
@@ -246,9 +246,9 @@ public final class Team {
             } else {
                 // Case Occupée
                 if (isMain) {
-                    if (occupant.currentTeam != this.team) enemiesOnMain.add(occupant);
+                    if (occupant.getCurrentTeam() != this.team) enemiesOnMain.add(occupant);
                     else friendsOnMain.add(occupant);
-                }else if(isAcceptable) if(myCell.currentTeam == occupant.currentTeam)friendsOnMain.add(occupant);
+                }else if(isAcceptable) if(myCell.getCurrentTeam() == occupant.getCurrentTeam())friendsOnMain.add(occupant);
                 else friendsOnMain.add(occupant);
             }
         }
@@ -291,7 +291,7 @@ public final class Team {
 
     // Petite méthode helper pour ne pas dupliquer le code de déplacement
     private void moveCellTo(Cell c, Point p, Cell[][] grid) {
-        grid[c.y][c.x] = null;
+        grid[c.getY()][c.getX()] = null;
         setCellPosition(c, p.x(), p.y()); // Ta méthode existante
         grid[p.y()][p.x()] = c;
     }
@@ -308,12 +308,12 @@ public final class Team {
 
         if(!target.isAlive()) return;
 
-        target.energy -= 5;
-        attacker.energy += 5;
+        target.setEnergy(target.getEnergy() - 5);
+        attacker.setEnergy(attacker.getEnergy() + 5);
 
-        if(target.energy <= 5){
-            target.energy = 5;
-            target.nextTeam = this.team;
+        if(target.getEnergy() <= 5){
+            target.setEnergy(5);
+            target.setNextTeam(this.team);
         }
     }
 
@@ -332,9 +332,9 @@ public final class Team {
 
         int maxenergy= 80;
 
-        if(healer.energy > minenergy && receiver.energy < maxenergy){
-            healer.energy --;
-            receiver.energy ++;
+        if(healer.getEnergy() > minenergy && receiver.getEnergy() < maxenergy){
+            healer.setEnergy(healer.getEnergy() - 1);
+            receiver.setEnergy(receiver.getEnergy() + 1);
         }
     }
 

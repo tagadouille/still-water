@@ -28,7 +28,7 @@ class TeamTest {
 
     @Test
     void testAddCell() {
-        Team.Cell cell = Team.Cell.CreateCell(1, 1, Color.RED);
+        Cell cell = Cell.CreateCell(1, 1, Color.RED);
         redTeam.addCell(cell);
         
         assertEquals(1, redTeam.getArmy().size());
@@ -39,11 +39,11 @@ class TeamTest {
     void testAttackLogicBetweenTeams() {
         // 1. Création des combattants
         // Un soldat de l'équipe ROUGE
-        Team.Cell attacker = Team.Cell.CreateCell(0, 0, Color.RED);
+        Cell attacker = Cell.CreateCell(0, 0, Color.RED);
         redTeam.addCell(attacker);
 
         // Une victime de l'équipe BLEUE
-        Team.Cell victim = Team.Cell.CreateCell(0, 1, Color.BLUE);
+        Cell victim = Cell.CreateCell(0, 1, Color.BLUE);
         blueTeam.addCell(victim);
         
         // 2. Configuration de l'énergie
@@ -68,8 +68,8 @@ class TeamTest {
     @Test
     void testHealLogicSameTeam() {
         // Le soin ne marche qu'entre membres de la même équipe
-        Team.Cell healer = Team.Cell.CreateCell(0, 0, Color.RED);
-        Team.Cell receiver = Team.Cell.CreateCell(0, 1, Color.RED);
+        Cell healer = Cell.CreateCell(0, 0, Color.RED);
+        Cell receiver = Cell.CreateCell(0, 1, Color.RED);
         
         redTeam.addCell(healer);
         redTeam.addCell(receiver);
