@@ -74,8 +74,8 @@ class TeamTest {
         redTeam.addCell(healer);
         redTeam.addCell(receiver);
         
-        healer.setEnergy(90); // Riche
-        receiver.setEnergy(30); // Pauvre
+        healer.setEnergy(90); // Presque plein
+        receiver.setEnergy(30); // Besoin de soin
 
         // Action : Soin
         redTeam.heal(healer, receiver);

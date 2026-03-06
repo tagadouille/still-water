@@ -7,17 +7,18 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 
 /**
- * Classe permettant de rendre les particules
+ * Class for rendering the particles of the teams on the canvas
  * 
  * @author Dai Elias
  */
 public final class ParticleView {
     
     /**
-     * Permet d'afficher les cellules d'une équipes
-     * @param gc le graphics context sur lequel affiché les cellules
-     * @param team l'équipe dont les cellules seront affichés
-     * @param screenSize la taille de l'écran
+     * Render the particles of a team on the canvas
+     * @param gc the graphics context of the canvas
+     * @param team the team for render the particles
+     * @param width the width of the canvas
+     * @param height the height of the canvas
      */
     public static void renderParticles(GraphicsContext gc, Team team, double width, double height){
 
